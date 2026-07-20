@@ -61,7 +61,7 @@ function SubscriptionPage() {
               </div>
               <div>
                 <div className="text-muted-foreground">Valor</div>
-                <div>{formatPriceBRL(data.data.billingCycle === "monthly" ? data.data.plan.monthlyPriceCents : data.data.plan.yearlyPriceCents)}</div>
+                <div>{formatPriceBRL(data.data.billingCycle === "monthly" ? data.data!.plan.monthlyPriceCents : data.data!.plan.yearlyPriceCents)}</div>
               </div>
             </div>
             <div className="mt-6 flex gap-2">
@@ -78,7 +78,7 @@ function SubscriptionPage() {
               {[0, 1, 2].map((i) => (
                 <li key={i} className="flex items-center justify-between py-2.5">
                   <span>Cobrança #{String(1000 + i)}</span>
-                  <span className="text-muted-foreground">{formatPriceBRL(data.data.plan.monthlyPriceCents)}</span>
+                  <span className="text-muted-foreground">{formatPriceBRL(data.data!.plan.monthlyPriceCents)}</span>
                   <span className="text-xs text-primary">Pago</span>
                 </li>
               ))}
