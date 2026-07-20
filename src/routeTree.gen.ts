@@ -9,45 +9,40 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SobreRouteImport } from './routes/sobre'
-import { Route as RedefinirSenhaRouteImport } from './routes/redefinir-senha'
-import { Route as RecuperarSenhaRouteImport } from './routes/recuperar-senha'
-import { Route as EntrarRouteImport } from './routes/entrar'
-import { Route as ContatoRouteImport } from './routes/contato'
-import { Route as CadastrarRouteImport } from './routes/cadastrar'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as PlanosIndexRouteImport } from './routes/planos.index'
-import { Route as CursosIndexRouteImport } from './routes/cursos.index'
+import { Route as AlunoRouteImport } from './routes/_aluno'
+import { Route as CadastrarRouteImport } from './routes/cadastrar'
+import { Route as ContatoRouteImport } from './routes/contato'
+import { Route as EntrarRouteImport } from './routes/entrar'
+import { Route as RecuperarSenhaRouteImport } from './routes/recuperar-senha'
+import { Route as RedefinirSenhaRouteImport } from './routes/redefinir-senha'
+import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as ConteudosIndexRouteImport } from './routes/conteudos.index'
-import { Route as PlanosSucessoRouteImport } from './routes/planos.sucesso'
-import { Route as PlanosCheckoutRouteImport } from './routes/planos.checkout'
-import { Route as CursosSlugRouteImport } from './routes/cursos.$slug'
 import { Route as ConteudosSlugRouteImport } from './routes/conteudos.$slug'
+import { Route as CursosIndexRouteImport } from './routes/cursos.index'
+import { Route as CursosSlugRouteImport } from './routes/cursos.$slug'
+import { Route as PlanosIndexRouteImport } from './routes/planos.index'
+import { Route as PlanosCheckoutRouteImport } from './routes/planos.checkout'
+import { Route as PlanosSucessoRouteImport } from './routes/planos.sucesso'
+import { Route as AlunoAlunoIndexRouteImport } from './routes/_aluno.aluno.index'
+import { Route as AlunoAlunoAssinaturaRouteImport } from './routes/_aluno.aluno.assinatura'
+import { Route as AlunoAlunoFavoritosRouteImport } from './routes/_aluno.aluno.favoritos'
+import { Route as AlunoAlunoPerfilRouteImport } from './routes/_aluno.aluno.perfil'
 import { Route as CertificadosValidarCodigoRouteImport } from './routes/certificados.validar.$codigo'
+import { Route as AlunoAlunoCertificadosIndexRouteImport } from './routes/_aluno.aluno.certificados.index'
+import { Route as AlunoAlunoCertificadosIdRouteImport } from './routes/_aluno.aluno.certificados.$id'
+import { Route as AlunoAlunoCursosIndexRouteImport } from './routes/_aluno.aluno.cursos.index'
+import { Route as AlunoAlunoCursosSlugIndexRouteImport } from './routes/_aluno.aluno.cursos.$slug.index'
+import { Route as AlunoAlunoCursosSlugQuizRouteImport } from './routes/_aluno.aluno.cursos.$slug.quiz'
+import { Route as AlunoAlunoCursosSlugAulasLessonIdRouteImport } from './routes/_aluno.aluno.cursos.$slug.aulas.$lessonId'
 
-const SobreRoute = SobreRouteImport.update({
-  id: '/sobre',
-  path: '/sobre',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RedefinirSenhaRoute = RedefinirSenhaRouteImport.update({
-  id: '/redefinir-senha',
-  path: '/redefinir-senha',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RecuperarSenhaRoute = RecuperarSenhaRouteImport.update({
-  id: '/recuperar-senha',
-  path: '/recuperar-senha',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EntrarRoute = EntrarRouteImport.update({
-  id: '/entrar',
-  path: '/entrar',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContatoRoute = ContatoRouteImport.update({
-  id: '/contato',
-  path: '/contato',
+const AlunoRoute = AlunoRouteImport.update({
+  id: '/_aluno',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CadastrarRoute = CadastrarRouteImport.update({
@@ -55,19 +50,29 @@ const CadastrarRoute = CadastrarRouteImport.update({
   path: '/cadastrar',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const ContatoRoute = ContatoRouteImport.update({
+  id: '/contato',
+  path: '/contato',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PlanosIndexRoute = PlanosIndexRouteImport.update({
-  id: '/planos/',
-  path: '/planos/',
+const EntrarRoute = EntrarRouteImport.update({
+  id: '/entrar',
+  path: '/entrar',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CursosIndexRoute = CursosIndexRouteImport.update({
-  id: '/cursos/',
-  path: '/cursos/',
+const RecuperarSenhaRoute = RecuperarSenhaRouteImport.update({
+  id: '/recuperar-senha',
+  path: '/recuperar-senha',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RedefinirSenhaRoute = RedefinirSenhaRouteImport.update({
+  id: '/redefinir-senha',
+  path: '/redefinir-senha',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SobreRoute = SobreRouteImport.update({
+  id: '/sobre',
+  path: '/sobre',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConteudosIndexRoute = ConteudosIndexRouteImport.update({
@@ -75,14 +80,14 @@ const ConteudosIndexRoute = ConteudosIndexRouteImport.update({
   path: '/conteudos/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PlanosSucessoRoute = PlanosSucessoRouteImport.update({
-  id: '/planos/sucesso',
-  path: '/planos/sucesso',
+const ConteudosSlugRoute = ConteudosSlugRouteImport.update({
+  id: '/conteudos/$slug',
+  path: '/conteudos/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PlanosCheckoutRoute = PlanosCheckoutRouteImport.update({
-  id: '/planos/checkout',
-  path: '/planos/checkout',
+const CursosIndexRoute = CursosIndexRouteImport.update({
+  id: '/cursos/',
+  path: '/cursos/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CursosSlugRoute = CursosSlugRouteImport.update({
@@ -90,16 +95,81 @@ const CursosSlugRoute = CursosSlugRouteImport.update({
   path: '/cursos/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ConteudosSlugRoute = ConteudosSlugRouteImport.update({
-  id: '/conteudos/$slug',
-  path: '/conteudos/$slug',
+const PlanosIndexRoute = PlanosIndexRouteImport.update({
+  id: '/planos/',
+  path: '/planos/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const PlanosCheckoutRoute = PlanosCheckoutRouteImport.update({
+  id: '/planos/checkout',
+  path: '/planos/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlanosSucessoRoute = PlanosSucessoRouteImport.update({
+  id: '/planos/sucesso',
+  path: '/planos/sucesso',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AlunoAlunoIndexRoute = AlunoAlunoIndexRouteImport.update({
+  id: '/aluno/',
+  path: '/aluno/',
+  getParentRoute: () => AlunoRoute,
+} as any)
+const AlunoAlunoAssinaturaRoute = AlunoAlunoAssinaturaRouteImport.update({
+  id: '/aluno/assinatura',
+  path: '/aluno/assinatura',
+  getParentRoute: () => AlunoRoute,
+} as any)
+const AlunoAlunoFavoritosRoute = AlunoAlunoFavoritosRouteImport.update({
+  id: '/aluno/favoritos',
+  path: '/aluno/favoritos',
+  getParentRoute: () => AlunoRoute,
+} as any)
+const AlunoAlunoPerfilRoute = AlunoAlunoPerfilRouteImport.update({
+  id: '/aluno/perfil',
+  path: '/aluno/perfil',
+  getParentRoute: () => AlunoRoute,
 } as any)
 const CertificadosValidarCodigoRoute =
   CertificadosValidarCodigoRouteImport.update({
     id: '/certificados/validar/$codigo',
     path: '/certificados/validar/$codigo',
     getParentRoute: () => rootRouteImport,
+  } as any)
+const AlunoAlunoCertificadosIndexRoute =
+  AlunoAlunoCertificadosIndexRouteImport.update({
+    id: '/aluno/certificados/',
+    path: '/aluno/certificados/',
+    getParentRoute: () => AlunoRoute,
+  } as any)
+const AlunoAlunoCertificadosIdRoute =
+  AlunoAlunoCertificadosIdRouteImport.update({
+    id: '/aluno/certificados/$id',
+    path: '/aluno/certificados/$id',
+    getParentRoute: () => AlunoRoute,
+  } as any)
+const AlunoAlunoCursosIndexRoute = AlunoAlunoCursosIndexRouteImport.update({
+  id: '/aluno/cursos/',
+  path: '/aluno/cursos/',
+  getParentRoute: () => AlunoRoute,
+} as any)
+const AlunoAlunoCursosSlugIndexRoute =
+  AlunoAlunoCursosSlugIndexRouteImport.update({
+    id: '/aluno/cursos/$slug/',
+    path: '/aluno/cursos/$slug/',
+    getParentRoute: () => AlunoRoute,
+  } as any)
+const AlunoAlunoCursosSlugQuizRoute =
+  AlunoAlunoCursosSlugQuizRouteImport.update({
+    id: '/aluno/cursos/$slug/quiz',
+    path: '/aluno/cursos/$slug/quiz',
+    getParentRoute: () => AlunoRoute,
+  } as any)
+const AlunoAlunoCursosSlugAulasLessonIdRoute =
+  AlunoAlunoCursosSlugAulasLessonIdRouteImport.update({
+    id: '/aluno/cursos/$slug/aulas/$lessonId',
+    path: '/aluno/cursos/$slug/aulas/$lessonId',
+    getParentRoute: () => AlunoRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -117,7 +187,17 @@ export interface FileRoutesByFullPath {
   '/conteudos/': typeof ConteudosIndexRoute
   '/cursos/': typeof CursosIndexRoute
   '/planos/': typeof PlanosIndexRoute
+  '/aluno/assinatura': typeof AlunoAlunoAssinaturaRoute
+  '/aluno/favoritos': typeof AlunoAlunoFavoritosRoute
+  '/aluno/perfil': typeof AlunoAlunoPerfilRoute
   '/certificados/validar/$codigo': typeof CertificadosValidarCodigoRoute
+  '/aluno/': typeof AlunoAlunoIndexRoute
+  '/aluno/certificados/$id': typeof AlunoAlunoCertificadosIdRoute
+  '/aluno/certificados/': typeof AlunoAlunoCertificadosIndexRoute
+  '/aluno/cursos/': typeof AlunoAlunoCursosIndexRoute
+  '/aluno/cursos/$slug/quiz': typeof AlunoAlunoCursosSlugQuizRoute
+  '/aluno/cursos/$slug/': typeof AlunoAlunoCursosSlugIndexRoute
+  '/aluno/cursos/$slug/aulas/$lessonId': typeof AlunoAlunoCursosSlugAulasLessonIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -134,11 +214,22 @@ export interface FileRoutesByTo {
   '/conteudos': typeof ConteudosIndexRoute
   '/cursos': typeof CursosIndexRoute
   '/planos': typeof PlanosIndexRoute
+  '/aluno/assinatura': typeof AlunoAlunoAssinaturaRoute
+  '/aluno/favoritos': typeof AlunoAlunoFavoritosRoute
+  '/aluno/perfil': typeof AlunoAlunoPerfilRoute
   '/certificados/validar/$codigo': typeof CertificadosValidarCodigoRoute
+  '/aluno': typeof AlunoAlunoIndexRoute
+  '/aluno/certificados/$id': typeof AlunoAlunoCertificadosIdRoute
+  '/aluno/certificados': typeof AlunoAlunoCertificadosIndexRoute
+  '/aluno/cursos': typeof AlunoAlunoCursosIndexRoute
+  '/aluno/cursos/$slug/quiz': typeof AlunoAlunoCursosSlugQuizRoute
+  '/aluno/cursos/$slug': typeof AlunoAlunoCursosSlugIndexRoute
+  '/aluno/cursos/$slug/aulas/$lessonId': typeof AlunoAlunoCursosSlugAulasLessonIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_aluno': typeof AlunoRouteWithChildren
   '/cadastrar': typeof CadastrarRoute
   '/contato': typeof ContatoRoute
   '/entrar': typeof EntrarRoute
@@ -152,7 +243,17 @@ export interface FileRoutesById {
   '/conteudos/': typeof ConteudosIndexRoute
   '/cursos/': typeof CursosIndexRoute
   '/planos/': typeof PlanosIndexRoute
+  '/_aluno/aluno/assinatura': typeof AlunoAlunoAssinaturaRoute
+  '/_aluno/aluno/favoritos': typeof AlunoAlunoFavoritosRoute
+  '/_aluno/aluno/perfil': typeof AlunoAlunoPerfilRoute
   '/certificados/validar/$codigo': typeof CertificadosValidarCodigoRoute
+  '/_aluno/aluno/': typeof AlunoAlunoIndexRoute
+  '/_aluno/aluno/certificados/$id': typeof AlunoAlunoCertificadosIdRoute
+  '/_aluno/aluno/certificados/': typeof AlunoAlunoCertificadosIndexRoute
+  '/_aluno/aluno/cursos/': typeof AlunoAlunoCursosIndexRoute
+  '/_aluno/aluno/cursos/$slug/quiz': typeof AlunoAlunoCursosSlugQuizRoute
+  '/_aluno/aluno/cursos/$slug/': typeof AlunoAlunoCursosSlugIndexRoute
+  '/_aluno/aluno/cursos/$slug/aulas/$lessonId': typeof AlunoAlunoCursosSlugAulasLessonIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -171,7 +272,17 @@ export interface FileRouteTypes {
     | '/conteudos/'
     | '/cursos/'
     | '/planos/'
+    | '/aluno/assinatura'
+    | '/aluno/favoritos'
+    | '/aluno/perfil'
     | '/certificados/validar/$codigo'
+    | '/aluno/'
+    | '/aluno/certificados/$id'
+    | '/aluno/certificados/'
+    | '/aluno/cursos/'
+    | '/aluno/cursos/$slug/quiz'
+    | '/aluno/cursos/$slug/'
+    | '/aluno/cursos/$slug/aulas/$lessonId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -188,10 +299,21 @@ export interface FileRouteTypes {
     | '/conteudos'
     | '/cursos'
     | '/planos'
+    | '/aluno/assinatura'
+    | '/aluno/favoritos'
+    | '/aluno/perfil'
     | '/certificados/validar/$codigo'
+    | '/aluno'
+    | '/aluno/certificados/$id'
+    | '/aluno/certificados'
+    | '/aluno/cursos'
+    | '/aluno/cursos/$slug/quiz'
+    | '/aluno/cursos/$slug'
+    | '/aluno/cursos/$slug/aulas/$lessonId'
   id:
     | '__root__'
     | '/'
+    | '/_aluno'
     | '/cadastrar'
     | '/contato'
     | '/entrar'
@@ -205,11 +327,22 @@ export interface FileRouteTypes {
     | '/conteudos/'
     | '/cursos/'
     | '/planos/'
+    | '/_aluno/aluno/assinatura'
+    | '/_aluno/aluno/favoritos'
+    | '/_aluno/aluno/perfil'
     | '/certificados/validar/$codigo'
+    | '/_aluno/aluno/'
+    | '/_aluno/aluno/certificados/$id'
+    | '/_aluno/aluno/certificados/'
+    | '/_aluno/aluno/cursos/'
+    | '/_aluno/aluno/cursos/$slug/quiz'
+    | '/_aluno/aluno/cursos/$slug/'
+    | '/_aluno/aluno/cursos/$slug/aulas/$lessonId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AlunoRoute: typeof AlunoRouteWithChildren
   CadastrarRoute: typeof CadastrarRoute
   ContatoRoute: typeof ContatoRoute
   EntrarRoute: typeof EntrarRoute
@@ -228,39 +361,18 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/sobre': {
-      id: '/sobre'
-      path: '/sobre'
-      fullPath: '/sobre'
-      preLoaderRoute: typeof SobreRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/redefinir-senha': {
-      id: '/redefinir-senha'
-      path: '/redefinir-senha'
-      fullPath: '/redefinir-senha'
-      preLoaderRoute: typeof RedefinirSenhaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/recuperar-senha': {
-      id: '/recuperar-senha'
-      path: '/recuperar-senha'
-      fullPath: '/recuperar-senha'
-      preLoaderRoute: typeof RecuperarSenhaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/entrar': {
-      id: '/entrar'
-      path: '/entrar'
-      fullPath: '/entrar'
-      preLoaderRoute: typeof EntrarRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contato': {
-      id: '/contato'
-      path: '/contato'
-      fullPath: '/contato'
-      preLoaderRoute: typeof ContatoRouteImport
+    '/_aluno': {
+      id: '/_aluno'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AlunoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cadastrar': {
@@ -270,25 +382,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CadastrarRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/contato': {
+      id: '/contato'
+      path: '/contato'
+      fullPath: '/contato'
+      preLoaderRoute: typeof ContatoRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/planos/': {
-      id: '/planos/'
-      path: '/planos'
-      fullPath: '/planos/'
-      preLoaderRoute: typeof PlanosIndexRouteImport
+    '/entrar': {
+      id: '/entrar'
+      path: '/entrar'
+      fullPath: '/entrar'
+      preLoaderRoute: typeof EntrarRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/cursos/': {
-      id: '/cursos/'
-      path: '/cursos'
-      fullPath: '/cursos/'
-      preLoaderRoute: typeof CursosIndexRouteImport
+    '/recuperar-senha': {
+      id: '/recuperar-senha'
+      path: '/recuperar-senha'
+      fullPath: '/recuperar-senha'
+      preLoaderRoute: typeof RecuperarSenhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/redefinir-senha': {
+      id: '/redefinir-senha'
+      path: '/redefinir-senha'
+      fullPath: '/redefinir-senha'
+      preLoaderRoute: typeof RedefinirSenhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sobre': {
+      id: '/sobre'
+      path: '/sobre'
+      fullPath: '/sobre'
+      preLoaderRoute: typeof SobreRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/conteudos/': {
@@ -298,18 +424,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConteudosIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/planos/sucesso': {
-      id: '/planos/sucesso'
-      path: '/planos/sucesso'
-      fullPath: '/planos/sucesso'
-      preLoaderRoute: typeof PlanosSucessoRouteImport
+    '/conteudos/$slug': {
+      id: '/conteudos/$slug'
+      path: '/conteudos/$slug'
+      fullPath: '/conteudos/$slug'
+      preLoaderRoute: typeof ConteudosSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/planos/checkout': {
-      id: '/planos/checkout'
-      path: '/planos/checkout'
-      fullPath: '/planos/checkout'
-      preLoaderRoute: typeof PlanosCheckoutRouteImport
+    '/cursos/': {
+      id: '/cursos/'
+      path: '/cursos'
+      fullPath: '/cursos/'
+      preLoaderRoute: typeof CursosIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cursos/$slug': {
@@ -319,12 +445,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CursosSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/conteudos/$slug': {
-      id: '/conteudos/$slug'
-      path: '/conteudos/$slug'
-      fullPath: '/conteudos/$slug'
-      preLoaderRoute: typeof ConteudosSlugRouteImport
+    '/planos/': {
+      id: '/planos/'
+      path: '/planos'
+      fullPath: '/planos/'
+      preLoaderRoute: typeof PlanosIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/planos/checkout': {
+      id: '/planos/checkout'
+      path: '/planos/checkout'
+      fullPath: '/planos/checkout'
+      preLoaderRoute: typeof PlanosCheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/planos/sucesso': {
+      id: '/planos/sucesso'
+      path: '/planos/sucesso'
+      fullPath: '/planos/sucesso'
+      preLoaderRoute: typeof PlanosSucessoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_aluno/aluno/': {
+      id: '/_aluno/aluno/'
+      path: '/aluno'
+      fullPath: '/aluno/'
+      preLoaderRoute: typeof AlunoAlunoIndexRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/_aluno/aluno/assinatura': {
+      id: '/_aluno/aluno/assinatura'
+      path: '/aluno/assinatura'
+      fullPath: '/aluno/assinatura'
+      preLoaderRoute: typeof AlunoAlunoAssinaturaRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/_aluno/aluno/favoritos': {
+      id: '/_aluno/aluno/favoritos'
+      path: '/aluno/favoritos'
+      fullPath: '/aluno/favoritos'
+      preLoaderRoute: typeof AlunoAlunoFavoritosRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/_aluno/aluno/perfil': {
+      id: '/_aluno/aluno/perfil'
+      path: '/aluno/perfil'
+      fullPath: '/aluno/perfil'
+      preLoaderRoute: typeof AlunoAlunoPerfilRouteImport
+      parentRoute: typeof AlunoRoute
     }
     '/certificados/validar/$codigo': {
       id: '/certificados/validar/$codigo'
@@ -333,11 +501,83 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CertificadosValidarCodigoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_aluno/aluno/certificados/': {
+      id: '/_aluno/aluno/certificados/'
+      path: '/aluno/certificados'
+      fullPath: '/aluno/certificados/'
+      preLoaderRoute: typeof AlunoAlunoCertificadosIndexRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/_aluno/aluno/certificados/$id': {
+      id: '/_aluno/aluno/certificados/$id'
+      path: '/aluno/certificados/$id'
+      fullPath: '/aluno/certificados/$id'
+      preLoaderRoute: typeof AlunoAlunoCertificadosIdRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/_aluno/aluno/cursos/': {
+      id: '/_aluno/aluno/cursos/'
+      path: '/aluno/cursos'
+      fullPath: '/aluno/cursos/'
+      preLoaderRoute: typeof AlunoAlunoCursosIndexRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/_aluno/aluno/cursos/$slug/': {
+      id: '/_aluno/aluno/cursos/$slug/'
+      path: '/aluno/cursos/$slug'
+      fullPath: '/aluno/cursos/$slug/'
+      preLoaderRoute: typeof AlunoAlunoCursosSlugIndexRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/_aluno/aluno/cursos/$slug/quiz': {
+      id: '/_aluno/aluno/cursos/$slug/quiz'
+      path: '/aluno/cursos/$slug/quiz'
+      fullPath: '/aluno/cursos/$slug/quiz'
+      preLoaderRoute: typeof AlunoAlunoCursosSlugQuizRouteImport
+      parentRoute: typeof AlunoRoute
+    }
+    '/_aluno/aluno/cursos/$slug/aulas/$lessonId': {
+      id: '/_aluno/aluno/cursos/$slug/aulas/$lessonId'
+      path: '/aluno/cursos/$slug/aulas/$lessonId'
+      fullPath: '/aluno/cursos/$slug/aulas/$lessonId'
+      preLoaderRoute: typeof AlunoAlunoCursosSlugAulasLessonIdRouteImport
+      parentRoute: typeof AlunoRoute
+    }
   }
 }
 
+interface AlunoRouteChildren {
+  AlunoAlunoAssinaturaRoute: typeof AlunoAlunoAssinaturaRoute
+  AlunoAlunoFavoritosRoute: typeof AlunoAlunoFavoritosRoute
+  AlunoAlunoPerfilRoute: typeof AlunoAlunoPerfilRoute
+  AlunoAlunoIndexRoute: typeof AlunoAlunoIndexRoute
+  AlunoAlunoCertificadosIdRoute: typeof AlunoAlunoCertificadosIdRoute
+  AlunoAlunoCertificadosIndexRoute: typeof AlunoAlunoCertificadosIndexRoute
+  AlunoAlunoCursosIndexRoute: typeof AlunoAlunoCursosIndexRoute
+  AlunoAlunoCursosSlugQuizRoute: typeof AlunoAlunoCursosSlugQuizRoute
+  AlunoAlunoCursosSlugIndexRoute: typeof AlunoAlunoCursosSlugIndexRoute
+  AlunoAlunoCursosSlugAulasLessonIdRoute: typeof AlunoAlunoCursosSlugAulasLessonIdRoute
+}
+
+const AlunoRouteChildren: AlunoRouteChildren = {
+  AlunoAlunoAssinaturaRoute: AlunoAlunoAssinaturaRoute,
+  AlunoAlunoFavoritosRoute: AlunoAlunoFavoritosRoute,
+  AlunoAlunoPerfilRoute: AlunoAlunoPerfilRoute,
+  AlunoAlunoIndexRoute: AlunoAlunoIndexRoute,
+  AlunoAlunoCertificadosIdRoute: AlunoAlunoCertificadosIdRoute,
+  AlunoAlunoCertificadosIndexRoute: AlunoAlunoCertificadosIndexRoute,
+  AlunoAlunoCursosIndexRoute: AlunoAlunoCursosIndexRoute,
+  AlunoAlunoCursosSlugQuizRoute: AlunoAlunoCursosSlugQuizRoute,
+  AlunoAlunoCursosSlugIndexRoute: AlunoAlunoCursosSlugIndexRoute,
+  AlunoAlunoCursosSlugAulasLessonIdRoute:
+    AlunoAlunoCursosSlugAulasLessonIdRoute,
+}
+
+const AlunoRouteWithChildren = AlunoRoute._addFileChildren(AlunoRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AlunoRoute: AlunoRouteWithChildren,
   CadastrarRoute: CadastrarRoute,
   ContatoRoute: ContatoRoute,
   EntrarRoute: EntrarRoute,
