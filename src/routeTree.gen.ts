@@ -10,16 +10,39 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SobreRouteImport } from './routes/sobre'
+import { Route as RedefinirSenhaRouteImport } from './routes/redefinir-senha'
+import { Route as RecuperarSenhaRouteImport } from './routes/recuperar-senha'
+import { Route as EntrarRouteImport } from './routes/entrar'
 import { Route as ContatoRouteImport } from './routes/contato'
+import { Route as CadastrarRouteImport } from './routes/cadastrar'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PlanosIndexRouteImport } from './routes/planos.index'
 import { Route as CursosIndexRouteImport } from './routes/cursos.index'
 import { Route as ConteudosIndexRouteImport } from './routes/conteudos.index'
+import { Route as PlanosSucessoRouteImport } from './routes/planos.sucesso'
+import { Route as PlanosCheckoutRouteImport } from './routes/planos.checkout'
 import { Route as CursosSlugRouteImport } from './routes/cursos.$slug'
 import { Route as ConteudosSlugRouteImport } from './routes/conteudos.$slug'
+import { Route as CertificadosValidarCodigoRouteImport } from './routes/certificados.validar.$codigo'
 
 const SobreRoute = SobreRouteImport.update({
   id: '/sobre',
   path: '/sobre',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RedefinirSenhaRoute = RedefinirSenhaRouteImport.update({
+  id: '/redefinir-senha',
+  path: '/redefinir-senha',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecuperarSenhaRoute = RecuperarSenhaRouteImport.update({
+  id: '/recuperar-senha',
+  path: '/recuperar-senha',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EntrarRoute = EntrarRouteImport.update({
+  id: '/entrar',
+  path: '/entrar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContatoRoute = ContatoRouteImport.update({
@@ -27,9 +50,19 @@ const ContatoRoute = ContatoRouteImport.update({
   path: '/contato',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CadastrarRoute = CadastrarRouteImport.update({
+  id: '/cadastrar',
+  path: '/cadastrar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlanosIndexRoute = PlanosIndexRouteImport.update({
+  id: '/planos/',
+  path: '/planos/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CursosIndexRoute = CursosIndexRouteImport.update({
@@ -42,6 +75,16 @@ const ConteudosIndexRoute = ConteudosIndexRouteImport.update({
   path: '/conteudos/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PlanosSucessoRoute = PlanosSucessoRouteImport.update({
+  id: '/planos/sucesso',
+  path: '/planos/sucesso',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlanosCheckoutRoute = PlanosCheckoutRouteImport.update({
+  id: '/planos/checkout',
+  path: '/planos/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CursosSlugRoute = CursosSlugRouteImport.update({
   id: '/cursos/$slug',
   path: '/cursos/$slug',
@@ -52,73 +95,135 @@ const ConteudosSlugRoute = ConteudosSlugRouteImport.update({
   path: '/conteudos/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CertificadosValidarCodigoRoute =
+  CertificadosValidarCodigoRouteImport.update({
+    id: '/certificados/validar/$codigo',
+    path: '/certificados/validar/$codigo',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/cadastrar': typeof CadastrarRoute
   '/contato': typeof ContatoRoute
+  '/entrar': typeof EntrarRoute
+  '/recuperar-senha': typeof RecuperarSenhaRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
   '/sobre': typeof SobreRoute
   '/conteudos/$slug': typeof ConteudosSlugRoute
   '/cursos/$slug': typeof CursosSlugRoute
+  '/planos/checkout': typeof PlanosCheckoutRoute
+  '/planos/sucesso': typeof PlanosSucessoRoute
   '/conteudos/': typeof ConteudosIndexRoute
   '/cursos/': typeof CursosIndexRoute
+  '/planos/': typeof PlanosIndexRoute
+  '/certificados/validar/$codigo': typeof CertificadosValidarCodigoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/cadastrar': typeof CadastrarRoute
   '/contato': typeof ContatoRoute
+  '/entrar': typeof EntrarRoute
+  '/recuperar-senha': typeof RecuperarSenhaRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
   '/sobre': typeof SobreRoute
   '/conteudos/$slug': typeof ConteudosSlugRoute
   '/cursos/$slug': typeof CursosSlugRoute
+  '/planos/checkout': typeof PlanosCheckoutRoute
+  '/planos/sucesso': typeof PlanosSucessoRoute
   '/conteudos': typeof ConteudosIndexRoute
   '/cursos': typeof CursosIndexRoute
+  '/planos': typeof PlanosIndexRoute
+  '/certificados/validar/$codigo': typeof CertificadosValidarCodigoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/cadastrar': typeof CadastrarRoute
   '/contato': typeof ContatoRoute
+  '/entrar': typeof EntrarRoute
+  '/recuperar-senha': typeof RecuperarSenhaRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
   '/sobre': typeof SobreRoute
   '/conteudos/$slug': typeof ConteudosSlugRoute
   '/cursos/$slug': typeof CursosSlugRoute
+  '/planos/checkout': typeof PlanosCheckoutRoute
+  '/planos/sucesso': typeof PlanosSucessoRoute
   '/conteudos/': typeof ConteudosIndexRoute
   '/cursos/': typeof CursosIndexRoute
+  '/planos/': typeof PlanosIndexRoute
+  '/certificados/validar/$codigo': typeof CertificadosValidarCodigoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/cadastrar'
     | '/contato'
+    | '/entrar'
+    | '/recuperar-senha'
+    | '/redefinir-senha'
     | '/sobre'
     | '/conteudos/$slug'
     | '/cursos/$slug'
+    | '/planos/checkout'
+    | '/planos/sucesso'
     | '/conteudos/'
     | '/cursos/'
+    | '/planos/'
+    | '/certificados/validar/$codigo'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/cadastrar'
     | '/contato'
+    | '/entrar'
+    | '/recuperar-senha'
+    | '/redefinir-senha'
     | '/sobre'
     | '/conteudos/$slug'
     | '/cursos/$slug'
+    | '/planos/checkout'
+    | '/planos/sucesso'
     | '/conteudos'
     | '/cursos'
+    | '/planos'
+    | '/certificados/validar/$codigo'
   id:
     | '__root__'
     | '/'
+    | '/cadastrar'
     | '/contato'
+    | '/entrar'
+    | '/recuperar-senha'
+    | '/redefinir-senha'
     | '/sobre'
     | '/conteudos/$slug'
     | '/cursos/$slug'
+    | '/planos/checkout'
+    | '/planos/sucesso'
     | '/conteudos/'
     | '/cursos/'
+    | '/planos/'
+    | '/certificados/validar/$codigo'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CadastrarRoute: typeof CadastrarRoute
   ContatoRoute: typeof ContatoRoute
+  EntrarRoute: typeof EntrarRoute
+  RecuperarSenhaRoute: typeof RecuperarSenhaRoute
+  RedefinirSenhaRoute: typeof RedefinirSenhaRoute
   SobreRoute: typeof SobreRoute
   ConteudosSlugRoute: typeof ConteudosSlugRoute
   CursosSlugRoute: typeof CursosSlugRoute
+  PlanosCheckoutRoute: typeof PlanosCheckoutRoute
+  PlanosSucessoRoute: typeof PlanosSucessoRoute
   ConteudosIndexRoute: typeof ConteudosIndexRoute
   CursosIndexRoute: typeof CursosIndexRoute
+  PlanosIndexRoute: typeof PlanosIndexRoute
+  CertificadosValidarCodigoRoute: typeof CertificadosValidarCodigoRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -130,6 +235,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SobreRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/redefinir-senha': {
+      id: '/redefinir-senha'
+      path: '/redefinir-senha'
+      fullPath: '/redefinir-senha'
+      preLoaderRoute: typeof RedefinirSenhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recuperar-senha': {
+      id: '/recuperar-senha'
+      path: '/recuperar-senha'
+      fullPath: '/recuperar-senha'
+      preLoaderRoute: typeof RecuperarSenhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/entrar': {
+      id: '/entrar'
+      path: '/entrar'
+      fullPath: '/entrar'
+      preLoaderRoute: typeof EntrarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contato': {
       id: '/contato'
       path: '/contato'
@@ -137,11 +263,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContatoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/cadastrar': {
+      id: '/cadastrar'
+      path: '/cadastrar'
+      fullPath: '/cadastrar'
+      preLoaderRoute: typeof CadastrarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/planos/': {
+      id: '/planos/'
+      path: '/planos'
+      fullPath: '/planos/'
+      preLoaderRoute: typeof PlanosIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cursos/': {
@@ -158,6 +298,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConteudosIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/planos/sucesso': {
+      id: '/planos/sucesso'
+      path: '/planos/sucesso'
+      fullPath: '/planos/sucesso'
+      preLoaderRoute: typeof PlanosSucessoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/planos/checkout': {
+      id: '/planos/checkout'
+      path: '/planos/checkout'
+      fullPath: '/planos/checkout'
+      preLoaderRoute: typeof PlanosCheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/cursos/$slug': {
       id: '/cursos/$slug'
       path: '/cursos/$slug'
@@ -172,17 +326,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConteudosSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/certificados/validar/$codigo': {
+      id: '/certificados/validar/$codigo'
+      path: '/certificados/validar/$codigo'
+      fullPath: '/certificados/validar/$codigo'
+      preLoaderRoute: typeof CertificadosValidarCodigoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CadastrarRoute: CadastrarRoute,
   ContatoRoute: ContatoRoute,
+  EntrarRoute: EntrarRoute,
+  RecuperarSenhaRoute: RecuperarSenhaRoute,
+  RedefinirSenhaRoute: RedefinirSenhaRoute,
   SobreRoute: SobreRoute,
   ConteudosSlugRoute: ConteudosSlugRoute,
   CursosSlugRoute: CursosSlugRoute,
+  PlanosCheckoutRoute: PlanosCheckoutRoute,
+  PlanosSucessoRoute: PlanosSucessoRoute,
   ConteudosIndexRoute: ConteudosIndexRoute,
   CursosIndexRoute: CursosIndexRoute,
+  PlanosIndexRoute: PlanosIndexRoute,
+  CertificadosValidarCodigoRoute: CertificadosValidarCodigoRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
