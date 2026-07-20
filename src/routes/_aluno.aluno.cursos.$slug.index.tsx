@@ -9,7 +9,7 @@ import { CheckCircle2, Circle, Award } from "lucide-react";
 import { formatWorkload } from "@/utils/format";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/_aluno/aluno/cursos/$slug")({
+export const Route = createFileRoute("/_aluno/aluno/cursos/$slug/")({
   component: CourseInside,
 });
 
