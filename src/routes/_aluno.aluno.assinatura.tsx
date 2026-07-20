@@ -49,25 +49,25 @@ function SubscriptionPage() {
         <div className="space-y-4">
           <div className="rounded-xl border border-border/60 bg-card p-6">
             <div className="text-xs uppercase tracking-widest text-primary">Plano atual</div>
-            <div className="mt-1 font-serif text-3xl">{data.data.plan.name}</div>
+            <div className="mt-1 font-serif text-3xl">{data.data!.plan.name}</div>
             <div className="mt-4 grid gap-3 text-sm md:grid-cols-3">
               <div>
                 <div className="text-muted-foreground">Ciclo</div>
-                <div>{data.data.billingCycle === "monthly" ? "Mensal" : "Anual"}</div>
+                <div>{data.data!.billingCycle === "monthly" ? "Mensal" : "Anual"}</div>
               </div>
               <div>
                 <div className="text-muted-foreground">Próxima renovação</div>
-                <div>{formatDateBR(data.data.renewalAt)}</div>
+                <div>{formatDateBR(data.data!.renewalAt)}</div>
               </div>
               <div>
                 <div className="text-muted-foreground">Valor</div>
-                <div>{formatPriceBRL(data.data.billingCycle === "monthly" ? data.data!.plan.monthlyPriceCents : data.data!.plan.yearlyPriceCents)}</div>
+                <div>{formatPriceBRL(data.data!.billingCycle === "monthly" ? data.data!.plan.monthlyPriceCents : data.data!.plan.yearlyPriceCents)}</div>
               </div>
             </div>
             <div className="mt-6 flex gap-2">
               <Button asChild variant="secondary"><Link to="/planos">Alterar plano</Link></Button>
-              <Button variant="ghost" onClick={() => cancel.mutate()} disabled={cancel.isPending || data.data.status === "canceled"}>
-                {data.data.status === "canceled" ? "Cancelada" : "Cancelar"}
+              <Button variant="ghost" onClick={() => cancel.mutate()} disabled={cancel.isPending || data.data!.status === "canceled"}>
+                {data.data!.status === "canceled" ? "Cancelada" : "Cancelar"}
               </Button>
             </div>
           </div>
