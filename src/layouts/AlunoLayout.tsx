@@ -39,7 +39,7 @@ export function AlunoLayout({ children }: { children: ReactNode }) {
         </div>
         <nav className="flex-1 space-y-1 p-3">
           {NAV.map((item) => {
-            const active = item.exact ? pathname === item.to : pathname.startsWith(item.to);
+            const active = "exact" in item && item.exact ? pathname === item.to : pathname.startsWith(item.to);
             const Icon = item.icon;
             return (
               <Link
