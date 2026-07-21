@@ -80,16 +80,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Aprenda inglês com aulas práticas, cursos online, acompanhamento de progresso e certificados de conclusão.",
+          "Aprenda inglês com aulas práticas, cursos online, conversação, viagens, trabalho e certificados de conclusão.",
       },
       { name: "author", content: "Nerya" },
-      { property: "og:title", content: "Nerya — Inglês que conecta. Fluência que transforma." },
+      { property: "og:title", content: "Nerya | Inglês Online" },
       {
         property: "og:description",
-        content: "Escola de inglês online: aulas ao vivo e gravadas, conversação, viagens, trabalho e certificados.",
+        content: "Aprenda inglês com aulas práticas, cursos online, conversação, viagens, trabalho e certificados de conclusão.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Nerya | Inglês Online" },
+      { name: "twitter:description", content: "Aprenda inglês com aulas práticas, cursos online, conversação, viagens, trabalho e certificados de conclusão." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f881b730-f1b0-4b91-a833-26c16a25fa1c/id-preview-a25be25a--3953b802-f4b2-4fdf-b200-077fb3753c8b.lovable.app-1784635468939.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/f881b730-f1b0-4b91-a833-26c16a25fa1c/id-preview-a25be25a--3953b802-f4b2-4fdf-b200-077fb3753c8b.lovable.app-1784635468939.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
