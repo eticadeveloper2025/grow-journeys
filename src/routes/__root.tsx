@@ -18,7 +18,7 @@ function NotFoundComponent() {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <p className="text-sm uppercase tracking-widest text-primary">404</p>
-        <h1 className="mt-3 font-serif text-5xl text-foreground">Página não encontrada</h1>
+        <h1 className="mt-3 font-display text-5xl text-foreground">Página não encontrada</h1>
         <p className="mt-3 text-sm text-muted-foreground">
           O link que você acessou não existe ou foi movido.
         </p>
@@ -45,7 +45,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="font-serif text-3xl text-foreground">Algo deu errado</h1>
+        <h1 className="font-display text-3xl text-foreground">Algo deu errado</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           Tente novamente em instantes ou volte para o início.
         </p>

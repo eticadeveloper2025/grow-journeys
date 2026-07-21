@@ -16,7 +16,7 @@ function Success() {
     <PublicLayout>
       <section className="container-page flex flex-col items-center py-24 text-center">
         <CheckCircle2 className="mb-4 h-14 w-14 text-primary" />
-        <h1 className="font-serif text-4xl">Tudo certo (demo).</h1>
+        <h1 className="font-display text-4xl">Tudo certo (demo).</h1>
         <p className="mt-3 max-w-md text-muted-foreground">
           Sua assinatura demonstrativa {plan ? <b>{plan}</b> : ""} foi ativada. Nenhum pagamento foi processado.
         </p>

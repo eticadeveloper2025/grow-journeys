@@ -18,7 +18,7 @@ function Profile() {
     <div className="max-w-xl space-y-6">
       <div>
         <p className="text-xs uppercase tracking-widest text-primary">Conta</p>
-        <h1 className="mt-1 font-serif text-4xl">Perfil</h1>
+        <h1 className="mt-1 font-display text-4xl">Perfil</h1>
       </div>
       <DemoBanner>Alterações não são persistidas na versão demonstrativa.</DemoBanner>
       <form

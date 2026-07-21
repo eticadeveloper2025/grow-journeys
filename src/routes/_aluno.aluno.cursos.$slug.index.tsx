@@ -58,7 +58,7 @@ function CourseInside() {
     <div className="space-y-8">
       <div>
         <p className="text-xs uppercase tracking-widest text-primary">Curso</p>
-        <h1 className="mt-1 font-serif text-4xl leading-tight">{course.title}</h1>
+        <h1 className="mt-1 font-display text-4xl leading-tight">{course.title}</h1>
         <div className="mt-4 flex items-center gap-4">
           <Progress value={pct} className="h-2 flex-1" />
           <span className="text-sm text-muted-foreground">{pct}%</span>
@@ -70,7 +70,7 @@ function CourseInside() {
           {course.modules.map((m) => (
             <div key={m.id} className="rounded-xl border border-border/60 bg-card p-5">
               <div className="text-xs uppercase tracking-widest text-primary">Módulo {m.position}</div>
-              <h2 className="font-serif text-xl">{m.title}</h2>
+              <h2 className="font-display text-xl">{m.title}</h2>
               <ul className="mt-4 divide-y divide-border/40">
                 {m.lessons.map((l) => {
                   const isDone = progressData?.data.some((p) => p.lessonId === l.id && p.completed);

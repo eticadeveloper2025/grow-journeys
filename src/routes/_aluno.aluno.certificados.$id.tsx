@@ -63,10 +63,10 @@ function CertView() {
       >
         <div className="border border-primary/40 p-10 text-center">
           <div className="text-xs uppercase tracking-[0.4em] text-primary">Certificado demonstrativo</div>
-          <div className="mt-4 font-serif text-2xl">Nerya</div>
+          <div className="mt-4 font-display text-2xl">Nerya</div>
 
-          <h1 className="mt-10 font-serif text-4xl leading-tight">Certificamos que</h1>
-          <div className="mt-4 font-serif text-5xl text-primary">{cert.user.fullName}</div>
+          <h1 className="mt-10 font-display text-4xl leading-tight">Certificamos que</h1>
+          <div className="mt-4 font-display text-5xl text-primary">{cert.user.fullName}</div>
           <p className="mx-auto mt-6 max-w-xl text-sm text-muted-foreground">
             concluiu o curso <b>{cert.course.title}</b>, com carga horária de {formatWorkload(cert.workloadMinutes)},
             em {formatDateLong(cert.completionDate)}.

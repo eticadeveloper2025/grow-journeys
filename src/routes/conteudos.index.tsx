@@ -11,7 +11,7 @@ export const Route = createFileRoute("/conteudos/")({
   head: () => ({
     meta: [
       { title: "Conteúdos — Nerya" },
-      { name: "description", content: "Artigos, ensaios e notas sobre design, produto e engenharia." },
+      { name: "description", content: "Curiosidades, vocabulário, cultura e dicas para deixar o inglês mais próximo da sua rotina." },
     ],
   }),
   component: BlogPage,
@@ -29,9 +29,9 @@ function BlogPage() {
     <PublicLayout>
       <section className="container-page py-14">
         <p className="text-xs uppercase tracking-widest text-primary">Editorial</p>
-        <h1 className="mt-2 font-serif text-5xl">Conteúdos</h1>
+        <h1 className="mt-2 font-display text-5xl">Conteúdos</h1>
         <p className="mt-3 max-w-2xl text-muted-foreground">
-          Ensaios, tutoriais e conversas com quem constrói produtos digitais.
+          Curiosidades, vocabulário, cultura e dicas para deixar o inglês mais próximo da sua rotina.
         </p>
 
         <div className="mt-8 flex flex-wrap gap-2">
@@ -61,7 +61,7 @@ function BlogPage() {
                   </div>
                   <div className="flex flex-1 flex-col gap-2 p-5">
                     <div className="text-xs uppercase tracking-widest text-primary">{p.category.name}</div>
-                    <h3 className="font-serif text-xl leading-tight">{p.title}</h3>
+                    <h3 className="font-display text-xl leading-tight">{p.title}</h3>
                     <p className="line-clamp-2 flex-1 text-sm text-muted-foreground">{p.excerpt}</p>
                     <div className="mt-2 text-xs text-muted-foreground">
                       {p.publishedAt && formatDateBR(p.publishedAt)} · {p.readingMinutes} min

@@ -58,7 +58,7 @@ function LessonPage() {
 
       <div>
         <div className="text-xs uppercase tracking-widest text-primary">{course.title}</div>
-        <h1 className="mt-1 font-serif text-3xl">{lesson.title}</h1>
+        <h1 className="mt-1 font-display text-3xl">{lesson.title}</h1>
       </div>
 
       <div className="overflow-hidden rounded-xl border border-border/60 bg-black">

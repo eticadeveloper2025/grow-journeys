@@ -12,7 +12,7 @@ export function LoadingBlock({ label = "Carregando…" }: { label?: string }) {
 export function EmptyState({ title, description, action }: { title: string; description?: string; action?: React.ReactNode }) {
   return (
     <div className="rounded-xl border border-dashed border-border/70 bg-card/40 p-10 text-center">
-      <h3 className="font-serif text-xl">{title}</h3>
+      <h3 className="font-display text-xl">{title}</h3>
       {description && <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">{description}</p>}
       {action && <div className="mt-4">{action}</div>}
     </div>
@@ -23,7 +23,7 @@ export function ErrorState({ error, onRetry }: { error: unknown; onRetry?: () =>
   const message = error instanceof Error ? error.message : "Erro ao carregar.";
   return (
     <div className="rounded-xl border border-destructive/30 bg-destructive/10 p-6 text-center">
-      <h3 className="font-serif text-lg text-destructive-foreground">Não foi possível carregar</h3>
+      <h3 className="font-display text-lg text-destructive-foreground">Não foi possível carregar</h3>
       <p className="mt-1 text-sm text-muted-foreground">{message}</p>
       {onRetry && (
         <Button variant="secondary" size="sm" className="mt-3" onClick={onRetry}>

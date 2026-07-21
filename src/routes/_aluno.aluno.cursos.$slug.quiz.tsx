@@ -52,7 +52,7 @@ function QuizPage() {
     <div className="mx-auto max-w-2xl space-y-6">
       <div>
         <p className="text-xs uppercase tracking-widest text-primary">Avaliação</p>
-        <h1 className="mt-1 font-serif text-3xl">{quiz.title}</h1>
+        <h1 className="mt-1 font-display text-3xl">{quiz.title}</h1>
         <p className="mt-1 text-sm text-muted-foreground">Nota mínima: {quiz.minimumScorePercentage}%</p>
       </div>
 
@@ -61,7 +61,7 @@ function QuizPage() {
           <div className="flex items-center gap-3">
             {result.passed ? <CheckCircle2 className="h-6 w-6 text-primary" /> : <XCircle className="h-6 w-6 text-destructive" />}
             <div>
-              <h2 className="font-serif text-2xl">Sua nota: {result.scorePercentage}%</h2>
+              <h2 className="font-display text-2xl">Sua nota: {result.scorePercentage}%</h2>
               <p className="text-sm text-muted-foreground">{result.passed ? "Você foi aprovada(o)." : "Você não atingiu a nota mínima."}</p>
             </div>
           </div>

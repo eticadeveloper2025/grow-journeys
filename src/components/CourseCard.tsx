@@ -33,7 +33,7 @@ export function CourseCard({ course }: { course: Course }) {
           <Clock className="h-3.5 w-3.5" />
           {formatWorkload(course.workloadMinutes)}
         </div>
-        <h3 className="font-serif text-xl leading-tight text-foreground">{course.title}</h3>
+        <h3 className="font-display text-xl leading-tight text-foreground">{course.title}</h3>
         <p className="line-clamp-2 flex-1 text-sm text-muted-foreground">
           {course.shortDescription}
         </p>

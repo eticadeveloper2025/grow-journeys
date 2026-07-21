@@ -35,7 +35,7 @@ function Register() {
       <section className="container-page flex items-center justify-center py-16">
         <form onSubmit={submit} className="w-full max-w-md space-y-4 rounded-xl border border-border/60 bg-card p-8">
           <p className="text-xs uppercase tracking-widest text-primary">Nova conta</p>
-          <h1 className="mt-1 font-serif text-3xl">Criar conta</h1>
+          <h1 className="mt-1 font-display text-3xl">Criar conta</h1>
           <DemoBanner>Conta demonstrativa. Nenhum e-mail é enviado.</DemoBanner>
           <div>
             <Label>Nome completo</Label>
