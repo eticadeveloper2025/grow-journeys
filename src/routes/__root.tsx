@@ -18,7 +18,7 @@ function NotFoundComponent() {
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <p className="text-sm uppercase tracking-widest text-primary">404</p>
-        <h1 className="mt-3 font-serif text-5xl text-foreground">Página não encontrada</h1>
+        <h1 className="mt-3 font-display text-5xl text-foreground">Página não encontrada</h1>
         <p className="mt-3 text-sm text-muted-foreground">
           O link que você acessou não existe ou foi movido.
         </p>
@@ -45,7 +45,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="font-serif text-3xl text-foreground">Algo deu errado</h1>
+        <h1 className="font-display text-3xl text-foreground">Algo deu errado</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           Tente novamente em instantes ou volte para o início.
         </p>
@@ -76,17 +76,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Nerya — Plataforma de Cursos" },
+      { title: "Nerya | Inglês Online" },
       {
         name: "description",
         content:
-          "Cursos, mentorias e conteúdos para times de design, produto e engenharia. Aprenda com quem constrói.",
+          "Aprenda inglês com aulas práticas, cursos online, acompanhamento de progresso e certificados de conclusão.",
       },
       { name: "author", content: "Nerya" },
-      { property: "og:title", content: "Nerya — Plataforma de Cursos" },
+      { property: "og:title", content: "Nerya — Inglês que conecta. Fluência que transforma." },
       {
         property: "og:description",
-        content: "Cursos, mentorias e conteúdos para times de design, produto e engenharia.",
+        content: "Escola de inglês online: aulas ao vivo e gravadas, conversação, viagens, trabalho e certificados.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -98,7 +98,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Work+Sans:wght@300;400;500;600;700&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700;800&display=swap",
       },
     ],
   }),

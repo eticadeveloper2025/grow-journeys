@@ -25,7 +25,7 @@ function Contact() {
       <section className="container-page grid max-w-4xl gap-10 py-16 md:grid-cols-2">
         <div>
           <p className="text-xs uppercase tracking-widest text-primary">Contato</p>
-          <h1 className="mt-2 font-serif text-5xl leading-tight">Fale com a gente.</h1>
+          <h1 className="mt-2 font-display text-5xl leading-tight">Fale com a gente.</h1>
           <p className="mt-4 text-muted-foreground">
             Dúvidas, parcerias, sugestões de curso. Respondemos em até 2 dias úteis.
           </p>

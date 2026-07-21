@@ -34,7 +34,7 @@ function Dashboard() {
     <div className="space-y-8">
       <div>
         <p className="text-xs uppercase tracking-widest text-primary">Bem-vinda(o) de volta</p>
-        <h1 className="mt-1 font-serif text-4xl">Olá, {user?.fullName.split(" ")[0]}.</h1>
+        <h1 className="mt-1 font-display text-4xl">Olá, {user?.fullName.split(" ")[0]}.</h1>
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
@@ -49,7 +49,7 @@ function Dashboard() {
 
       <section>
         <div className="mb-4 flex items-end justify-between">
-          <h2 className="font-serif text-2xl">Continue de onde parou</h2>
+          <h2 className="font-display text-2xl">Continue de onde parou</h2>
           <Button asChild variant="ghost" size="sm"><Link to="/aluno/cursos">Ver todos</Link></Button>
         </div>
         {isPending && <LoadingBlock />}
@@ -67,7 +67,7 @@ function StatCard({ icon, label, value }: { icon: React.ReactNode; label: string
   return (
     <div className="rounded-xl border border-border/60 bg-card p-5">
       <div className="flex items-center gap-2 text-xs text-muted-foreground">{icon}{label}</div>
-      <div className="mt-2 font-serif text-4xl">{value}</div>
+      <div className="mt-2 font-display text-4xl">{value}</div>
     </div>
   );
 }
@@ -84,7 +84,7 @@ function EnrollmentRow({ enrollmentId, courseSlug, title, cover, courseId }: { e
     <Link to="/aluno/cursos/$slug" params={{ slug: courseSlug }} className="flex gap-4 rounded-xl border border-border/60 bg-card p-4 transition hover:border-primary/40">
       <img src={cover} alt={title} className="h-20 w-28 shrink-0 rounded-md object-cover" />
       <div className="min-w-0 flex-1">
-        <div className="font-serif text-lg leading-tight">{title}</div>
+        <div className="font-display text-lg leading-tight">{title}</div>
         <div className="mt-2 flex items-center gap-3 text-xs text-muted-foreground">
           {done}/{total} aulas
         </div>

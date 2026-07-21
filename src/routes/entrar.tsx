@@ -48,7 +48,7 @@ function Login() {
         <form onSubmit={submit} className="w-full max-w-md space-y-4 rounded-xl border border-border/60 bg-card p-8">
           <div>
             <p className="text-xs uppercase tracking-widest text-primary">Área do aluno</p>
-            <h1 className="mt-1 font-serif text-3xl">Entrar</h1>
+            <h1 className="mt-1 font-display text-3xl">Entrar</h1>
           </div>
           <DemoBanner>
             Credenciais demo: <b>aluno@nerya.demo / demo123</b> · <b>admin@nerya.demo / admin123</b>

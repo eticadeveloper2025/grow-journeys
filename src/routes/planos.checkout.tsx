@@ -59,7 +59,7 @@ function Checkout() {
     <PublicLayout>
       <section className="container-page grid max-w-5xl gap-8 py-14 md:grid-cols-[1.2fr_1fr]">
         <form onSubmit={submit} className="space-y-4 rounded-xl border border-border/60 bg-card p-6">
-          <h1 className="font-serif text-3xl">Checkout</h1>
+          <h1 className="font-display text-3xl">Checkout</h1>
           <DemoBanner>Não pedimos dados de pagamento. Isto é apenas uma simulação.</DemoBanner>
           <div>
             <Label>Nome</Label>
@@ -101,7 +101,7 @@ function Checkout() {
           <div className="text-xs uppercase tracking-widest text-primary">Resumo</div>
           {plan && (
             <>
-              <div className="mt-3 font-serif text-2xl">{plan.name}</div>
+              <div className="mt-3 font-display text-2xl">{plan.name}</div>
               <div className="text-sm text-muted-foreground">Ciclo: {cycle === "yearly" ? "Anual" : "Mensal"}</div>
               <div className="mt-6 space-y-1.5 border-t border-border/60 pt-4 text-sm">
                 <div className="flex justify-between text-muted-foreground">
@@ -112,7 +112,7 @@ function Checkout() {
                     <span>Cupom NERYA20</span><span>-{formatPriceBRL(basePrice - finalPrice)}</span>
                   </div>
                 )}
-                <div className="mt-4 flex justify-between border-t border-border/60 pt-3 font-serif text-lg text-foreground">
+                <div className="mt-4 flex justify-between border-t border-border/60 pt-3 font-display text-lg text-foreground">
                   <span>Total</span><span>{formatPriceBRL(finalPrice)}</span>
                 </div>
               </div>

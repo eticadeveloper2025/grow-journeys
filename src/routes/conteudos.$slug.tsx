@@ -28,7 +28,7 @@ function PostPage() {
         {data && (
           <>
             <div className="text-xs uppercase tracking-widest text-primary">{data.data.category.name}</div>
-            <h1 className="mt-3 font-serif text-5xl leading-tight">{data.data.title}</h1>
+            <h1 className="mt-3 font-display text-5xl leading-tight">{data.data.title}</h1>
             <div className="mt-4 text-sm text-muted-foreground">
               Por {data.data.author.fullName} · {data.data.publishedAt && formatDateLong(data.data.publishedAt)} · {data.data.readingMinutes} min
             </div>

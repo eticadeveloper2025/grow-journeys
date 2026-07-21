@@ -83,45 +83,45 @@ function buildProgress(): LessonProgress[] {
 
 export const mockLessonProgress: LessonProgress[] = buildProgress();
 
-/** Quizzes de exemplo */
+/** Quizzes de exemplo — todos sobre inglês */
 export const mockQuizzes: Quiz[] = [
   {
     id: "q-c-01",
     courseId: "c-01",
-    title: "Avaliação — Fundamentos de Design",
+    title: "Avaliação — Inglês do Zero",
     minimumScorePercentage: 70,
     questions: [
       {
         id: "qq-1",
         quizId: "q-c-01",
-        question: "Qual etapa vem antes do wireframe?",
+        question: "Como você se apresenta em inglês?",
         position: 1,
         options: [
-          { id: "qo-1a", questionId: "qq-1", optionText: "Pesquisa e descoberta", isCorrect: true, position: 1 },
-          { id: "qo-1b", questionId: "qq-1", optionText: "Handoff", isCorrect: false, position: 2 },
-          { id: "qo-1c", questionId: "qq-1", optionText: "QA visual", isCorrect: false, position: 3 },
+          { id: "qo-1a", questionId: "qq-1", optionText: "My name is Ana.", isCorrect: true, position: 1 },
+          { id: "qo-1b", questionId: "qq-1", optionText: "I am name Ana.", isCorrect: false, position: 2 },
+          { id: "qo-1c", questionId: "qq-1", optionText: "Me call Ana.", isCorrect: false, position: 3 },
         ],
       },
       {
         id: "qq-2",
         quizId: "q-c-01",
-        question: "O que é um design system?",
+        question: "Qual é a tradução de “breakfast”?",
         position: 2,
         options: [
-          { id: "qo-2a", questionId: "qq-2", optionText: "Uma lib de ícones", isCorrect: false, position: 1 },
-          { id: "qo-2b", questionId: "qq-2", optionText: "Um conjunto de padrões, componentes e diretrizes reutilizáveis", isCorrect: true, position: 2 },
-          { id: "qo-2c", questionId: "qq-2", optionText: "Um framework CSS", isCorrect: false, position: 3 },
+          { id: "qo-2a", questionId: "qq-2", optionText: "Almoço", isCorrect: false, position: 1 },
+          { id: "qo-2b", questionId: "qq-2", optionText: "Café da manhã", isCorrect: true, position: 2 },
+          { id: "qo-2c", questionId: "qq-2", optionText: "Jantar", isCorrect: false, position: 3 },
         ],
       },
       {
         id: "qq-3",
         quizId: "q-c-01",
-        question: "Qual métrica ajuda a validar usabilidade?",
+        question: "Qual frase é usada para pedir informação de forma educada?",
         position: 3,
         options: [
-          { id: "qo-3a", questionId: "qq-3", optionText: "SUS Score", isCorrect: true, position: 1 },
-          { id: "qo-3b", questionId: "qq-3", optionText: "Lighthouse", isCorrect: false, position: 2 },
-          { id: "qo-3c", questionId: "qq-3", optionText: "TypeScript strict", isCorrect: false, position: 3 },
+          { id: "qo-3a", questionId: "qq-3", optionText: "Excuse me, could you help me?", isCorrect: true, position: 1 },
+          { id: "qo-3b", questionId: "qq-3", optionText: "Hey, help now!", isCorrect: false, position: 2 },
+          { id: "qo-3c", questionId: "qq-3", optionText: "You help me.", isCorrect: false, position: 3 },
         ],
       },
     ],
@@ -129,17 +129,17 @@ export const mockQuizzes: Quiz[] = [
   {
     id: "q-c-06",
     courseId: "c-06",
-    title: "Avaliação — Liderança Técnica",
+    title: "Avaliação — Expressões do Dia a Dia",
     minimumScorePercentage: 70,
     questions: [
       {
         id: "qq6-1",
         quizId: "q-c-06",
-        question: "Qual prática melhor sustenta 1:1s?",
+        question: "O que significa a expressão “to hit the books”?",
         position: 1,
         options: [
-          { id: "qo6-1a", questionId: "qq6-1", optionText: "Agenda compartilhada e follow-up", isCorrect: true, position: 1 },
-          { id: "qo6-1b", questionId: "qq6-1", optionText: "Reuniões sem pauta", isCorrect: false, position: 2 },
+          { id: "qo6-1a", questionId: "qq6-1", optionText: "Estudar bastante", isCorrect: true, position: 1 },
+          { id: "qo6-1b", questionId: "qq6-1", optionText: "Rasgar os livros", isCorrect: false, position: 2 },
         ],
       },
     ],

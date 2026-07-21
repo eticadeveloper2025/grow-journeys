@@ -32,7 +32,7 @@ function MyCourses() {
     <div className="space-y-6">
       <div>
         <p className="text-xs uppercase tracking-widest text-primary">Aprendizado</p>
-        <h1 className="mt-1 font-serif text-4xl">Meus cursos</h1>
+        <h1 className="mt-1 font-display text-4xl">Meus cursos</h1>
       </div>
       {isPending && <LoadingBlock />}
       {data && data.data.length === 0 && (
@@ -77,7 +77,7 @@ function MyCourseCard({ enrollmentId, courseId, slug, title, cover, status }: { 
           <Badge variant="secondary" className="bg-primary/10 text-primary">{STATUS_LABEL[status]}</Badge>
           <span className="text-xs text-muted-foreground">{pct}%</span>
         </div>
-        <h3 className="font-serif text-xl leading-tight">{title}</h3>
+        <h3 className="font-display text-xl leading-tight">{title}</h3>
         <Progress value={pct} className="mt-auto h-1.5" />
       </div>
     </Link>

@@ -29,7 +29,7 @@ function Forgot() {
           }}
           className="w-full max-w-md space-y-4 rounded-xl border border-border/60 bg-card p-8"
         >
-          <h1 className="font-serif text-3xl">Recuperar senha</h1>
+          <h1 className="font-display text-3xl">Recuperar senha</h1>
           <DemoBanner />
           <div>
             <Label>E-mail</Label>

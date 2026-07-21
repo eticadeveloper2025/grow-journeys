@@ -2,11 +2,11 @@ import type { Post } from "@/types";
 
 const NOW = "2026-01-10T10:00:00.000Z";
 
-const LOREM = `A construção de produtos digitais evoluiu de decisões isoladas para uma disciplina colaborativa que integra pesquisa, design, engenharia e negócios. Neste conteúdo exploramos práticas que times de alta performance usam para reduzir retrabalho e aumentar previsibilidade.
+const LOREM = `Aprender inglês é muito mais do que decorar regras: é entrar em contato com uma outra forma de pensar, de conversar e de se relacionar com o mundo. Neste conteúdo, vamos explorar como pequenas descobertas sobre o idioma podem transformar a maneira como você estuda.
 
-Desde a definição de métricas de sucesso até a instrumentação de eventos e a análise contínua, cada etapa oferece oportunidades de aprendizado. O segredo está em criar ciclos curtos: hipótese, experimento, medição, decisão.
+Cada palavra tem uma história. Muitas expressões que usamos hoje nasceram séculos atrás, em contextos completamente diferentes. Conhecer essa origem ajuda a memorizar naturalmente e a entender por que certas frases soam do jeito que soam.
 
-Boas equipes não terceirizam a escuta do usuário. Elas incorporam pesquisa qualitativa e quantitativa ao ritmo do desenvolvimento, transformando insights em melhorias tangíveis nos produtos.`;
+O segredo para evoluir no inglês está em criar curiosidade genuína: assistir séries prestando atenção nas expressões, anotar palavras novas, praticar em situações reais e, principalmente, permitir-se errar. Errar é parte do processo — e cada erro é uma aula.`;
 
 function mkPost(overrides: Partial<Post> & { id: string; title: string; slug: string; categoryId: string; coverUrl: string }): Post {
   return {
@@ -15,7 +15,7 @@ function mkPost(overrides: Partial<Post> & { id: string; title: string; slug: st
     content: LOREM,
     status: "published",
     publishedAt: NOW,
-    readingMinutes: 6,
+    readingMinutes: 5,
     ...overrides,
   };
 }
@@ -23,58 +23,86 @@ function mkPost(overrides: Partial<Post> & { id: string; title: string; slug: st
 export const mockPosts: Post[] = [
   mkPost({
     id: "post-01",
-    title: "Como estruturar um design system escalável",
-    slug: "design-system-escalavel",
-    categoryId: "cat-01",
-    coverUrl: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1200&q=80",
+    title: "Você sabia que “goodbye” nasceu de uma oração?",
+    slug: "goodbye-origem",
+    categoryId: "cat-08",
+    coverUrl: "https://images.unsplash.com/photo-1476820865390-c52aeebb9891?w=1200&q=80",
   }),
   mkPost({
     id: "post-02",
-    title: "TypeScript: 7 padrões que todo time deveria conhecer",
-    slug: "typescript-7-padroes",
-    categoryId: "cat-02",
-    coverUrl: "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?w=1200&q=80",
+    title: "Por que “breakfast” significa quebrar o jejum?",
+    slug: "breakfast-significado",
+    categoryId: "cat-08",
+    coverUrl: "https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=1200&q=80",
   }),
   mkPost({
     id: "post-03",
-    title: "Pesquisa qualitativa em ciclos curtos",
-    slug: "pesquisa-qualitativa",
-    categoryId: "cat-03",
-    coverUrl: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&q=80",
+    title: "De onde vem a expressão “mayday”?",
+    slug: "mayday-origem",
+    categoryId: "cat-08",
+    coverUrl: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200&q=80",
   }),
   mkPost({
     id: "post-04",
-    title: "Do sênior ao líder técnico",
-    slug: "do-senior-ao-lider",
-    categoryId: "cat-04",
-    coverUrl: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=1200&q=80",
+    title: "Palavras em inglês que mudaram com o tempo",
+    slug: "palavras-que-mudaram",
+    categoryId: "cat-02",
+    coverUrl: "https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=1200&q=80",
   }),
   mkPost({
     id: "post-05",
-    title: "Arquiteturas frontend em 2026",
-    slug: "arquiteturas-frontend-2026",
-    categoryId: "cat-02",
-    coverUrl: "https://images.unsplash.com/photo-1481487196290-c152efe083f5?w=1200&q=80",
+    title: "O inglês quase perdeu a palavra “you”?",
+    slug: "historia-do-you",
+    categoryId: "cat-08",
+    coverUrl: "https://images.unsplash.com/photo-1522543558187-768b6df7c25c?w=1200&q=80",
   }),
   mkPost({
     id: "post-06",
-    title: "Métricas que importam para produtos digitais",
-    slug: "metricas-produto",
-    categoryId: "cat-03",
-    coverUrl: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=80",
+    title: "Expressões que não devem ser traduzidas literalmente",
+    slug: "expressoes-nao-literais",
+    categoryId: "cat-02",
+    coverUrl: "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=1200&q=80",
   }),
   mkPost({
     id: "post-07",
-    title: "Tokens de design: teoria e prática",
-    slug: "tokens-de-design",
-    categoryId: "cat-01",
-    coverUrl: "https://images.unsplash.com/photo-1618004652321-13a63e576b80?w=1200&q=80",
+    title: "Como pedir comida em inglês sem travar",
+    slug: "pedir-comida-em-ingles",
+    categoryId: "cat-06",
+    coverUrl: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=80",
   }),
   mkPost({
     id: "post-08",
-    title: "Feedback contínuo em times remotos",
-    slug: "feedback-remotos",
+    title: "Diferença entre “say”, “tell” e “speak”",
+    slug: "say-tell-speak",
     categoryId: "cat-04",
-    coverUrl: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&q=80",
+    coverUrl: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=1200&q=80",
+  }),
+  mkPost({
+    id: "post-09",
+    title: "Erros de pronúncia comuns entre brasileiros",
+    slug: "erros-pronuncia-brasileiros",
+    categoryId: "cat-03",
+    coverUrl: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?w=1200&q=80",
+  }),
+  mkPost({
+    id: "post-10",
+    title: "Frases essenciais para viajar",
+    slug: "frases-para-viajar",
+    categoryId: "cat-06",
+    coverUrl: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1200&q=80",
+  }),
+  mkPost({
+    id: "post-11",
+    title: "Como pensar em inglês sem traduzir tudo",
+    slug: "pensar-em-ingles",
+    categoryId: "cat-01",
+    coverUrl: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1200&q=80",
+  }),
+  mkPost({
+    id: "post-12",
+    title: "Falsos cognatos que confundem brasileiros",
+    slug: "falsos-cognatos",
+    categoryId: "cat-02",
+    coverUrl: "https://images.unsplash.com/photo-1513258496099-48168024aec0?w=1200&q=80",
   }),
 ];

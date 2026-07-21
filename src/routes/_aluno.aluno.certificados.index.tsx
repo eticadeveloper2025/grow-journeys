@@ -47,7 +47,7 @@ function CertList() {
     <div className="space-y-8">
       <div>
         <p className="text-xs uppercase tracking-widest text-primary">Reconhecimento</p>
-        <h1 className="mt-1 font-serif text-4xl">Meus certificados</h1>
+        <h1 className="mt-1 font-display text-4xl">Meus certificados</h1>
       </div>
 
       {issued.length === 0 && withoutCert.length === 0 && (
@@ -56,7 +56,7 @@ function CertList() {
 
       {issued.length > 0 && (
         <section className="space-y-3">
-          <h2 className="font-serif text-xl">Emitidos</h2>
+          <h2 className="font-display text-xl">Emitidos</h2>
           <div className="grid gap-3 md:grid-cols-2">
             {issued.map((c) => (
               <div key={c.id} className="flex items-center gap-4 rounded-xl border border-border/60 bg-card p-4">
@@ -64,7 +64,7 @@ function CertList() {
                   <Award className="h-6 w-6" />
                 </div>
                 <div className="flex-1">
-                  <div className="font-serif text-lg leading-tight">{c.course.title}</div>
+                  <div className="font-display text-lg leading-tight">{c.course.title}</div>
                   <div className="text-xs text-muted-foreground">Emitido em {formatDateBR(c.issueDate)} · {c.certificateCode}</div>
                 </div>
                 <Button asChild size="sm" variant="secondary">
@@ -78,12 +78,12 @@ function CertList() {
 
       {withoutCert.length > 0 && (
         <section className="space-y-3">
-          <h2 className="font-serif text-xl">Disponíveis para emissão</h2>
+          <h2 className="font-display text-xl">Disponíveis para emissão</h2>
           <div className="grid gap-3 md:grid-cols-2">
             {withoutCert.map((e) => (
               <div key={e.id} className="flex items-center gap-4 rounded-xl border border-border/60 bg-card p-4">
                 <div className="flex-1">
-                  <div className="font-serif text-lg leading-tight">{e.course.title}</div>
+                  <div className="font-display text-lg leading-tight">{e.course.title}</div>
                   <div className="text-xs text-muted-foreground">Concluído</div>
                 </div>
                 <Button size="sm" onClick={() => issue.mutate(e.id)} disabled={issue.isPending}>Emitir</Button>
@@ -109,7 +109,7 @@ function BlockedList() {
   if (inProgress.length === 0) return null;
   return (
     <section className="space-y-3">
-      <h2 className="font-serif text-xl">Ainda em progresso</h2>
+      <h2 className="font-display text-xl">Ainda em progresso</h2>
       <div className="grid gap-3 md:grid-cols-2">
         {inProgress.map((e) => (
           <BlockedRow key={e.id} enrollmentId={e.id} title={e.course.title} required={e.course.requiredProgressPercentage} courseId={e.courseId} />
@@ -129,7 +129,7 @@ function BlockedRow({ enrollmentId, title, required, courseId }: { enrollmentId:
   const pct = total ? Math.round((done / total) * 100) : 0;
   return (
     <div className="rounded-xl border border-border/60 bg-card p-4">
-      <div className="font-serif text-lg leading-tight">{title}</div>
+      <div className="font-display text-lg leading-tight">{title}</div>
       <div className="mt-1 text-xs text-muted-foreground">Progresso {pct}% de {required}% exigido para o certificado.</div>
     </div>
   );

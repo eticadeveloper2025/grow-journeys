@@ -7,7 +7,7 @@ export const Route = createFileRoute("/_aluno/aluno/favoritos")({
     <div className="space-y-6">
       <div>
         <p className="text-xs uppercase tracking-widest text-primary">Curadoria pessoal</p>
-        <h1 className="mt-1 font-serif text-4xl">Favoritos</h1>
+        <h1 className="mt-1 font-display text-4xl">Favoritos</h1>
       </div>
       <EmptyState
         title="Você ainda não favoritou nenhum item"

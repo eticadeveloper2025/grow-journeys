@@ -27,7 +27,7 @@ function Verify() {
     <PublicLayout>
       <section className="container-page max-w-2xl py-16">
         <p className="text-xs uppercase tracking-widest text-primary">Validação de certificado</p>
-        <h1 className="mt-2 font-serif text-4xl">Código: {codigo}</h1>
+        <h1 className="mt-2 font-display text-4xl">Código: {codigo}</h1>
 
         <div className="mt-8">
           {isPending && <LoadingBlock label="Consultando registro…" />}
@@ -35,7 +35,7 @@ function Verify() {
             <div className="flex items-start gap-3 rounded-xl border border-destructive/40 bg-destructive/10 p-6">
               <XCircle className="mt-0.5 h-6 w-6 text-destructive" />
               <div>
-                <h2 className="font-serif text-xl">Não encontrado</h2>
+                <h2 className="font-display text-xl">Não encontrado</h2>
                 <p className="text-sm text-muted-foreground">Nenhum certificado corresponde a este código.</p>
               </div>
             </div>
@@ -45,7 +45,7 @@ function Verify() {
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="mt-0.5 h-6 w-6 text-primary" />
                 <div className="flex-1">
-                  <h2 className="font-serif text-2xl">Certificado válido</h2>
+                  <h2 className="font-display text-2xl">Certificado válido</h2>
                   <p className="text-sm text-muted-foreground">
                     Emitido para <b>{data.data.user.fullName}</b> em {formatDateLong(data.data.issueDate)}.
                   </p>
@@ -61,7 +61,7 @@ function Verify() {
           )}
           {data?.data && data.data.status === "revoked" && (
             <div className="rounded-xl border border-destructive/40 bg-destructive/10 p-6">
-              <h2 className="font-serif text-xl">Certificado revogado</h2>
+              <h2 className="font-display text-xl">Certificado revogado</h2>
               <p className="mt-1 text-sm text-muted-foreground">Motivo: {data.data.revocationReason ?? "não informado"}</p>
             </div>
           )}

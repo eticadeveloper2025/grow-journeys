@@ -31,7 +31,7 @@ export function AlunoLayout({ children }: { children: ReactNode }) {
       <aside className="hidden w-64 shrink-0 border-r border-border/60 bg-sidebar md:flex md:flex-col">
         <div className="border-b border-border/60 px-5 py-5">
           <Link to="/" className="flex items-center gap-2">
-            <span className="font-serif text-2xl leading-none">Nerya</span>
+            <span className="font-display text-2xl leading-none">nerya.</span>
             <span className="rounded-sm bg-primary/15 px-1.5 py-0.5 text-[10px] uppercase tracking-widest text-primary">
               aluno
             </span>
@@ -71,7 +71,7 @@ export function AlunoLayout({ children }: { children: ReactNode }) {
 
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="flex h-14 items-center justify-between border-b border-border/60 bg-background px-5 md:hidden">
-          <Link to="/" className="font-serif text-xl">Nerya</Link>
+          <Link to="/" className="font-display text-xl">nerya.</Link>
           <Button variant="ghost" size="sm" onClick={handleLogout}>
             <LogOut className="h-4 w-4" />
           </Button>

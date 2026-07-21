@@ -29,7 +29,7 @@ function Plans() {
     <PublicLayout>
       <section className="container-page py-16">
         <p className="text-xs uppercase tracking-widest text-primary">Planos</p>
-        <h1 className="mt-2 font-serif text-5xl">Assine e desbloqueie tudo.</h1>
+        <h1 className="mt-2 font-display text-5xl">Assine e desbloqueie tudo.</h1>
         <p className="mt-3 max-w-2xl text-muted-foreground">
           Comece pelo Explorar. Evolua quando quiser.
         </p>
@@ -62,10 +62,10 @@ function Plans() {
                     <Star className="h-3 w-3" /> Recomendado
                   </span>
                 )}
-                <div className="font-serif text-2xl">{plan.name}</div>
+                <div className="font-display text-2xl">{plan.name}</div>
                 <p className="mt-1 text-sm text-muted-foreground">{plan.description}</p>
                 <div className="mt-6">
-                  <span className="font-serif text-5xl">{price === 0 ? "Grátis" : formatPriceBRL(price)}</span>
+                  <span className="font-display text-5xl">{price === 0 ? "Grátis" : formatPriceBRL(price)}</span>
                   {price > 0 && <span className="ml-1 text-sm text-muted-foreground">{cycle}</span>}
                 </div>
                 <ul className="mt-6 flex-1 space-y-2 text-sm">

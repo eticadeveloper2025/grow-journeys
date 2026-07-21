@@ -63,7 +63,7 @@ function CourseDetail() {
         <div className="container-page grid gap-10 py-14 md:grid-cols-[1.3fr_1fr]">
           <div>
             <div className="text-xs uppercase tracking-widest text-primary">Curso</div>
-            <h1 className="mt-2 font-serif text-5xl leading-tight">{course.title}</h1>
+            <h1 className="mt-2 font-display text-5xl leading-tight">{course.title}</h1>
             <p className="mt-4 max-w-2xl text-lg text-muted-foreground">{course.shortDescription}</p>
             <div className="mt-6 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
               <Badge variant="secondary" className="bg-primary/10 text-primary">{course.level}</Badge>
@@ -83,7 +83,7 @@ function CourseDetail() {
 
           <aside className="rounded-xl border border-border/60 bg-card p-6">
             <img src={course.coverUrl} alt={course.title} className="mb-5 aspect-video w-full rounded-md object-cover" />
-            <div className="mb-4 font-serif text-3xl">
+            <div className="mb-4 font-display text-3xl">
               {course.priceCents === 0 ? "Gratuito" : formatPriceBRL(course.priceCents)}
             </div>
             {user ? (
@@ -106,15 +106,15 @@ function CourseDetail() {
 
       <section className="container-page grid gap-12 py-14 md:grid-cols-[1.3fr_1fr]">
         <div>
-          <h2 className="font-serif text-3xl">Sobre este curso</h2>
+          <h2 className="font-display text-3xl">Sobre este curso</h2>
           <p className="mt-4 whitespace-pre-line text-muted-foreground">{course.description}</p>
 
-          <h2 className="mt-12 font-serif text-3xl">Programa</h2>
+          <h2 className="mt-12 font-display text-3xl">Programa</h2>
           <div className="mt-6 space-y-4">
             {course.modules.map((mod) => (
               <div key={mod.id} className="rounded-lg border border-border/60 bg-card p-5">
                 <div className="mb-1 text-xs uppercase tracking-widest text-primary">Módulo {mod.position}</div>
-                <h3 className="font-serif text-xl">{mod.title}</h3>
+                <h3 className="font-display text-xl">{mod.title}</h3>
                 <p className="mt-1 text-sm text-muted-foreground">{mod.description}</p>
                 <ul className="mt-4 space-y-1.5">
                   {mod.lessons.map((l) => (
@@ -138,7 +138,7 @@ function CourseDetail() {
             <div className="mt-3 flex items-center gap-3">
               <img src={course.instructor.photoUrl} alt={course.instructor.displayName} className="h-14 w-14 rounded-full object-cover" />
               <div>
-                <div className="font-serif text-lg">{course.instructor.displayName}</div>
+                <div className="font-display text-lg">{course.instructor.displayName}</div>
               </div>
             </div>
             <p className="mt-4 text-sm text-muted-foreground">{course.instructor.bio}</p>

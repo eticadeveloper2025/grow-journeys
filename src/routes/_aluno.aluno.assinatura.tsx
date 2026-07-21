@@ -35,7 +35,7 @@ function SubscriptionPage() {
     <div className="space-y-6">
       <div>
         <p className="text-xs uppercase tracking-widest text-primary">Financeiro</p>
-        <h1 className="mt-1 font-serif text-4xl">Assinatura</h1>
+        <h1 className="mt-1 font-display text-4xl">Assinatura</h1>
       </div>
       <DemoBanner />
 
@@ -49,7 +49,7 @@ function SubscriptionPage() {
         <div className="space-y-4">
           <div className="rounded-xl border border-border/60 bg-card p-6">
             <div className="text-xs uppercase tracking-widest text-primary">Plano atual</div>
-            <div className="mt-1 font-serif text-3xl">{data.data!.plan.name}</div>
+            <div className="mt-1 font-display text-3xl">{data.data!.plan.name}</div>
             <div className="mt-4 grid gap-3 text-sm md:grid-cols-3">
               <div>
                 <div className="text-muted-foreground">Ciclo</div>
