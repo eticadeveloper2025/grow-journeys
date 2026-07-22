@@ -14,30 +14,54 @@ const NAV = [
   { to: "/contato", label: "Contato" },
 ] as const;
 
+function Logo({ className }: { className?: string }) {
+  return (
+    <span className={cn("font-display text-2xl leading-none tracking-tight text-foreground", className)}>
+      nerya<span className="text-brand">.</span>
+    </span>
+  );
+}
+
 export function PublicLayout({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => setOpen(false), [pathname]);
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <header className="sticky top-0 z-40 border-b border-border/60 bg-background/85 backdrop-blur">
-        <div className="container-page flex h-16 items-center justify-between gap-4">
-          <Link to="/" className="flex items-center gap-2 shrink-0">
-            <span className="font-display text-3xl leading-none tracking-tight text-foreground">
-              nerya<span className="text-coral">.</span>
-            </span>
+      <header
+        className={cn(
+          "sticky top-0 z-40 border-b transition-colors duration-200",
+          scrolled
+            ? "border-border bg-background/85 backdrop-blur-md"
+            : "border-transparent bg-background/60 backdrop-blur",
+        )}
+      >
+        <div className="container-page flex h-16 items-center justify-between gap-6 md:h-[72px]">
+          <Link to="/" className="flex shrink-0 items-center" aria-label="Nerya — Início">
+            <Logo />
           </Link>
 
-          <nav className="hidden items-center gap-6 lg:flex">
+          <nav className="hidden items-center gap-1 lg:flex">
             {NAV.map((item) => (
               <Link
                 key={item.to}
                 to={item.to}
-                className="text-sm font-medium text-muted-foreground transition hover:text-foreground"
-                activeProps={{ className: "text-foreground" }}
+                className="relative rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                activeProps={{
+                  className:
+                    "text-foreground after:absolute after:left-3 after:right-3 after:-bottom-0.5 after:h-[2px] after:rounded-full after:bg-brand",
+                }}
                 activeOptions={{ exact: item.to === "/" }}
               >
                 {item.label}
@@ -54,10 +78,10 @@ export function PublicLayout({ children }: { children: ReactNode }) {
               </Button>
             ) : (
               <>
-                <Button asChild size="sm" variant="ghost">
+                <Button asChild size="sm" variant="ghost" className="text-muted-foreground hover:text-foreground">
                   <Link to="/entrar">Entrar</Link>
                 </Button>
-                <Button asChild size="sm" className="bg-coral hover:opacity-90">
+                <Button asChild size="sm" className="bg-brand text-primary-foreground hover:bg-brand-dark">
                   <Link to="/cadastrar">Começar a aprender</Link>
                 </Button>
               </>
@@ -65,28 +89,31 @@ export function PublicLayout({ children }: { children: ReactNode }) {
           </div>
 
           <button
-            className="rounded-md p-2 text-foreground lg:hidden"
+            className="rounded-md p-2 text-foreground transition-colors hover:bg-surface lg:hidden"
             onClick={() => setOpen((v) => !v)}
-            aria-label="Menu"
+            aria-label="Abrir menu"
+            aria-expanded={open}
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
 
-        <div className={cn("border-t border-border/60 lg:hidden", open ? "block" : "hidden")}>
+        <div className={cn("border-t border-border lg:hidden", open ? "block" : "hidden")}>
           <div className="container-page flex flex-col gap-1 py-3">
             {NAV.map((item) => (
               <Link
                 key={item.to}
                 to={item.to}
-                className="rounded-md px-2 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
+                className="rounded-md px-3 py-2.5 text-sm text-muted-foreground transition hover:bg-surface hover:text-foreground"
+                activeProps={{ className: "bg-surface text-foreground" }}
+                activeOptions={{ exact: item.to === "/" }}
               >
                 {item.label}
               </Link>
             ))}
             <div className="mt-2 flex gap-2">
               {user ? (
-                <Button asChild size="sm" className="flex-1">
+                <Button asChild size="sm" className="flex-1 bg-brand hover:bg-brand-dark">
                   <Link to={user.role === "admin" ? "/" : "/aluno"}>Minha área</Link>
                 </Button>
               ) : (
@@ -94,7 +121,7 @@ export function PublicLayout({ children }: { children: ReactNode }) {
                   <Button asChild size="sm" variant="ghost" className="flex-1">
                     <Link to="/entrar">Entrar</Link>
                   </Button>
-                  <Button asChild size="sm" className="flex-1 bg-coral hover:opacity-90">
+                  <Button asChild size="sm" className="flex-1 bg-brand text-primary-foreground hover:bg-brand-dark">
                     <Link to="/cadastrar">Começar</Link>
                   </Button>
                 </>
@@ -106,42 +133,42 @@ export function PublicLayout({ children }: { children: ReactNode }) {
 
       <main className="flex-1">{children}</main>
 
-      <footer className="border-t border-border/60 bg-[color:var(--background-soft)]">
-        <div className="container-page grid gap-8 py-12 md:grid-cols-4">
+      <footer className="border-t border-border bg-[color:var(--background-soft)]">
+        <div className="container-page grid gap-10 py-14 md:grid-cols-4">
           <div>
-            <div className="font-display text-3xl">
-              nerya<span className="text-coral">.</span>
-            </div>
-            <p className="mt-3 max-w-xs text-sm text-muted-foreground">
-              Inglês online que conecta. Aulas práticas, cursos, conversação e certificados de conclusão.
+            <Logo className="text-3xl" />
+            <p className="mt-4 max-w-xs text-sm text-muted-foreground">
+              Inglês online que conecta. Aulas práticas, cursos, conversação e certificados.
             </p>
-            <p className="mt-3 text-xs uppercase tracking-widest text-lilac">Nerya | Inglês Online</p>
           </div>
           <div>
-            <div className="mb-3 text-xs uppercase tracking-widest text-muted-foreground">Aprender</div>
-            <ul className="space-y-2 text-sm">
-              <li><Link to="/cursos" className="hover:text-foreground">Cursos</Link></li>
-              <li><Link to="/planos" className="hover:text-foreground">Planos</Link></li>
-              <li><Link to="/conteudos" className="hover:text-foreground">Conteúdos</Link></li>
+            <div className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">Aprender</div>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li><Link to="/cursos" className="transition hover:text-foreground">Cursos</Link></li>
+              <li><Link to="/planos" className="transition hover:text-foreground">Planos</Link></li>
+              <li><Link to="/conteudos" className="transition hover:text-foreground">Conteúdos</Link></li>
             </ul>
           </div>
           <div>
-            <div className="mb-3 text-xs uppercase tracking-widest text-muted-foreground">Institucional</div>
-            <ul className="space-y-2 text-sm">
-              <li><Link to="/sobre" className="hover:text-foreground">Como funciona</Link></li>
-              <li><Link to="/contato" className="hover:text-foreground">Contato</Link></li>
+            <div className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">Institucional</div>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li><Link to="/sobre" className="transition hover:text-foreground">Como funciona</Link></li>
+              <li><Link to="/contato" className="transition hover:text-foreground">Contato</Link></li>
             </ul>
           </div>
           <div>
-            <div className="mb-3 text-xs uppercase tracking-widest text-muted-foreground">Aviso</div>
+            <div className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">Aviso</div>
             <p className="text-xs text-muted-foreground">
-              Esta versão é demonstrativa. Nenhum pagamento é processado e os certificados aqui emitidos são apenas ilustrativos.
+              Versão demonstrativa. Nenhum pagamento é processado e certificados aqui emitidos são ilustrativos.
             </p>
           </div>
         </div>
-        <div className="border-t border-border/60">
-          <div className="container-page py-4 text-xs text-muted-foreground">
-            © {new Date().getFullYear()} Nerya. Todos os direitos reservados.
+        <div className="border-t border-border">
+          <div className="container-page flex flex-wrap items-center justify-between gap-3 py-5 text-xs text-muted-foreground">
+            <span>© {new Date().getFullYear()} Nerya. Todos os direitos reservados.</span>
+            <span className="inline-flex items-center gap-1.5">
+              <span className="h-1.5 w-1.5 rounded-full bg-brand" /> Feito com foco em fluência.
+            </span>
           </div>
         </div>
       </footer>
