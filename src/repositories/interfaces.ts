@@ -1,6 +1,11 @@
 import type {
   ApiListResponse,
   ApiResponse,
+  AvailabilitySlot,
+  Booking,
+  BookingCancellationNotification,
+  BookingConfirmationNotification,
+  BookingRescheduledNotification,
   Category,
   Certificate,
   Course,
@@ -13,7 +18,9 @@ import type {
   Post,
   Quiz,
   QuizAttempt,
+  NotificationResult,
   Session,
+  StudentCreditBalance,
   Subscription,
   User,
 } from "@/types";
@@ -104,6 +111,32 @@ export interface SubscriptionRepository {
   /** POST /api/subscriptions/checkout */
   subscribe(userId: string, planId: string, cycle: "monthly" | "yearly"): Promise<ApiResponse<Subscription>>;
   cancel(userId: string): Promise<ApiResponse<null>>;
+}
+
+export interface BookingRepository {
+  /** GET /api/me/bookings */
+  listForUser(userId: string): Promise<ApiListResponse<Booking>>;
+  /** GET /api/me/bookings/upcoming */
+  upcomingForUser(userId: string): Promise<ApiListResponse<Booking>>;
+  /** GET /api/me/bookings/history */
+  historyForUser(userId: string): Promise<ApiListResponse<Booking>>;
+  /** GET /api/availability */
+  availability(params?: { from?: string; to?: string }): Promise<ApiListResponse<AvailabilitySlot>>;
+  /** POST /api/bookings */
+  book(userId: string, slotId: string, topic?: string): Promise<ApiResponse<Booking>>;
+  /** POST /api/bookings/:id/cancel */
+  cancel(bookingId: string, userId: string): Promise<ApiResponse<Booking>>;
+  /** GET /api/me/credits */
+  creditBalance(userId: string): Promise<ApiResponse<StudentCreditBalance>>;
+}
+
+export interface NotificationRepository {
+  /** Mock only. In API mode, POST /api/bookings triggers backend-owned Resend delivery. */
+  sendBookingConfirmation(input: BookingConfirmationNotification): Promise<ApiResponse<NotificationResult>>;
+  /** Mock only. In API mode, POST /api/bookings/:id/cancel triggers backend-owned Resend delivery. */
+  sendBookingCancellation(input: BookingCancellationNotification): Promise<ApiResponse<NotificationResult>>;
+  /** Mock only. In API mode, backend-owned reschedule endpoint will trigger Resend delivery. */
+  sendBookingRescheduled(input: BookingRescheduledNotification): Promise<ApiResponse<NotificationResult>>;
 }
 
 export interface BlogRepository {

@@ -1,96 +1,210 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { PublicLayout } from "@/layouts/PublicLayout";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { planRepository } from "@/repositories";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
-import { Check, X, Star } from "lucide-react";
+import { ArrowRight, Check, Loader2, Sparkles } from "lucide-react";
 import { formatPriceBRL } from "@/utils/format";
 import { DemoBanner } from "@/components/DemoBanner";
-import { LoadingBlock } from "@/components/States";
+import { EmptyState, ErrorState, LoadingBlock } from "@/components/States";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
+import type { Plan } from "@/types";
 
 export const Route = createFileRoute("/planos/")({
   head: () => ({
     meta: [
       { title: "Planos — Nerya" },
-      { name: "description", content: "Escolha o plano que combina com seu ritmo de estudo." },
+      { name: "description", content: "Escolha um plano de aulas particulares de inglês com créditos mensais." },
     ],
   }),
   component: Plans,
 });
 
+function savingsLabel(plan: Plan): string | null {
+  if (!plan.originalMonthlyPriceCents || plan.originalMonthlyPriceCents <= plan.monthlyPriceCents) return null;
+  const saved = plan.originalMonthlyPriceCents - plan.monthlyPriceCents;
+  const percent = Math.round((saved / plan.originalMonthlyPriceCents) * 100);
+  return `${percent}% de desconto`;
+}
+
+function frequencyLabel(plan: Plan): string {
+  return plan.lessonsPerWeek > 0 ? `${plan.lessonsPerWeek}x por semana` : "Aula avulsa";
+}
+
 function Plans() {
-  const [yearly, setYearly] = useState(false);
-  const { data, isPending } = useQuery({ queryKey: ["plans"], queryFn: () => planRepository.list() });
+  const navigate = useNavigate();
+  const { user, loading: authLoading } = useAuth();
+  const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
+  const { data, isPending, error, refetch } = useQuery({ queryKey: ["plans"], queryFn: () => planRepository.list() });
+
+  const choosePlan = useMutation({
+    mutationFn: async (plan: Plan) => {
+      setSelectedPlanId(plan.id);
+      await new Promise((resolve) => setTimeout(resolve, 250));
+      return plan;
+    },
+    onSuccess: (plan) => {
+      if (!user) {
+        toast.info("Entre para confirmar o plano demonstrativo.");
+        navigate({
+          to: "/entrar",
+          search: { redirect: `/planos/checkout?plan=${plan.id}&cycle=monthly` },
+        });
+        return;
+      }
+      toast.success("Plano selecionado (demonstrativo).");
+      navigate({ to: "/planos/checkout", search: { plan: plan.id, cycle: "monthly" } });
+    },
+    onError: (err) => {
+      toast.error(err instanceof Error ? err.message : "Nao foi possivel escolher o plano.");
+    },
+  });
+
+  const plans = data?.data ?? [];
 
   return (
     <PublicLayout>
-      <section className="container-page py-16">
-        <p className="text-xs uppercase tracking-widest text-primary">Planos</p>
-        <h1 className="mt-2 font-display text-5xl">Assine e desbloqueie tudo.</h1>
-        <p className="mt-3 max-w-2xl text-muted-foreground">
-          Comece pelo Explorar. Evolua quando quiser.
-        </p>
+      <section className="bg-plan-bg text-plan-ink">
+        <div className="container-page py-14 md:py-18">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-xs font-semibold uppercase tracking-widest text-plan-primary">Planos Nerya</p>
+            <h1 className="mt-3 font-display text-4xl text-plan-ink md:text-6xl">Escolha sua frequência.</h1>
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-plan-muted md:text-base">
+              Aulas particulares ao vivo com créditos mensais claros, valores comparáveis e fluxo demonstrativo sem cobrança real.
+            </p>
+          </div>
 
-        <div className="mt-6"><DemoBanner>Ambiente demonstrativo — nenhum pagamento será realizado.</DemoBanner></div>
+          <div className="mx-auto mt-7 max-w-3xl">
+            <DemoBanner>Ambiente demonstrativo — nenhum pagamento será realizado.</DemoBanner>
+          </div>
 
-        <div className="mt-8 flex items-center justify-center gap-3 text-sm">
-          <span className={cn(!yearly && "text-foreground", yearly && "text-muted-foreground")}>Mensal</span>
-          <Switch checked={yearly} onCheckedChange={setYearly} />
-          <span className={cn(yearly && "text-foreground", !yearly && "text-muted-foreground")}>
-            Anual <span className="ml-1 rounded bg-primary/15 px-1.5 py-0.5 text-xs text-primary">-2 meses</span>
-          </span>
-        </div>
+          {isPending && (
+            <div className="mx-auto mt-10 max-w-5xl rounded-lg border border-plan-border bg-plan-panel p-6">
+              <LoadingBlock label="Carregando planos…" />
+            </div>
+          )}
 
-        {isPending && <div className="mt-10"><LoadingBlock /></div>}
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
-          {data?.data.map((plan) => {
-            const price = yearly ? plan.yearlyPriceCents : plan.monthlyPriceCents;
-            const cycle = yearly ? "/ ano" : "/ mês";
-            return (
-              <div
-                key={plan.id}
-                className={cn(
-                  "relative flex flex-col rounded-2xl border border-border/60 bg-card p-7",
-                  plan.featured && "border-primary/50 glow-accent",
-                )}
-              >
-                {plan.featured && (
-                  <span className="absolute -top-3 left-6 inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground">
-                    <Star className="h-3 w-3" /> Recomendado
-                  </span>
-                )}
-                <div className="font-display text-2xl">{plan.name}</div>
-                <p className="mt-1 text-sm text-muted-foreground">{plan.description}</p>
-                <div className="mt-6">
-                  <span className="font-display text-5xl">{price === 0 ? "Grátis" : formatPriceBRL(price)}</span>
-                  {price > 0 && <span className="ml-1 text-sm text-muted-foreground">{cycle}</span>}
-                </div>
-                <ul className="mt-6 flex-1 space-y-2 text-sm">
-                  {plan.features.map((f) => (
-                    <li key={f.id} className="flex items-start gap-2">
-                      {f.included ? (
-                        <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                      ) : (
-                        <X className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground/50" />
-                      )}
-                      <span className={cn(!f.included && "text-muted-foreground/60")}>{f.feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Button asChild className="mt-6 w-full" variant={plan.featured ? "default" : "secondary"}>
-                  <Link
-                    to="/planos/checkout"
-                    search={{ plan: plan.id, cycle: yearly ? "yearly" : "monthly" }}
+          {error && (
+            <div className="mx-auto mt-10 max-w-5xl">
+              <ErrorState error={error} onRetry={() => refetch()} />
+            </div>
+          )}
+
+          {!isPending && !error && plans.length === 0 && (
+            <div className="mx-auto mt-10 max-w-3xl">
+              <EmptyState title="Nenhum plano disponível" description="Novas opções de aulas serão publicadas em breve." />
+            </div>
+          )}
+
+          {plans.length > 0 && (
+            <div className="mx-auto mt-10 grid max-w-6xl gap-4 sm:grid-cols-2 xl:grid-cols-5">
+              {plans.map((plan) => {
+                const saving = savingsLabel(plan);
+                const isChoosing = choosePlan.isPending && selectedPlanId === plan.id;
+                const disabled = authLoading || choosePlan.isPending;
+                const priceAria = plan.originalMonthlyPriceCents
+                  ? `${formatPriceBRL(plan.monthlyPriceCents)} por mês, de ${formatPriceBRL(plan.originalMonthlyPriceCents)}`
+                  : `${formatPriceBRL(plan.monthlyPriceCents)}`;
+
+                return (
+                  <article
+                    key={plan.id}
+                    className={cn(
+                      "relative flex min-w-0 flex-col rounded-lg border bg-plan-panel p-5 shadow-sm transition-colors",
+                      plan.featured
+                        ? "border-plan-primary bg-plan-panel-soft shadow-[0_18px_45px_-34px_var(--plan-primary-dark)]"
+                        : "border-plan-border",
+                      selectedPlanId === plan.id && "ring-2 ring-plan-primary",
+                    )}
                   >
-                    {price === 0 ? "Começar" : "Assinar"}
-                  </Link>
-                </Button>
-              </div>
-            );
-          })}
+                    {plan.featured && (
+                      <Badge className="absolute -top-3 left-4 gap-1 bg-plan-primary text-primary-foreground">
+                        <Sparkles className="h-3 w-3" aria-hidden="true" />
+                        Recomendado
+                      </Badge>
+                    )}
+
+                    <div className="flex min-h-24 flex-col justify-between gap-4">
+                      <div>
+                        <h2 className="font-display text-2xl text-plan-ink">{plan.name}</h2>
+                        <p className="mt-1 text-sm font-medium text-plan-primary">{frequencyLabel(plan)}</p>
+                      </div>
+                      <div className="rounded-md bg-plan-primary-dark px-3 py-2 text-sm font-semibold text-primary-foreground">
+                        {plan.lessonsPerMonth === 1 ? "1 aula" : `${plan.lessonsPerMonth} aulas por mês`}
+                      </div>
+                    </div>
+
+                    <div className="mt-6 border-t border-plan-border pt-5">
+                      <div className="min-h-6 text-sm">
+                        {plan.originalMonthlyPriceCents ? (
+                          <span className="text-plan-muted">
+                            De{" "}
+                            <span className="line-through decoration-plan-primary decoration-2">
+                              {formatPriceBRL(plan.originalMonthlyPriceCents)}
+                            </span>
+                          </span>
+                        ) : (
+                          <span className="text-plan-muted">Valor único</span>
+                        )}
+                      </div>
+                      <div className="mt-1" aria-label={priceAria}>
+                        <span className="font-display text-5xl leading-none text-plan-primary-dark">
+                          {formatPriceBRL(plan.monthlyPriceCents)}
+                        </span>
+                        {plan.lessonsPerMonth > 1 && <span className="ml-1 text-sm text-plan-muted">/ mês</span>}
+                      </div>
+                      <div className="mt-3 min-h-7">
+                        {saving ? (
+                          <span className="inline-flex rounded-md bg-plan-detail/15 px-2.5 py-1 text-xs font-semibold text-plan-primary-dark">
+                            {saving}
+                          </span>
+                        ) : (
+                          <span className="text-xs text-plan-muted">Sem assinatura mensal</span>
+                        )}
+                      </div>
+                    </div>
+
+                    <p className="mt-4 min-h-16 text-sm leading-relaxed text-plan-muted">{plan.description}</p>
+
+                    <ul className="mt-5 flex-1 space-y-2 text-sm text-plan-ink">
+                      {plan.features.map((feature) => (
+                        <li key={feature.id} className="flex gap-2">
+                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-plan-primary" aria-hidden="true" />
+                          <span>{feature.feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <Button
+                      type="button"
+                      className={cn(
+                        "mt-6 min-h-11 w-full bg-plan-primary text-primary-foreground hover:bg-plan-primary-dark",
+                        plan.featured && "bg-plan-primary-dark hover:bg-plan-primary",
+                      )}
+                      disabled={disabled}
+                      onClick={() => choosePlan.mutate(plan)}
+                      aria-label={`Escolher plano ${plan.name}, ${priceAria}`}
+                    >
+                      {isChoosing ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
+                          Selecionando
+                        </>
+                      ) : (
+                        <>
+                          Escolher plano <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
+                        </>
+                      )}
+                    </Button>
+                  </article>
+                );
+              })}
+            </div>
+          )}
         </div>
       </section>
     </PublicLayout>

@@ -19,7 +19,12 @@ const searchSchema = z.object({
 
 export const Route = createFileRoute("/planos/checkout")({
   validateSearch: (s) => searchSchema.parse(s),
-  head: () => ({ meta: [{ title: "Checkout — Nerya" }] }),
+  head: () => ({
+    meta: [
+      { title: "Checkout do plano — Nerya" },
+      { name: "description", content: "Confirme seu plano de aulas particulares em ambiente demonstrativo." },
+    ],
+  }),
   component: Checkout,
 });
 
@@ -59,7 +64,7 @@ function Checkout() {
     <PublicLayout>
       <section className="container-page grid max-w-5xl gap-8 py-14 md:grid-cols-[1.2fr_1fr]">
         <form onSubmit={submit} className="space-y-4 rounded-xl border border-border/60 bg-card p-6">
-          <h1 className="font-display text-3xl">Checkout</h1>
+          <h1 className="font-display text-3xl">Contratar plano</h1>
           <DemoBanner>Não pedimos dados de pagamento. Isto é apenas uma simulação.</DemoBanner>
           <div>
             <Label>Nome</Label>
@@ -90,7 +95,7 @@ function Checkout() {
             </div>
           </div>
           <Button type="submit" className="w-full" disabled={loading || !plan}>
-            {loading ? "Processando…" : "Confirmar (demo)"}
+            {loading ? "Processando…" : "Confirmar plano (demo)"}
           </Button>
           <div className="text-center text-xs text-muted-foreground">
             <Link to="/planos" className="hover:text-primary">← Voltar aos planos</Link>

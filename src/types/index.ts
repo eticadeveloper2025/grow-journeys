@@ -159,6 +159,9 @@ export interface Plan {
   name: string;
   slug: string;
   description: string;
+  lessonsPerWeek: number;
+  lessonsPerMonth: number;
+  originalMonthlyPriceCents?: number;
   monthlyPriceCents: number;
   yearlyPriceCents: number;
   featured: boolean;
@@ -172,6 +175,89 @@ export interface PlanFeature {
   feature: string;
   included: boolean;
   position: number;
+}
+
+export type BookingStatus = "scheduled" | "completed" | "cancelled" | "no_show";
+
+export interface Booking {
+  id: string;
+  studentId: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  durationMinutes: number;
+  format: "online";
+  status: BookingStatus;
+  topic?: string;
+  notes?: string;
+  createdAt: string;
+}
+
+export interface AvailabilitySlot {
+  id: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  available: boolean;
+  unavailableReason?: "outside_window" | "booked" | "past" | "blocked";
+}
+
+export interface StudentCreditBalance {
+  studentId: string;
+  planId: string;
+  totalCredits: number;
+  usedCredits: number;
+  remainingCredits: number;
+  cycleStart: string;
+  cycleEnd: string;
+}
+
+export interface SchedulingConfig {
+  timezone: string;
+  workingDays: number[];
+  startTime: string;
+  endTime: string;
+  lessonDurationMinutes: number;
+  bufferMinutes: number;
+  minimumAdvanceHours: number;
+  bookingWindowDays: number;
+  cancellationLimitHours: number;
+}
+
+export interface NotificationAttempt {
+  id: string;
+  bookingId: string;
+  userId: string;
+  channel: "email";
+  status: "queued" | "sent" | "failed";
+  createdAt: string;
+  message: string;
+}
+
+export interface BookingConfirmationNotification {
+  booking: Booking;
+  user: User;
+  plan?: Plan;
+}
+
+export interface BookingCancellationNotification {
+  booking: Booking;
+  user: User;
+  reason?: string;
+}
+
+export interface BookingRescheduledNotification {
+  previousBooking: Booking;
+  nextBooking: Booking;
+  user: User;
+}
+
+export interface NotificationResult {
+  id: string;
+  status: "simulated" | "queued" | "skipped";
+  provider: "mock" | "backend";
+  message: string;
+  createdAt: string;
 }
 
 export type SubscriptionStatus = "active" | "canceled" | "past_due" | "trialing";

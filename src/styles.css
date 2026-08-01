@@ -60,6 +60,16 @@
   --color-brand-soft: var(--brand-soft);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
+  --color-plan-bg: var(--plan-bg);
+  --color-plan-panel: var(--plan-panel);
+  --color-plan-panel-soft: var(--plan-panel-soft);
+  --color-plan-ink: var(--plan-ink);
+  --color-plan-muted: var(--plan-muted);
+  --color-plan-primary: var(--plan-primary);
+  --color-plan-primary-dark: var(--plan-primary-dark);
+  --color-plan-primary-light: var(--plan-primary-light);
+  --color-plan-border: var(--plan-border);
+  --color-plan-detail: var(--plan-detail);
 
   /* Retrocompatibilidade tokens antigos (mapeados na marca) */
   --color-navy: var(--brand-darker);
@@ -133,6 +143,18 @@
   --sidebar-accent-foreground: #F5F7FB;
   --sidebar-border: rgba(255, 255, 255, 0.06);
   --sidebar-ring: rgba(83, 97, 132, 0.55);
+
+  /* Planos: variações semânticas derivadas de #536184 */
+  --plan-bg: #F5F7FB;
+  --plan-panel: #FFFFFF;
+  --plan-panel-soft: #EDF1F7;
+  --plan-ink: #172033;
+  --plan-muted: #5F6880;
+  --plan-primary: #536184;
+  --plan-primary-dark: #2E374F;
+  --plan-primary-light: #A8B1CF;
+  --plan-border: rgba(83, 97, 132, 0.22);
+  --plan-detail: #9A8FB9;
 }
 
 @layer base {
@@ -243,6 +265,7 @@
 @utility bg-brand { background-color: var(--brand); color: var(--foreground); }
 @utility bg-surface { background-color: var(--surface); }
 @utility bg-surface-2 { background-color: var(--surface-2); }
+@utility bg-plan-bg { background-color: var(--plan-bg); color: var(--plan-ink); }
 
 @utility glow-accent {
   box-shadow: 0 0 0 1px color-mix(in oklab, var(--brand) 40%, transparent),

@@ -1,10 +1,12 @@
 import type {
   AuthRepository,
   BlogRepository,
+  BookingRepository,
   CertificateRepository,
   CourseRepository,
   EnrollmentRepository,
   LessonRepository,
+  NotificationRepository,
   PlanRepository,
   ProgressRepository,
   QuizRepository,
@@ -19,17 +21,25 @@ import { mockCourses, mockModules, mockLessons, mockCategories } from "@/mocks/c
 import { mockEnrollments, mockLessonProgress, mockCertificates, mockQuizzes } from "@/mocks/enrollments";
 import { mockPlans } from "@/mocks/plans";
 import { mockPosts } from "@/mocks/posts";
+import { mockBookings, mockCreditBalances } from "@/mocks/bookings";
+import { schedulingConfig } from "@/config/scheduling";
+import { buildAvailabilitySlots } from "@/utils/scheduling";
 import type {
+  AvailabilitySlot,
   ApiListResponse,
   ApiResponse,
+  Booking,
   Certificate,
   Course,
   Enrollment,
   LessonProgress,
+  NotificationResult,
+  NotificationAttempt,
   Plan,
   Post,
   QuizAttempt,
   Session,
+  StudentCreditBalance,
   Subscription,
   User,
 } from "@/types";
@@ -61,6 +71,28 @@ function loadUsers(): User[] {
 }
 function saveUsers(list: User[]): void {
   storage.set(STORAGE_KEYS.users, list);
+}
+function loadBookings(): Booking[] {
+  return storage.get<Booking[]>(STORAGE_KEYS.bookings, mockBookings);
+}
+function saveBookings(list: Booking[]): void {
+  storage.set(STORAGE_KEYS.bookings, list);
+}
+function loadCredits(): StudentCreditBalance[] {
+  return storage.get<StudentCreditBalance[]>(STORAGE_KEYS.credits, mockCreditBalances);
+}
+function saveCredits(list: StudentCreditBalance[]): void {
+  storage.set(STORAGE_KEYS.credits, list);
+}
+function loadNotifications(): NotificationAttempt[] {
+  return storage.get<NotificationAttempt[]>(STORAGE_KEYS.notifications, []);
+}
+function saveNotifications(list: NotificationAttempt[]): void {
+  storage.set(STORAGE_KEYS.notifications, list);
+}
+
+function listMeta<T>(items: T[]): ApiListResponse<T>["meta"] {
+  return { page: 1, perPage: items.length, total: items.length, totalPages: 1 };
 }
 
 /* ---------------- Auth ---------------- */
@@ -99,7 +131,7 @@ export const mockAuthRepository: AuthRepository = {
   },
   async forgotPassword(_email) {
     await mockDelay();
-    return { data: null, message: "Se o e-mail existir, um link de recuperação foi enviado." };
+    return { data: null, message: "Se o e-mail existir, a recuperação foi simulada." };
   },
   async resetPassword(_token, _password) {
     await mockDelay();
@@ -516,6 +548,176 @@ export const mockSubscriptionRepository: SubscriptionRepository = {
       storage.set(`${STORAGE_KEYS.plan}:${userId}`, { ...sub, status: "canceled", canceledAt: new Date().toISOString() });
     }
     return { data: null, message: "Assinatura cancelada (demonstrativo)." };
+  },
+};
+
+/* ---------------- Bookings / Credits ---------------- */
+
+function isPastBooking(booking: Booking): boolean {
+  return booking.status !== "scheduled";
+}
+
+export const mockBookingRepository: BookingRepository = {
+  async listForUser(userId) {
+    await mockDelay(150);
+    maybeMockError("busca de aulas");
+    const items = loadBookings()
+      .filter((b) => b.studentId === userId)
+      .sort((a, b) => `${a.date} ${a.startTime}`.localeCompare(`${b.date} ${b.startTime}`));
+    return { data: items, meta: listMeta(items) };
+  },
+  async upcomingForUser(userId) {
+    await mockDelay(150);
+    maybeMockError("busca de proximas aulas");
+    const items = loadBookings()
+      .filter((b) => b.studentId === userId && b.status === "scheduled")
+      .sort((a, b) => `${a.date} ${a.startTime}`.localeCompare(`${b.date} ${b.startTime}`));
+    return { data: items, meta: listMeta(items) };
+  },
+  async historyForUser(userId) {
+    await mockDelay(150);
+    maybeMockError("busca de historico");
+    const items = loadBookings()
+      .filter((b) => b.studentId === userId && isPastBooking(b))
+      .sort((a, b) => `${b.date} ${b.startTime}`.localeCompare(`${a.date} ${a.startTime}`));
+    return { data: items, meta: listMeta(items) };
+  },
+  async availability(params) {
+    await mockDelay(150);
+    maybeMockError("busca de disponibilidade");
+    const items: AvailabilitySlot[] = buildAvailabilitySlots(schedulingConfig, loadBookings(), params);
+    return { data: items, meta: listMeta(items) };
+  },
+  async book(userId, slotId, topic) {
+    await mockDelay();
+    const slots = await this.availability();
+    const slot = slots.data.find((s) => s.id === slotId);
+    if (!slot || !slot.available) {
+      throw new ApiError({ code: "SLOT_UNAVAILABLE", message: "Este horario nao esta disponivel." });
+    }
+    const credits = loadCredits();
+    const creditIdx = credits.findIndex((c) => c.studentId === userId);
+    if (creditIdx < 0 || credits[creditIdx].remainingCredits <= 0) {
+      throw new ApiError({ code: "NO_CREDITS", message: "Voce nao possui creditos disponiveis para agendar." });
+    }
+    const booking: Booking = {
+      id: `b-${shortCode()}`,
+      studentId: userId,
+      date: slot.date,
+      startTime: slot.startTime,
+      endTime: slot.endTime,
+      durationMinutes: schedulingConfig.lessonDurationMinutes,
+      format: "online",
+      status: "scheduled",
+      topic,
+      createdAt: new Date().toISOString(),
+    };
+    credits[creditIdx] = {
+      ...credits[creditIdx],
+      usedCredits: credits[creditIdx].usedCredits + 1,
+      remainingCredits: credits[creditIdx].remainingCredits - 1,
+    };
+    saveCredits(credits);
+    saveBookings([...loadBookings(), booking]);
+    return { data: booking, message: "Aula agendada (demonstrativo)." };
+  },
+  async cancel(bookingId, userId) {
+    await mockDelay();
+    const bookings = loadBookings();
+    const idx = bookings.findIndex((b) => b.id === bookingId && b.studentId === userId);
+    if (idx < 0) throw new ApiError({ code: "NOT_FOUND", message: "Aula nao encontrada." });
+    if (bookings[idx].status !== "scheduled") {
+      throw new ApiError({ code: "INVALID_STATUS", message: "Esta aula nao pode ser cancelada." });
+    }
+    bookings[idx] = { ...bookings[idx], status: "cancelled", notes: bookings[idx].notes ?? "Cancelada pelo aluno." };
+    const credits = loadCredits();
+    const creditIdx = credits.findIndex((c) => c.studentId === userId);
+    if (creditIdx >= 0) {
+      credits[creditIdx] = {
+        ...credits[creditIdx],
+        usedCredits: Math.max(0, credits[creditIdx].usedCredits - 1),
+        remainingCredits: credits[creditIdx].remainingCredits + 1,
+      };
+      saveCredits(credits);
+    }
+    saveBookings(bookings);
+    return { data: bookings[idx], message: "Aula cancelada (demonstrativo)." };
+  },
+  async creditBalance(userId) {
+    await mockDelay(120);
+    const existing = loadCredits().find((c) => c.studentId === userId);
+    if (existing) return { data: existing };
+    const fallback: StudentCreditBalance = {
+      studentId: userId,
+      planId: "p-1x-semana",
+      totalCredits: 4,
+      usedCredits: 0,
+      remainingCredits: 4,
+      cycleStart: "2026-07-30",
+      cycleEnd: "2026-08-29",
+    };
+    return { data: fallback };
+  },
+};
+
+/* ---------------- Notifications (mock only) ---------------- */
+
+function saveNotificationAttempt(input: {
+  bookingId: string;
+  userId: string;
+  message: string;
+}): NotificationResult {
+  const now = new Date().toISOString();
+  const id = `ntf-${shortCode()}`;
+  const attempt: NotificationAttempt = {
+    id,
+    bookingId: input.bookingId,
+    userId: input.userId,
+    channel: "email",
+    status: "queued",
+    createdAt: now,
+    message: input.message,
+  };
+  saveNotifications([...loadNotifications(), attempt]);
+  return {
+    id,
+    status: "simulated",
+    provider: "mock",
+    createdAt: now,
+    message: "Notificação simulada registrada. Nenhum e-mail real foi enviado.",
+  };
+}
+
+export const mockNotificationRepository: NotificationRepository = {
+  async sendBookingConfirmation({ booking, user, plan }) {
+    await mockDelay(80);
+    return {
+      data: saveNotificationAttempt({
+        bookingId: booking.id,
+        userId: user.id,
+        message: `Confirmacao mockada da aula de ${booking.date} ${booking.startTime}${plan ? ` no plano ${plan.name}` : ""}.`,
+      }),
+    };
+  },
+  async sendBookingCancellation({ booking, user, reason }) {
+    await mockDelay(80);
+    return {
+      data: saveNotificationAttempt({
+        bookingId: booking.id,
+        userId: user.id,
+        message: `Cancelamento mockado da aula de ${booking.date} ${booking.startTime}${reason ? `: ${reason}` : ""}.`,
+      }),
+    };
+  },
+  async sendBookingRescheduled({ previousBooking, nextBooking, user }) {
+    await mockDelay(80);
+    return {
+      data: saveNotificationAttempt({
+        bookingId: nextBooking.id,
+        userId: user.id,
+        message: `Reagendamento mockado de ${previousBooking.date} ${previousBooking.startTime} para ${nextBooking.date} ${nextBooking.startTime}.`,
+      }),
+    };
   },
 };
 

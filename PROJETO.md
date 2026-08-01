@@ -1,10 +1,10 @@
 # Nerya — Guia do Projeto
 
-Documento de referência para futuras alterações na plataforma **Nerya — escola de inglês online**. Leia antes de mexer em qualquer código.
+Documento de referência para futuras alterações na plataforma **Nerya — aulas particulares de inglês online**.
 
 > **Posicionamento da marca**: *"Inglês que conecta. Fluência que transforma."*
 > **Logo**: sempre em minúsculas — `nerya.`
-> **Nicho**: exclusivamente ensino de **inglês** (viagens, conversação, trabalho, pronúncia). Nunca reintroduzir cursos de tecnologia/design.
+> **Nicho**: aulas particulares de **inglês** com um único professor, ao vivo, com planos, créditos, agendamento e histórico.
 
 ---
 
@@ -12,235 +12,212 @@ Documento de referência para futuras alterações na plataforma **Nerya — esc
 
 | Camada | Tecnologia |
 |--------|------------|
-| Framework | **TanStack Start v1** (React 19 + Vite 7, SSR/SSG capaz) |
+| Framework | **TanStack Start v1** (React 19 + Vite 7/8, SSR/SSG capaz) |
 | Roteamento | **TanStack Router** file-based (`src/routes/`) |
-| Estilo | **Tailwind CSS v4** via `src/styles.css` (tokens `@theme`) |
-| UI Kit | **shadcn/ui** (Radix + variantes) em `src/components/ui/` |
-| Estado servidor | **TanStack Query** (`QueryClient` em `src/router.tsx`) |
-| Formulários | `react-hook-form` + `zod` |
-| PDF de certificado | `html2canvas` + `jspdf` (client-side) |
+| Estilo | **Tailwind CSS v4** via `src/styles.css` |
+| UI Kit | **shadcn/ui** em `src/components/ui/` |
+| Estado servidor | **TanStack Query** |
+| Formulários | `react-hook-form` + `zod` quando necessário |
 | Datas / formatação | `date-fns` (locale pt-BR) |
 
-**Não usar**: Supabase, Lovable Cloud, Firebase, banco real, Edge Functions, pagamentos reais, envio de e-mail real. O projeto é **mock-first** até integração futura com API própria + PostgreSQL no Render.
+**Não usar**: Supabase, Lovable Cloud, Firebase, banco real, Edge Functions, pagamentos reais, envio de e-mail real ou reserva real em calendário externo. O projeto é **mock-first** até integração futura com API própria + PostgreSQL no Render.
 
 ---
 
-## 2. Arquitetura Mock-First
+## 2. Domínio funcional
+
+A Nerya é uma plataforma de aulas particulares de inglês conduzidas ao vivo por um único professor.
+
+O produto deve focar em:
+
+- conversação;
+- pronúncia;
+- inglês para viagens;
+- inglês profissional;
+- acompanhamento individual;
+- frequência de aulas;
+- créditos;
+- agendamento;
+- próximas aulas;
+- histórico de aulas realizadas.
+
+Não reintroduzir: catálogo de cursos, módulos, aula gravada, aula em vídeo, player, percentual assistido, matrícula em curso, certificado de curso, quiz, favoritos de conteúdo ou trilha de conteúdo.
+
+---
+
+## 3. Arquitetura mock-first
 
 Regra de ouro: **componentes nunca importam mocks ou `localStorage` diretamente**. O fluxo é sempre:
 
 ```
 UI (componentes / rotas)
-  → hooks (useAuth, etc.)
-    → services / repositories (interfaces)
-      → mock  (padrão, src/repositories/mock)
-      → api   (stubs futuros, src/repositories/api)
-        → src/mocks/*  ou  fetch(VITE_API_BASE_URL)
+  -> hooks
+    -> services / repositories
+      -> mock  (src/repositories/mock)
+      -> api   (src/repositories/api)
+        -> src/mocks/* ou fetch(VITE_API_BASE_URL)
 ```
 
 ### Estrutura de pastas
 
 ```
 src/
-  components/       Componentes reutilizáveis (UI + domínio)
-    ui/             Primitives shadcn — NÃO renomear/mover
-  routes/           Rotas file-based TanStack (ver §5)
-  layouts/          PublicLayout, AlunoLayout (shells)
-  mocks/            Base de dados fictícia (users, courses, plans, posts, enrollments)
+  components/       Componentes reutilizáveis
+  routes/           Rotas file-based TanStack
+  layouts/          PublicLayout, AlunoLayout
+  mocks/            Base de dados fictícia
   repositories/
-    interfaces.ts   Contratos (AuthRepository, CourseRepository, ...)
-    mock/           Implementação padrão consumindo src/mocks/
-    api/            Stubs REST futuros (não implementados ainda)
-    index.ts        Fábrica lê VITE_DATA_SOURCE (mock|api)
-  hooks/            useAuth e outros hooks de aplicação
-  lib/              storage.ts (única porta para localStorage), utils
-  utils/            mockDelay, format, mapping
+    interfaces.ts   Contratos
+    mock/           Implementação padrão
+    api/            Stubs REST futuros
+    index.ts        Fábrica lê VITE_DATA_SOURCE
+  hooks/            useAuth e hooks de aplicação
+  lib/              storage.ts
+  utils/            mockDelay, format, bookings
   types/            Modelos de domínio + ApiResponse/ApiListResponse
-  config/           env.ts — leitura tipada de import.meta.env
-  styles.css        Tokens do design system (Tailwind v4)
+  config/           env.ts
+  styles.css        Tokens do design system
 ```
 
 ---
 
-## 3. Design System (Escuro Editorial)
+## 4. Modelos principais
 
-Todos os tokens vivem em `src/styles.css` sob `@theme`. **Nunca hardcode cores** (`bg-white`, `text-[#123]`) nos componentes — sempre semântico (`bg-background`, `text-primary`).
+- `Plan`: plano comercial com preço, recursos e frequência descrita em features.
+- `Booking`: aula agendada ou realizada.
+- `AvailabilitySlot`: horário disponível para reserva.
+- `StudentCreditBalance`: créditos do aluno no ciclo atual.
+- `Subscription`: contratação demonstrativa de plano.
 
-- Paleta principal: azul-marinho profundo, azul acinzentado (`#536184`), lilás, coral, amarelo pontual, papel quente.
-- Tipografia:
-  - **Display** (títulos): `Anton` / `Archivo Black` (condensada) → classe `font-display`.
-  - **UI/Body**: `Inter` / `Manrope`.
-  - Fontes carregadas via `<link>` em `src/routes/__root.tsx` (nunca `@import` remoto no CSS).
-- Cantos discretos, sombras suaves, micro-animações (150–300ms, easing suave).
-- Respeitar `prefers-reduced-motion` em qualquer animação nova.
+Rotas antigas e repositórios antigos ligados a cursos podem existir apenas como compatibilidade temporária, sem aparecer na navegação ou nas telas principais.
 
 ---
 
-## 4. Persistência local
+## 5. Persistência local
 
-Toda gravação em `localStorage` passa por `src/lib/storage.ts` com chaves centralizadas em `STORAGE_KEYS`:
+Toda gravação em `localStorage` passa por `src/lib/storage.ts`.
+
+Chaves atuais:
 
 ```
-nerya:session         → sessão do usuário logado
-nerya:progress        → progresso por aula
-nerya:enrollments     → matrículas
-nerya:certificates    → certificados emitidos
-nerya:favorites:*     → favoritos (cursos/posts)
-nerya:plan            → plano ativo
-nerya:prefs           → preferências
-nerya:quiz            → tentativas de quiz
+nerya:session      -> sessão do usuário logado
+nerya:bookings     -> aulas agendadas e histórico
+nerya:credits      -> créditos por aluno
+nerya:plan         -> plano ativo
+nerya:prefs        -> preferências
+nerya:users        -> usuários demo
+nerya:notifications -> tentativas mockadas de notificação
 ```
 
-**Nunca** ler/escrever `localStorage` fora de `storage.ts`. Leitura de estado de UI deve ocorrer em `useEffect` (SSR-safe).
+Chaves legadas podem permanecer apenas para compatibilidade de migração.
 
 ---
 
-## 5. Rotas (TanStack file-based)
+## 6. Rotas
 
 Convenção **flat com pontos**, não pastas aninhadas. `routeTree.gen.ts` é auto-gerado — **não editar à mão**.
 
-### Público (`PublicLayout`)
-`/` `/cursos` `/cursos/$slug` `/conteudos` `/conteudos/$slug` `/planos` `/planos/checkout` `/planos/sucesso` `/sobre` `/contato` `/entrar` `/cadastrar` `/recuperar-senha` `/redefinir-senha` `/certificados/validar/$codigo`
+### Público
 
-### Aluno (`_aluno` layout com guard)
-`/aluno` `/aluno/cursos` `/aluno/cursos/$slug` `/aluno/cursos/$slug/aulas/$lessonId` `/aluno/cursos/$slug/quiz` `/aluno/certificados` `/aluno/certificados/$id` `/aluno/favoritos` `/aluno/perfil` `/aluno/assinatura`
+`/` `/planos` `/planos/checkout` `/planos/sucesso` `/agendar` `/como-funciona` `/contato` `/entrar` `/cadastrar` `/recuperar-senha` `/redefinir-senha`
 
-### Guards
-`src/routes/_aluno.tsx` faz `beforeLoad` checando `nerya:session`; se ausente, redireciona para `/entrar`. Comentário obrigatório: *"Validação real deve ocorrer no backend — este guard é apenas UX."*
+### Aluno
 
-### Regras obrigatórias
-- Cada rota tem `head()` com **título e description únicos** (nunca reutilizar da home).
-- Rota com hero/capa: incluir `og:image` + `twitter:image` com URL absoluta.
-- Novo `<Link to="...">` só depois de criar o arquivo da rota — build type-checa.
-- Nunca usar `src/pages/`, nunca `react-router-dom`.
+`/aluno` `/aluno/agendar` `/aluno/aulas` `/aluno/historico` `/aluno/plano` `/aluno/perfil`
 
----
+### Compatibilidade temporária
 
-## 6. Autenticação demo
+As rotas antigas `/cursos`, `/conteudos`, `/sobre`, `/aluno/cursos`, `/aluno/certificados`, `/aluno/favoritos` e `/aluno/assinatura` devem redirecionar para destinos atuais. Não remover enquanto houver chance de links externos ou histórico local apontarem para elas.
 
-| Papel | E-mail | Senha |
-|-------|--------|-------|
-| Aluno | `aluno@nerya.demo` | `demo123` |
-| Aluno | `bruno@nerya.demo` | `demo123` |
-| Admin | `admin@nerya.demo` | `admin123` |
+### Guard
 
-Fluxos (login, logout, recuperar, redefinir) simulados em `mockAuthRepository`. Toasts genéricos de "e-mail enviado" — nunca prometer envio real.
+`src/routes/_aluno.tsx` faz `beforeLoad` checando `nerya:session`; se ausente, redireciona para `/entrar`. Comentário obrigatório:
+
+`Validação real deve ocorrer no backend — este guard é apenas UX.`
 
 ---
 
-## 7. Variáveis de ambiente
+## 7. Estados de UI obrigatórios
 
-Copiar `.env.example` para `.env.local`:
+Toda listagem/detalhe cobre:
 
-| Variável | Default | Papel |
-|----------|---------|-------|
-| `VITE_APP_NAME` | `Nerya` | Nome público |
-| `VITE_APP_ENV` | `development` | Ambiente |
-| `VITE_DATA_SOURCE` | `mock` | `mock` ou `api` (troca a fábrica) |
-| `VITE_API_BASE_URL` | `http://localhost:3000/api` | Base da API futura |
-| `VITE_ENABLE_MOCK_ERRORS` | `false` | Injeta ~15% de falhas para testar retry |
+- loading;
+- vazio;
+- erro com retry;
+- sucesso.
 
-**Nunca** colocar segredos em `VITE_*` (vão para o bundle público).
+Componentes prontos ficam em `src/components/States.tsx`.
 
 ---
 
-## 8. Simulação de API
+## 8. Planos e checkout demo
 
-- `utils/mockDelay.ts`: `await mockDelay(300..600)` antes de cada resposta.
-- `utils/maybeMockError.ts`: se `VITE_ENABLE_MOCK_ERRORS=true`, falha aleatória para testar UI.
-- Formato de resposta (bater com API futura):
-  ```ts
-  ApiResponse<T>     = { data: T; message?: string }
-  ApiListResponse<T> = { data: T[]; meta: { total, page, pageSize } }
-  ApiError           = { error: { code, message, details? } }
-  ```
-- Todo `MockRepository` documenta no JSDoc o endpoint REST correspondente (`POST /api/auth/login`, etc.).
-
----
-
-## 9. Estados de UI obrigatórios
-
-Toda listagem/detalhe cobre: **loading (skeleton)**, **vazio**, **erro com retry**, **sucesso**. Componentes prontos em `src/components/States.tsx`. Botões sem ação real → toast *"Funcionalidade demonstrativa"*.
-
----
-
-## 10. Como adicionar coisas
-
-### Novo curso de inglês
-1. Editar `src/mocks/courses.ts` (id UUID fixo, slug, módulos, aulas com YouTube URL).
-2. Se necessário, adicionar matrícula demo em `src/mocks/enrollments.ts`.
-3. Nada mais — repositórios já leem daí.
-
-### Novo campo no domínio
-1. Atualizar type em `src/types/index.ts`.
-2. Atualizar mocks.
-3. Atualizar `interfaces.ts` se muda contrato.
-4. Atualizar `mock/` e `api/` (stub) em `src/repositories/`.
-5. Ajustar UI consumidora.
-
-### Nova rota
-1. Criar arquivo em `src/routes/` seguindo convenção flat (`area.sub.tsx`).
-2. Definir `head()` único.
-3. Nunca editar `routeTree.gen.ts`.
-
-### Novo repositório
-1. Adicionar interface em `src/repositories/interfaces.ts`.
-2. Implementar em `mock/` (funcional) e `api/` (stub que lança "não implementado").
-3. Registrar na fábrica `src/repositories/index.ts`.
-
----
-
-## 11. Certificados demo
-
-1. `certificateService.canIssue(enrollmentId)` valida `required_progress_percentage` e `minimum_score_percentage`.
-2. Emite com `certificate_code` (UUID curto) em `nerya:certificates`.
-3. Página renderiza selo **"Certificado demonstrativo"** visível.
-4. PDF via `html2canvas` + `jspdf` (client-only).
-5. `/certificados/validar/$codigo` procura no store local.
-
----
-
-## 12. Planos e checkout demo
-
-- Toggle mensal/anual em `/planos`.
-- Cupom `NERYA20` → -20% visual.
-- Checkout pede **apenas nome e e-mail**. Nunca cartão/CVV/CPF.
+- Planos representam frequência de aulas e créditos por ciclo.
+- Cupom `NERYA20` aplica desconto visual.
+- Checkout pede apenas nome e e-mail.
+- Nunca pedir cartão, CVV ou CPF.
 - Banner persistente: *"Ambiente demonstrativo — nenhum pagamento será realizado."*
 - Ativação/cancelamento apenas em `nerya:plan`.
 
 ---
 
-## 13. Deploy no Render (Static Site)
+## 9. Agendamento demo
 
-- Build command: `npm install && npm run build`
-- Publish dir: `dist`
-- Configurar todas as `VITE_*` no painel antes do build.
-- TanStack Start resolve deep links — **não** criar `_redirects` manualmente.
-
-### Arquitetura futura
-```
-Frontend (Render Static Site)
-    → API HTTPS (Render Web Service)
-        → PostgreSQL (Render)
-```
-Para migrar: implementar `src/repositories/api/*`, setar `VITE_DATA_SOURCE=api` e `VITE_API_BASE_URL`. Nenhum componente muda.
+- Disponibilidades vêm de `src/mocks/bookings.ts`.
+- Agendar uma aula consome um crédito.
+- Cancelar uma aula agendada devolve um crédito.
+- Histórico não deve exibir thumbnail, player, vídeo ou percentual assistido.
+- Aulas realizadas mostram data, horário, duração, status, tópico e observação opcional.
+- O fluxo de criação passa por `src/services/bookingService.ts`.
+- Notificações são simuladas por `MockNotificationRepository`; nenhum e-mail real é enviado.
 
 ---
 
-## 14. Checklist antes de commitar
+## 10. Notificações e Resend futuro
 
-- [ ] Nada em `src/pages/`, nada de `react-router-dom`.
-- [ ] Sem cor hardcoded (`text-white`, `#hex`) — só tokens semânticos.
+Não colocar segredo em `VITE_*`. Variáveis `VITE_*` entram no bundle público.
+
+Nesta etapa não há envio real de e-mail. O comportamento correto é:
+
+```
+Frontend
+  -> bookingService
+    -> MockBookingRepository
+    -> MockNotificationRepository
+```
+
+No modo API futuro:
+
+```
+Frontend
+  -> POST /api/bookings
+    -> backend valida e persiste
+    -> backend envia via Resend
+    -> backend retorna a reserva
+```
+
+O frontend nunca chama a API do Resend diretamente. A chave futura `RESEND_API_KEY` deve existir apenas no backend.
+
+Contrato detalhado: [`docs/INTEGRACAO_RESEND.md`](docs/INTEGRACAO_RESEND.md).
+
+---
+
+## 11. Checklist antes de commitar
+
+- [ ] Navegação pública contém Início, Planos, Agendar aula, Como funciona, Contato e Entrar.
+- [ ] Área do aluno contém Dashboard, Agendar aula, Próximas aulas, Histórico, Plano e Perfil.
+- [ ] Sem links novos para rotas antigas.
+- [ ] Rotas antigas relevantes redirecionam.
 - [ ] Sem `localStorage.*` fora de `src/lib/storage.ts`.
-- [ ] Sem menção a Supabase/Firebase/tecnologia genérica de cursos.
-- [ ] Cursos, posts e planos permanecem sobre **inglês**.
-- [ ] Toda rota nova tem `head()` único.
-- [ ] Estados loading/vazio/erro cobertos.
-- [ ] `prefers-reduced-motion` respeitado em animações novas.
-- [ ] Logo escrita como `nerya.` (minúsculas).
+- [ ] Sem chave ou SDK Resend no frontend.
+- [ ] Sem variável `VITE_*` contendo segredo.
+- [ ] Sem menção visível a catálogo, aulas gravadas, player, progresso de vídeo, certificado de curso ou quiz.
+- [ ] Toda rota nova tem `head()` próprio.
+- [ ] Estados loading/vazio/erro/sucesso cobertos nas páginas de dados.
+- [ ] Logo escrita como `nerya.`.
 
 ---
 
-## 15. Fora do escopo desta etapa
+## 12. Fora do escopo
 
-Sem backend real, sem banco, sem auth de terceiros, sem pagamento real, sem envio de e-mail, sem upload de arquivo em servidor, sem emissão oficial de certificado, sem Edge Functions. Todos os fluxos "Ambiente demonstrativo" são simulações locais.
+Sem backend real, banco, auth de terceiros, pagamento real, envio de e-mail, upload em servidor, certificado oficial ou reserva real de calendário. Todos os fluxos são simulações locais.

@@ -1,54 +1,41 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PublicLayout } from "@/layouts/PublicLayout";
 import { Button } from "@/components/ui/button";
-import { CourseCard } from "@/components/CourseCard";
-import { useQuery } from "@tanstack/react-query";
-import { courseRepository } from "@/repositories";
 import {
   ArrowRight,
-  Award,
-  BookOpen,
-  Headphones,
-  MessagesSquare,
-  PlayCircle,
-  Sparkles,
-  Users,
+  CalendarDays,
   CheckCircle2,
+  Clock3,
+  CreditCard,
+  MessageCircle,
+  Sparkles,
+  UserRoundCheck,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Nerya | Inglês Online" },
+      { title: "Nerya | Aulas particulares de inglês" },
       {
         name: "description",
         content:
-          "Aprenda inglês com aulas práticas, cursos online, conversação, viagens, trabalho e certificados de conclusão.",
+          "Aulas particulares de inglês ao vivo com acompanhamento individual, planos de créditos e agendamento online.",
       },
     ],
   }),
   component: HomePage,
 });
 
-const FORMATS = [
-  { icon: PlayCircle, title: "Curso gravado", text: "Estude no seu ritmo, reveja aulas e acompanhe a evolução." },
-  { icon: Users, title: "Turma ao vivo", text: "Aprenda em grupo e pratique conversação toda semana." },
-  { icon: MessagesSquare, title: "Aula particular", text: "Plano de estudos sob medida para os seus objetivos." },
-  { icon: Headphones, title: "Clube de conversação", text: "Encontros focados em situações reais do dia a dia." },
-  { icon: BookOpen, title: "Aula avulsa", text: "Escolha um tema específico e faça uma aula sem assinatura." },
-  { icon: Sparkles, title: "Intensivo", text: "Uma jornada concentrada para acelerar seu aprendizado." },
+const FOCUS = [
+  { icon: MessageCircle, title: "Conversação", text: "Prática guiada para falar com mais naturalidade." },
+  { icon: Sparkles, title: "Pronúncia", text: "Correções pontuais para melhorar clareza e ritmo." },
+  { icon: CalendarDays, title: "Viagens", text: "Situações reais para aeroporto, hotel, passeios e restaurantes." },
+  { icon: UserRoundCheck, title: "Profissional", text: "Reuniões, apresentações, entrevistas e small talk." },
 ];
 
 function HomePage() {
-  const { data } = useQuery({
-    queryKey: ["courses", "featured"],
-    queryFn: () => courseRepository.list(),
-  });
-  const featured = data?.data.slice(0, 6) ?? [];
-
   return (
     <PublicLayout>
-      {/* HERO */}
       <section className="relative overflow-hidden border-b border-border">
         <div
           className="pointer-events-none absolute inset-0 opacity-70"
@@ -58,11 +45,11 @@ function HomePage() {
               "radial-gradient(ellipse 60% 50% at 15% 0%, color-mix(in oklab, var(--brand) 22%, transparent), transparent 60%), radial-gradient(ellipse 50% 40% at 90% 100%, color-mix(in oklab, var(--brand-light) 12%, transparent), transparent 60%)",
           }}
         />
-        <div className="container-page relative grid items-center gap-14 py-20 md:grid-cols-[1.1fr_1fr] md:py-28">
+        <div className="container-page relative grid items-center gap-14 py-20 md:grid-cols-[1.05fr_0.95fr] md:py-28">
           <div className="max-w-xl">
             <span className="inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-[11px] font-medium uppercase tracking-widest text-muted-foreground">
               <span className="h-1.5 w-1.5 rounded-full bg-brand" />
-              Primeira aula gratuita
+              Aulas particulares ao vivo
             </span>
             <h1 className="mt-6 font-display text-foreground">
               Inglês que <span className="text-brand-light">conecta.</span>
@@ -70,37 +57,36 @@ function HomePage() {
               Fluência que <span className="text-brand">transforma.</span>
             </h1>
             <p className="mt-6 max-w-lg text-base leading-relaxed text-muted-foreground md:text-lg">
-              Aulas práticas, conteúdos atuais e acompanhamento da sua evolução — do primeiro contato com o idioma até a confiança para conversar.
+              Aprenda inglês em aulas individuais com um professor, agenda flexível e acompanhamento da sua frequência a cada ciclo.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild size="lg" className="bg-brand text-primary-foreground hover:bg-brand-dark">
-                <Link to="/cadastrar">
-                  Fazer aula gratuita <ArrowRight className="ml-2 h-4 w-4" />
+                <Link to="/agendar">
+                  Agendar aula <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
               <Button asChild size="lg" variant="secondary" className="border border-border bg-transparent hover:bg-surface">
-                <Link to="/cursos">Conhecer os cursos</Link>
+                <Link to="/planos">Ver planos</Link>
               </Button>
             </div>
             <ul className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-muted-foreground">
               <li className="inline-flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-brand-light" /> Aulas online
+                <CheckCircle2 className="h-4 w-4 text-brand-light" /> Professor único
               </li>
               <li className="inline-flex items-center gap-2">
-                <Award className="h-4 w-4 text-brand-light" /> Certificado de conclusão
+                <CreditCard className="h-4 w-4 text-brand-light" /> Créditos mensais
               </li>
               <li className="inline-flex items-center gap-2">
-                <Users className="h-4 w-4 text-brand-light" /> Turmas e particulares
+                <Clock3 className="h-4 w-4 text-brand-light" /> Horários reservados
               </li>
             </ul>
           </div>
 
-          {/* Card mock — clean */}
           <div className="relative hidden min-h-[420px] md:block">
             <div className="absolute inset-0 rounded-2xl border border-border bg-surface/60 backdrop-blur-sm" />
             <div className="relative flex h-full flex-col justify-between rounded-2xl p-8">
               <div className="flex items-center justify-between">
-                <div className="text-xs uppercase tracking-widest text-muted-foreground">Lesson 01 · Greetings</div>
+                <div className="text-xs uppercase tracking-widest text-muted-foreground">Próxima aula</div>
                 <div className="inline-flex items-center gap-2 rounded-full bg-surface-2 px-2.5 py-1 text-[11px] text-muted-foreground">
                   <span className="h-1.5 w-1.5 rounded-full bg-brand" /> Ao vivo
                 </div>
@@ -108,51 +94,35 @@ function HomePage() {
 
               <div className="my-8">
                 <p className="font-display text-4xl leading-tight text-foreground md:text-5xl">
-                  You say <span className="text-brand-light">hello</span>,<br />
-                  I say <span className="text-brand">hi</span>.
+                  Small talk <span className="text-brand-light">without</span>
+                  <br />
+                  freezing.
                 </p>
                 <p className="mt-4 text-sm text-muted-foreground">
-                  Pratique cumprimentos e apresentações em contextos reais.
+                  Tema: conversa profissional em reuniões e apresentações rápidas.
                 </p>
               </div>
 
-              <div className="space-y-3">
-                <div>
-                  <div className="mb-1.5 flex justify-between text-xs text-muted-foreground">
-                    <span>Progresso do módulo</span>
-                    <span className="text-foreground">62%</span>
+              <div className="grid gap-3">
+                {[
+                  ["Data", "03/08/2026"],
+                  ["Horário", "09:00-09:50"],
+                  ["Créditos restantes", "4"],
+                ].map(([label, value]) => (
+                  <div key={label} className="flex items-center justify-between rounded-lg border border-border bg-background/40 p-3">
+                    <span className="text-xs uppercase tracking-widest text-muted-foreground">{label}</span>
+                    <span className="font-medium text-foreground">{value}</span>
                   </div>
-                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-surface-2">
-                    <div className="h-full rounded-full bg-brand" style={{ width: "62%" }} />
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 rounded-lg border border-border bg-background/40 p-3">
-                  <div className="grid h-9 w-9 place-items-center rounded-md bg-brand/15 text-brand-light">
-                    <PlayCircle className="h-4 w-4" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="truncate text-sm text-foreground">Small talk no trabalho</div>
-                    <div className="text-xs text-muted-foreground">Próxima aula · 12 min</div>
-                  </div>
-                  <ArrowRight className="h-4 w-4 text-muted-foreground" />
-                </div>
+                ))}
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* FAIXA DE DIFERENCIAIS */}
       <section className="border-b border-border">
-        <div className="container-page grid grid-cols-2 gap-6 py-8 md:grid-cols-3 lg:grid-cols-6">
-          {[
-            "Aulas ao vivo e gravadas",
-            "Conteúdo no seu ritmo",
-            "Exercícios práticos",
-            "Progresso acompanhado",
-            "Certificado de conclusão",
-            "Primeira aula gratuita",
-          ].map((f) => (
+        <div className="container-page grid grid-cols-2 gap-6 py-8 md:grid-cols-4">
+          {["Conversação real", "Pronúncia guiada", "Inglês para viagens", "Inglês profissional"].map((f) => (
             <div key={f} className="flex items-start gap-2 text-xs font-medium uppercase tracking-widest text-muted-foreground">
               <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-brand" /> {f}
             </div>
@@ -160,24 +130,20 @@ function HomePage() {
         </div>
       </section>
 
-      {/* COMO VOCÊ QUER APRENDER */}
       <section className="container-page py-20 md:py-24">
         <div className="mb-12 max-w-2xl">
-          <p className="text-xs font-semibold uppercase tracking-widest text-brand-light">Modalidades</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-brand-light">Acompanhamento individual</p>
           <h2 className="mt-3 text-foreground">
-            Como você quer <span className="text-brand-light">aprender?</span>
+            Uma rotina de inglês que cabe na <span className="text-brand-light">sua semana.</span>
           </h2>
           <p className="mt-4 text-muted-foreground">
-            Escolha o formato que combina com a sua rotina. Você pode combinar mais de um ao longo da jornada.
+            Você escolhe um plano de aulas, consulta seus créditos e reserva os melhores horários disponíveis.
           </p>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {FORMATS.map((f) => (
-            <div
-              key={f.title}
-              className="group relative overflow-hidden rounded-xl border border-border bg-surface p-6 transition duration-200 hover:-translate-y-0.5 hover:border-brand/50"
-            >
-              <div className="grid h-10 w-10 place-items-center rounded-lg bg-brand/10 text-brand-light transition group-hover:bg-brand/15">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {FOCUS.map((f) => (
+            <div key={f.title} className="rounded-xl border border-border bg-surface p-6">
+              <div className="grid h-10 w-10 place-items-center rounded-lg bg-brand/10 text-brand-light">
                 <f.icon className="h-5 w-5" />
               </div>
               <h3 className="mt-5 text-foreground">{f.title}</h3>
@@ -187,70 +153,41 @@ function HomePage() {
         </div>
       </section>
 
-      {/* CURSOS EM DESTAQUE */}
-      <section className="border-t border-border bg-[color:var(--background-soft)]">
-        <div className="container-page py-20 md:py-24">
-          <div className="mb-10 grid gap-6 md:grid-cols-[1fr_auto] md:items-end">
-            <div className="max-w-2xl">
-              <p className="text-xs font-semibold uppercase tracking-widest text-brand-light">Cursos de inglês</p>
-              <h2 className="mt-3 text-foreground">
-                Do primeiro <span className="text-brand-light">hello</span> à conversa de verdade.
-              </h2>
-              <p className="mt-4 text-muted-foreground">
-                Trilhas organizadas por objetivo — viagens, trabalho, conversação e mais.
-              </p>
-            </div>
-            <Button asChild variant="ghost" className="justify-self-start text-brand-light hover:bg-surface hover:text-foreground md:justify-self-end">
-              <Link to="/cursos">
-                Ver todos os cursos <ArrowRight className="ml-1 h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
-
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {featured.map((c) => (
-              <CourseCard key={c.id} course={c} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* MANIFESTO */}
-      <section className="border-y border-border">
+      <section className="border-y border-border bg-[color:var(--background-soft)]">
         <div className="container-page grid gap-10 py-20 md:grid-cols-2 md:gap-16 md:py-24">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-brand-light">Nosso jeito</p>
+            <p className="text-xs font-semibold uppercase tracking-widest text-brand-light">Como funciona</p>
             <h2 className="mt-3 text-foreground">
-              Inglês que faz parte da <span className="text-brand-light">vida real.</span>
+              Plano, créditos e aula marcada sem complicar.
             </h2>
           </div>
-          <div className="space-y-5 text-base leading-relaxed text-muted-foreground md:text-lg">
-            <p>
-              A Nerya nasceu para tornar o inglês mais próximo, prático e possível. O aprendizado não fica preso a regras decoradas: ele aparece em conversas, viagens, trabalho, música e situações do dia a dia.
-            </p>
-            <ul className="grid gap-3 sm:grid-cols-2">
-              {["Aprender fazendo", "Errar faz parte", "Evolução visível", "Ritmo possível"].map((it) => (
-                <li key={it} className="flex items-center gap-2 text-sm text-foreground">
-                  <CheckCircle2 className="h-4 w-4 text-brand-light" /> {it}
-                </li>
-              ))}
-            </ul>
-          </div>
+          <ol className="grid gap-4 text-sm text-muted-foreground">
+            {[
+              "Escolha a frequência ideal para seu momento.",
+              "Use seus créditos para reservar horários disponíveis.",
+              "Participe das aulas ao vivo com foco no seu objetivo.",
+              "Acompanhe próximas aulas, frequência e histórico na área do aluno.",
+            ].map((item, index) => (
+              <li key={item} className="flex gap-4 rounded-lg border border-border/60 bg-card p-4">
+                <span className="font-display text-2xl text-brand-light">{index + 1}</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 
-      {/* CTA */}
       <section className="container-page py-24 text-center">
         <p className="text-xs font-semibold uppercase tracking-widest text-brand-light">Bora começar?</p>
         <h2 className="mx-auto mt-3 max-w-3xl text-foreground">
-          Seu inglês não precisa ficar só no <span className="text-brand-light">caderno.</span>
+          Reserve um horário e transforme estudo em conversa.
         </h2>
         <p className="mx-auto mt-4 max-w-lg text-muted-foreground">
-          Crie sua conta demonstrativa em segundos e faça sua primeira aula gratuita.
+          A plataforma é demonstrativa, mas o fluxo mostra como alunos contratam planos e gerenciam suas aulas.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Button asChild size="lg" className="bg-brand text-primary-foreground hover:bg-brand-dark">
-            <Link to="/cadastrar">Fazer aula gratuita</Link>
+            <Link to="/agendar">Agendar aula</Link>
           </Button>
           <Button asChild size="lg" variant="secondary" className="border border-border bg-transparent hover:bg-surface">
             <Link to="/entrar">Já sou aluno</Link>
