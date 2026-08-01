@@ -7,10 +7,9 @@ import { cn } from "@/lib/utils";
 
 const NAV = [
   { to: "/", label: "Início" },
-  { to: "/cursos", label: "Cursos" },
   { to: "/planos", label: "Planos" },
-  { to: "/conteudos", label: "Conteúdos" },
-  { to: "/sobre", label: "Como funciona" },
+  { to: "/agendar", label: "Agendar aula" },
+  { to: "/como-funciona", label: "Como funciona" },
   { to: "/contato", label: "Contato" },
 ] as const;
 
@@ -82,7 +81,7 @@ export function PublicLayout({ children }: { children: ReactNode }) {
                   <Link to="/entrar">Entrar</Link>
                 </Button>
                 <Button asChild size="sm" className="bg-brand text-primary-foreground hover:bg-brand-dark">
-                  <Link to="/cadastrar">Começar a aprender</Link>
+                  <Link to="/agendar">Agendar aula</Link>
                 </Button>
               </>
             )}
@@ -122,7 +121,7 @@ export function PublicLayout({ children }: { children: ReactNode }) {
                     <Link to="/entrar">Entrar</Link>
                   </Button>
                   <Button asChild size="sm" className="flex-1 bg-brand text-primary-foreground hover:bg-brand-dark">
-                    <Link to="/cadastrar">Começar</Link>
+                    <Link to="/agendar">Agendar aula</Link>
                   </Button>
                 </>
               )}
@@ -138,28 +137,27 @@ export function PublicLayout({ children }: { children: ReactNode }) {
           <div>
             <Logo className="text-3xl" />
             <p className="mt-4 max-w-xs text-sm text-muted-foreground">
-              Inglês online que conecta. Aulas práticas, cursos, conversação e certificados.
+              Inglês online que conecta. Aulas particulares ao vivo, conversação e acompanhamento individual.
             </p>
           </div>
           <div>
-            <div className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">Aprender</div>
+            <div className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">Aulas</div>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link to="/cursos" className="transition hover:text-foreground">Cursos</Link></li>
               <li><Link to="/planos" className="transition hover:text-foreground">Planos</Link></li>
-              <li><Link to="/conteudos" className="transition hover:text-foreground">Conteúdos</Link></li>
+              <li><Link to="/agendar" className="transition hover:text-foreground">Agendar aula</Link></li>
             </ul>
           </div>
           <div>
             <div className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">Institucional</div>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link to="/sobre" className="transition hover:text-foreground">Como funciona</Link></li>
+              <li><Link to="/como-funciona" className="transition hover:text-foreground">Como funciona</Link></li>
               <li><Link to="/contato" className="transition hover:text-foreground">Contato</Link></li>
             </ul>
           </div>
           <div>
             <div className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">Aviso</div>
             <p className="text-xs text-muted-foreground">
-              Versão demonstrativa. Nenhum pagamento é processado e certificados aqui emitidos são ilustrativos.
+              Versão demonstrativa. Nenhum pagamento é processado e nenhum horário real é reservado.
             </p>
           </div>
         </div>

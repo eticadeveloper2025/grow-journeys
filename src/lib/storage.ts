@@ -49,5 +49,8 @@ export const STORAGE_KEYS = {
   prefs: "prefs",
   quiz: "quiz",
   plan: "plan",
+  bookings: "bookings",
+  credits: "credits",
+  notifications: "notifications",
   users: "users",
 } as const;

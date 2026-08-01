@@ -1,6 +1,6 @@
 import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
 import { type ReactNode } from "react";
-import { LayoutDashboard, GraduationCap, Award, Heart, User as UserIcon, CreditCard, LogOut } from "lucide-react";
+import { CalendarPlus, CalendarDays, Clock3, LayoutDashboard, User as UserIcon, CreditCard, LogOut } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -8,10 +8,10 @@ import { toast } from "sonner";
 
 const NAV = [
   { to: "/aluno", label: "Dashboard", icon: LayoutDashboard, exact: true },
-  { to: "/aluno/cursos", label: "Meus cursos", icon: GraduationCap },
-  { to: "/aluno/certificados", label: "Certificados", icon: Award },
-  { to: "/aluno/favoritos", label: "Favoritos", icon: Heart },
-  { to: "/aluno/assinatura", label: "Assinatura", icon: CreditCard },
+  { to: "/aluno/agendar", label: "Agendar aula", icon: CalendarPlus },
+  { to: "/aluno/aulas", label: "Próximas aulas", icon: CalendarDays },
+  { to: "/aluno/historico", label: "Histórico", icon: Clock3 },
+  { to: "/aluno/plano", label: "Plano", icon: CreditCard },
   { to: "/aluno/perfil", label: "Perfil", icon: UserIcon },
 ] as const;
 

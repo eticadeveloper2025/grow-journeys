@@ -25,7 +25,7 @@ function Forgot() {
             setLoading(true);
             await authRepository.forgotPassword(email);
             setLoading(false);
-            toast.success("Se o e-mail existir, um link foi enviado (demo).");
+            toast.success("Recuperação simulada. Nenhum e-mail real foi enviado.");
           }}
           className="w-full max-w-md space-y-4 rounded-xl border border-border/60 bg-card p-8"
         >
@@ -35,7 +35,7 @@ function Forgot() {
             <Label>E-mail</Label>
             <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           </div>
-          <Button type="submit" className="w-full" disabled={loading}>Enviar link</Button>
+          <Button type="submit" className="w-full" disabled={loading}>Simular recuperação</Button>
           <div className="text-center text-sm">
             <Link to="/entrar" className="text-primary hover:underline">Voltar</Link>
           </div>

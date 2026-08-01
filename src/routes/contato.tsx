@@ -12,7 +12,7 @@ export const Route = createFileRoute("/contato")({
   head: () => ({
     meta: [
       { title: "Contato — Nerya" },
-      { name: "description", content: "Fale com o time da Nerya." },
+      { name: "description", content: "Fale com a Nerya sobre planos, créditos e aulas particulares de inglês." },
     ],
   }),
   component: Contact,
@@ -27,7 +27,7 @@ function Contact() {
           <p className="text-xs uppercase tracking-widest text-primary">Contato</p>
           <h1 className="mt-2 font-display text-5xl leading-tight">Fale com a gente.</h1>
           <p className="mt-4 text-muted-foreground">
-            Dúvidas, parcerias, sugestões de curso. Respondemos em até 2 dias úteis.
+            Dúvidas sobre planos, créditos, horários ou objetivos de inglês. Respondemos em até 2 dias úteis.
           </p>
           <div className="mt-6 space-y-1 text-sm text-muted-foreground">
             <div>oi@nerya.demo</div>
@@ -40,7 +40,7 @@ function Contact() {
             setLoading(true);
             setTimeout(() => {
               setLoading(false);
-              toast.success("Mensagem enviada (demonstrativo).");
+              toast.success("Mensagem registrada (demonstrativo).");
               (e.target as HTMLFormElement).reset();
             }, 500);
           }}

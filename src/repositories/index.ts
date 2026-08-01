@@ -5,10 +5,12 @@ import type {
   AdminRepository,
   AuthRepository,
   BlogRepository,
+  BookingRepository,
   CertificateRepository,
   CourseRepository,
   EnrollmentRepository,
   LessonRepository,
+  NotificationRepository,
   PlanRepository,
   ProgressRepository,
   QuizRepository,
@@ -27,6 +29,8 @@ export const quizRepository: QuizRepository = useMock ? mock.mockQuizRepository 
 export const certificateRepository: CertificateRepository = useMock ? mock.mockCertificateRepository : api.apiCertificateRepository;
 export const planRepository: PlanRepository = useMock ? mock.mockPlanRepository : api.apiPlanRepository;
 export const subscriptionRepository: SubscriptionRepository = useMock ? mock.mockSubscriptionRepository : api.apiSubscriptionRepository;
+export const bookingRepository: BookingRepository = useMock ? mock.mockBookingRepository : api.apiBookingRepository;
+export const notificationRepository: NotificationRepository = useMock ? mock.mockNotificationRepository : api.apiNotificationRepository;
 export const blogRepository: BlogRepository = useMock ? mock.mockBlogRepository : api.apiBlogRepository;
 export const userRepository: UserRepository = useMock ? mock.mockUserRepository : api.apiUserRepository;
 export const adminRepository: AdminRepository = useMock ? mock.mockAdminRepository : api.apiAdminRepository;
