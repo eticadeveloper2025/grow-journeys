@@ -260,6 +260,31 @@ export interface NotificationResult {
   createdAt: string;
 }
 
+export type LeadIntent = "contact" | "scheduling";
+export type LeadPreferredChannel = "email" | "whatsapp";
+
+export interface LeadRequest {
+  id: string;
+  intent: LeadIntent;
+  fullName: string;
+  email: string;
+  whatsapp?: string;
+  preferredChannel: LeadPreferredChannel;
+  preferredSchedule?: string;
+  message: string;
+  origin?: string;
+  createdAt: string;
+}
+
+export interface LeadSubmissionResult {
+  id: string;
+  status: "simulated" | "queued" | "redirected";
+  provider: "mock" | "backend" | "whatsapp-web";
+  message: string;
+  whatsappUrl?: string;
+  createdAt: string;
+}
+
 export type SubscriptionStatus = "active" | "canceled" | "past_due" | "trialing";
 
 export interface Subscription {

@@ -9,27 +9,34 @@ A Nerya é uma plataforma demonstrativa para um único professor de inglês: alu
 npm install
 npm run dev    # http://localhost:8080
 npm run build
+npm run start  # produção, depois do build
 ```
 
 ## Credenciais demonstrativas
 
-| Papel | E-mail | Senha |
-|-------|--------|-------|
-| Aluno | `aluno@nerya.demo` | `demo123` |
-| Aluno | `bruno@nerya.demo` | `demo123` |
+| Papel | E-mail             | Senha      |
+| ----- | ------------------ | ---------- |
+| Aluno | `aluno@nerya.demo` | `demo123`  |
+| Aluno | `bruno@nerya.demo` | `demo123`  |
 | Admin | `admin@nerya.demo` | `admin123` |
 
 ## Variáveis de ambiente
 
 Copie `.env.example` para `.env.local` e ajuste conforme necessário.
 
-| Variável | Descrição | Padrão |
-|----------|-----------|--------|
-| `VITE_APP_NAME` | Nome público do app | `Nerya` |
-| `VITE_APP_ENV` | Ambiente (`development` / `production`) | `development` |
-| `VITE_DATA_SOURCE` | `mock` (dados locais) ou `api` (futuro) | `mock` |
-| `VITE_API_BASE_URL` | URL base da API real (uso futuro) | `http://localhost:3000/api` |
-| `VITE_ENABLE_MOCK_ERRORS` | Injeta falhas simuladas para testar erro/retry | `false` |
+| Variável                      | Descrição                                       | Padrão                              |
+| ----------------------------- | ----------------------------------------------- | ----------------------------------- |
+| `VITE_APP_NAME`               | Nome público do app                             | `Nerya`                             |
+| `VITE_APP_ENV`                | Ambiente (`development` / `production`)         | `development`                       |
+| `VITE_DATA_SOURCE`            | `mock` (dados locais) ou `api` (futuro)         | `mock`                              |
+| `VITE_LEADS_DATA_SOURCE`      | `mock` ou `api` apenas para leads públicos      | `mock`                              |
+| `VITE_API_BASE_URL`           | URL base da API                                 | `/api`                              |
+| `VITE_ENABLE_MOCK_ERRORS`     | Injeta falhas simuladas para testar erro/retry  | `false`                             |
+| `VITE_PUBLIC_CONTACT_EMAIL`   | E-mail publico exibido no site                  | `guilherme...@gmail.com`            |
+| `VITE_PUBLIC_WHATSAPP_NUMBER` | Numero publico para WhatsApp Web, com DDI e DDD | vazio                               |
+| `RESEND_API_KEY`              | Chave secreta do Resend, somente servidor       | vazio                               |
+| `RESEND_FROM_EMAIL`           | Remetente verificado do Resend                  | `Nerya <onboarding@resend.dev>`     |
+| `RESEND_TO_EMAIL`             | Destinatario dos leads                          | `guilherme.augusto.nery1@gmail.com` |
 
 Nunca coloque segredos (`DATABASE_URL`, `JWT_SECRET`, chaves de pagamento) em variáveis `VITE_*`.
 
@@ -59,24 +66,25 @@ Nenhum componente acessa `localStorage` diretamente; o fluxo passa por hooks, re
 - **Histórico**: aulas realizadas com data, horário, duração, status, tópico e observações.
 - **Notificações**: tentativas são registradas localmente em modo mock; nenhum e-mail real é enviado.
 
-## Integração futura com Resend
+## Integracao com Resend e WhatsApp
 
 O frontend não deve chamar o Resend diretamente e nenhuma chave deve ser criada como `VITE_*`.
-Detalhes do contrato e do modo mock estão em [`docs/INTEGRACAO_RESEND.md`](docs/INTEGRACAO_RESEND.md).
+Detalhes do contrato e do modo híbrido estão em [`docs/INTEGRACAO_RESEND.md`](docs/INTEGRACAO_RESEND.md).
 
-Fluxo atual mock:
-
-```
-Frontend -> bookingService -> MockBookingRepository -> MockNotificationRepository
-```
-
-Fluxo futuro API:
+Fluxo de leads por e-mail nesta fase:
 
 ```
-Frontend -> POST /api/bookings -> backend -> Resend
+Frontend -> POST /api/leads -> backend -> Resend -> professor
 ```
 
-A chave `RESEND_API_KEY`, quando existir, deve ficar somente no backend.
+Fluxo de WhatsApp:
+
+```
+Frontend -> WhatsApp Web com mensagem preenchida
+```
+
+A chave `RESEND_API_KEY` deve ficar somente no backend. Use `VITE_DATA_SOURCE=mock` e
+`VITE_LEADS_DATA_SOURCE=api` para ativar apenas leads reais, mantendo o restante mockado.
 
 ## Rotas principais
 
@@ -93,14 +101,17 @@ Rotas antigas relacionadas a cursos, conteúdos e certificados foram mantidas ap
 - [`MELHORIAS_FUTURAS.md`](MELHORIAS_FUTURAS.md): pendências e evolução planejada.
 - [`docs/INTEGRACAO_RESEND.md`](docs/INTEGRACAO_RESEND.md): contrato seguro para notificações futuras.
 
-## Deploy no Render (Static Site)
+## Deploy no Render (Web Service Node)
 
-- **Build command**: `npm install && npm run build`
-- **Publish directory**: `dist`
-- **Redirects**: TanStack Start resolve rotas profundas.
+- **Build command**: `npm ci && npm run build`
+- **Start command**: `npm run start`
+- **Health check path**: `/api/health`
+- **Server entry**: `.output/server/index.mjs`
 
-Configure as variáveis `VITE_*` no painel do Render antes do build.
+O projeto inclui `render.yaml`. Configure os segredos no painel do Render, especialmente
+`RESEND_API_KEY` e `RESEND_FROM_EMAIL`.
 
 ## Fora do escopo desta etapa
 
-Sem backend real, banco de dados, autenticação de terceiros, pagamentos reais, envio de e-mails ou reserva real de calendário. Todos os fluxos indicados como demonstrativos são simulações locais.
+Sem banco de dados, autenticação real, pagamentos reais, créditos reais ou reserva real de calendário.
+Nesta fase, somente a captação de leads por e-mail é real quando `VITE_LEADS_DATA_SOURCE=api`.
