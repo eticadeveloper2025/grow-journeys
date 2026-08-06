@@ -26,7 +26,7 @@ Banco passa a ser necessário para:
 Use Render Web Service, não Static Site.
 
 ```text
-Build Command: npm ci && npm run build
+Build Command: npm ci --include=dev && npm run build
 Start Command: npm run start
 Health Check Path: /api/health
 ```

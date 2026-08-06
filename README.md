@@ -103,7 +103,7 @@ Rotas antigas relacionadas a cursos, conteúdos e certificados foram mantidas ap
 
 ## Deploy no Render (Web Service Node)
 
-- **Build command**: `npm ci && npm run build`
+- **Build command**: `npm ci --include=dev && npm run build`
 - **Start command**: `npm run start`
 - **Health check path**: `/api/health`
 - **Server entry**: `.output/server/index.mjs`
