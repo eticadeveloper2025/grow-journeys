@@ -52,5 +52,6 @@ export const STORAGE_KEYS = {
   bookings: "bookings",
   credits: "credits",
   notifications: "notifications",
+  leadRequests: "lead-requests",
   users: "users",
 } as const;

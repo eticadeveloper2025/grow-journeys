@@ -19,6 +19,9 @@ export const env = {
   appName: readString("VITE_APP_NAME", "Nerya"),
   appEnv: readString("VITE_APP_ENV", "development"),
   dataSource: readString("VITE_DATA_SOURCE", "mock") as DataSource,
+  leadsDataSource: readString("VITE_LEADS_DATA_SOURCE", "mock") as DataSource,
   apiBaseUrl: readString("VITE_API_BASE_URL", "http://localhost:3000/api"),
   enableMockErrors: readBool("VITE_ENABLE_MOCK_ERRORS", false),
+  publicContactEmail: readString("VITE_PUBLIC_CONTACT_EMAIL", "oi@nerya.demo"),
+  publicWhatsAppNumber: readString("VITE_PUBLIC_WHATSAPP_NUMBER", ""),
 } as const;

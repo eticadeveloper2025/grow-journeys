@@ -7,6 +7,11 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
+  nitro: {
+    // Render Web Service precisa de um servidor Node que leia process.env.PORT.
+    // A config do Lovable continua forçando Cloudflare dentro do sandbox Lovable.
+    preset: process.env.NITRO_PRESET ?? "node-server",
+  },
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this

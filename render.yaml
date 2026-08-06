@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: nerya-site
+    runtime: node
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: NITRO_PRESET
+        value: node-server
+      - key: RESEND_API_KEY
+        sync: false
+      - key: RESEND_FROM_EMAIL
+        sync: false
+      - key: RESEND_TO_EMAIL
+        value: guilherme.augusto.nery1@gmail.com
+      - key: VITE_APP_ENV
+        value: production
+      - key: VITE_DATA_SOURCE
+        value: mock
+      - key: VITE_LEADS_DATA_SOURCE
+        value: api
+      - key: VITE_API_BASE_URL
+        value: /api
+      - key: VITE_PUBLIC_CONTACT_EMAIL
+        value: guilherme.augusto.nery1@gmail.com
+      - key: VITE_PUBLIC_WHATSAPP_NUMBER
+        sync: false
