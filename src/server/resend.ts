@@ -30,6 +30,10 @@ export const resendLeadEmailProvider: LeadEmailProvider = {
     });
 
     if (result.error) {
+      console.error("Resend provider rejected lead email.", {
+        name: result.error.name,
+        message: result.error.message,
+      });
       throw new Error("RESEND_PROVIDER_ERROR");
     }
 
