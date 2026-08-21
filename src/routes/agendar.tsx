@@ -1,7 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 import { PublicLayout } from "@/layouts/PublicLayout";
 import { LeadCaptureForm } from "@/components/LeadCaptureForm";
 import { SchedulingCalendar } from "@/components/SchedulingCalendar";
+import { formatDateLong } from "@/utils/format";
+import type { AvailabilitySlot } from "@/types";
 
 export const Route = createFileRoute("/agendar")({
   head: () => ({
@@ -18,15 +21,24 @@ export const Route = createFileRoute("/agendar")({
 });
 
 function SchedulePublic() {
+  const [requestedSchedule, setRequestedSchedule] = useState("");
+
+  const requestSlot = (slot: AvailabilitySlot) => {
+    setRequestedSchedule(
+      `${formatDateLong(`${slot.date}T12:00:00`)} das ${slot.startTime} às ${slot.endTime}`,
+    );
+  };
+
   return (
     <PublicLayout>
       <section className="container-page grid gap-8 py-10 md:py-14 lg:grid-cols-[0.86fr_1.14fr] lg:items-start">
         <LeadCaptureForm
           intent="scheduling"
           title="Pedir um horário"
-          description="Envie sua disponibilidade e objetivo. A resposta pode chegar por e-mail ou pelo WhatsApp Web com mensagem preenchida."
+          description="Escolha um horário no calendário ou descreva sua disponibilidade. A confirmação chega por e-mail."
+          preferredSchedulePreset={requestedSchedule}
         />
-        <SchedulingCalendar framed={false} />
+        <SchedulingCalendar framed={false} publicLeadMode onRequestSlot={requestSlot} />
       </section>
     </PublicLayout>
   );

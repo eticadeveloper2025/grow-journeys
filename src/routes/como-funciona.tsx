@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PublicLayout } from "@/layouts/PublicLayout";
 import { Button } from "@/components/ui/button";
-import { CalendarDays, CheckCircle2, CreditCard, History, MessageCircle } from "lucide-react";
+import { CalendarDays, CheckCircle2, Clock3, MailCheck, MessageCircle } from "lucide-react";
 
 export const Route = createFileRoute("/como-funciona")({
   head: () => ({
@@ -9,7 +9,8 @@ export const Route = createFileRoute("/como-funciona")({
       { title: "Como funciona — Nerya" },
       {
         name: "description",
-        content: "Entenda como funcionam os planos, créditos, agendamento e histórico de aulas particulares na Nerya.",
+        content:
+          "Entenda como funcionam os planos, a solicitação de horário e as aulas particulares na Nerya.",
       },
     ],
   }),
@@ -17,10 +18,26 @@ export const Route = createFileRoute("/como-funciona")({
 });
 
 const STEPS = [
-  { icon: CreditCard, title: "Contrate um plano", text: "Cada plano libera créditos mensais para reservar aulas particulares." },
-  { icon: CalendarDays, title: "Escolha um horário", text: "Consulte a disponibilidade e confirme o melhor horário para sua rotina." },
-  { icon: MessageCircle, title: "Participe da aula", text: "A aula acontece ao vivo, com foco em conversação, pronúncia e seus objetivos." },
-  { icon: History, title: "Acompanhe seu histórico", text: "Depois, consulte aulas realizadas, frequência, tópicos trabalhados e observações." },
+  {
+    icon: Clock3,
+    title: "Escolha uma frequência",
+    text: "Os planos mostram quantas aulas cabem na sua rotina e o valor mensal estimado.",
+  },
+  {
+    icon: CalendarDays,
+    title: "Escolha um horário",
+    text: "Consulte a disponibilidade e envie uma solicitação pelo formulário.",
+  },
+  {
+    icon: MailCheck,
+    title: "Confirme por e-mail",
+    text: "Você recebe o retorno com a confirmação do horário e próximos passos.",
+  },
+  {
+    icon: MessageCircle,
+    title: "Participe da aula",
+    text: "A aula acontece ao vivo, com foco em conversação, pronúncia e seus objetivos.",
+  },
 ];
 
 function HowItWorks() {
@@ -29,10 +46,13 @@ function HowItWorks() {
       <section className="container-page max-w-5xl py-20">
         <p className="text-xs uppercase tracking-widest text-coral">Como funciona</p>
         <h1 className="mt-2 font-display text-5xl leading-[0.95] md:text-7xl">
-          INGLÊS AO VIVO,<br />COM <span className="text-lilac">ROTINA CLARA</span>.
+          INGLÊS AO VIVO,
+          <br />
+          COM <span className="text-lilac">ROTINA CLARA</span>.
         </h1>
         <p className="mt-8 max-w-3xl text-lg text-muted-foreground">
-          A Nerya organiza a experiência de aulas particulares: você contrata uma frequência, acompanha créditos, agenda horários e visualiza seu histórico.
+          A Nerya organiza a experiência inicial de aulas particulares: você escolhe uma frequência,
+          solicita um horário e recebe a confirmação por e-mail.
         </p>
 
         <div className="mt-14 grid gap-4 md:grid-cols-2">
@@ -41,7 +61,9 @@ function HowItWorks() {
               <div className="grid h-10 w-10 place-items-center rounded-lg bg-primary/10 text-primary">
                 <step.icon className="h-5 w-5" />
               </div>
-              <div className="mt-5 font-display text-2xl text-foreground">{step.title.toUpperCase()}</div>
+              <div className="mt-5 font-display text-2xl text-foreground">
+                {step.title.toUpperCase()}
+              </div>
               <p className="mt-2 text-sm text-muted-foreground">{step.text}</p>
             </div>
           ))}
@@ -54,7 +76,7 @@ function HowItWorks() {
               "Foco em conversação e segurança para falar.",
               "Correção de pronúncia durante a prática.",
               "Temas alinhados a viagens, trabalho e rotina.",
-              "Histórico de participação e tópicos trabalhados.",
+              "Combinação clara de frequência, horário e objetivo.",
             ].map((item) => (
               <li key={item} className="flex gap-2">
                 <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" /> {item}
@@ -64,8 +86,12 @@ function HowItWorks() {
         </div>
 
         <div className="mt-10 flex flex-wrap gap-3">
-          <Button asChild><Link to="/agendar">Agendar aula</Link></Button>
-          <Button asChild variant="secondary"><Link to="/planos">Ver planos</Link></Button>
+          <Button asChild>
+            <Link to="/agendar">Agendar aula</Link>
+          </Button>
+          <Button asChild variant="secondary">
+            <Link to="/planos">Ver planos</Link>
+          </Button>
         </div>
       </section>
     </PublicLayout>

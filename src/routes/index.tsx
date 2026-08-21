@@ -6,7 +6,6 @@ import {
   CalendarDays,
   CheckCircle2,
   Clock3,
-  CreditCard,
   MessageCircle,
   Sparkles,
   UserRoundCheck,
@@ -19,7 +18,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Aulas particulares de inglês ao vivo com acompanhamento individual, planos de créditos e agendamento online.",
+          "Aulas particulares de inglês ao vivo com acompanhamento individual, planos por frequência e solicitação de horário online.",
       },
     ],
   }),
@@ -27,10 +26,22 @@ export const Route = createFileRoute("/")({
 });
 
 const FOCUS = [
-  { icon: MessageCircle, title: "Conversação", text: "Prática guiada para falar com mais naturalidade." },
+  {
+    icon: MessageCircle,
+    title: "Conversação",
+    text: "Prática guiada para falar com mais naturalidade.",
+  },
   { icon: Sparkles, title: "Pronúncia", text: "Correções pontuais para melhorar clareza e ritmo." },
-  { icon: CalendarDays, title: "Viagens", text: "Situações reais para aeroporto, hotel, passeios e restaurantes." },
-  { icon: UserRoundCheck, title: "Profissional", text: "Reuniões, apresentações, entrevistas e small talk." },
+  {
+    icon: CalendarDays,
+    title: "Viagens",
+    text: "Situações reais para aeroporto, hotel, passeios e restaurantes.",
+  },
+  {
+    icon: UserRoundCheck,
+    title: "Profissional",
+    text: "Reuniões, apresentações, entrevistas e small talk.",
+  },
 ];
 
 function HomePage() {
@@ -57,15 +68,25 @@ function HomePage() {
               Fluência que <span className="text-brand">transforma.</span>
             </h1>
             <p className="mt-6 max-w-lg text-base leading-relaxed text-muted-foreground md:text-lg">
-              Aprenda inglês em aulas individuais com um professor, agenda flexível e acompanhamento da sua frequência a cada ciclo.
+              Aprenda inglês em aulas individuais com um professor, agenda flexível e acompanhamento
+              da sua frequência a cada ciclo.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Button asChild size="lg" className="bg-brand text-primary-foreground hover:bg-brand-dark">
+              <Button
+                asChild
+                size="lg"
+                className="bg-brand text-primary-foreground hover:bg-brand-dark"
+              >
                 <Link to="/agendar">
                   Agendar aula <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="secondary" className="border border-border bg-transparent hover:bg-surface">
+              <Button
+                asChild
+                size="lg"
+                variant="secondary"
+                className="border border-border bg-transparent hover:bg-surface"
+              >
                 <Link to="/planos">Ver planos</Link>
               </Button>
             </div>
@@ -74,7 +95,7 @@ function HomePage() {
                 <CheckCircle2 className="h-4 w-4 text-brand-light" /> Professor único
               </li>
               <li className="inline-flex items-center gap-2">
-                <CreditCard className="h-4 w-4 text-brand-light" /> Créditos mensais
+                <CalendarDays className="h-4 w-4 text-brand-light" /> Solicitação por e-mail
               </li>
               <li className="inline-flex items-center gap-2">
                 <Clock3 className="h-4 w-4 text-brand-light" /> Horários reservados
@@ -86,31 +107,38 @@ function HomePage() {
             <div className="absolute inset-0 rounded-2xl border border-border bg-surface/60 backdrop-blur-sm" />
             <div className="relative flex h-full flex-col justify-between rounded-2xl p-8">
               <div className="flex items-center justify-between">
-                <div className="text-xs uppercase tracking-widest text-muted-foreground">Próxima aula</div>
+                <div className="text-xs uppercase tracking-widest text-muted-foreground">
+                  Solicitação de aula
+                </div>
                 <div className="inline-flex items-center gap-2 rounded-full bg-surface-2 px-2.5 py-1 text-[11px] text-muted-foreground">
-                  <span className="h-1.5 w-1.5 rounded-full bg-brand" /> Ao vivo
+                  <span className="h-1.5 w-1.5 rounded-full bg-brand" /> Por e-mail
                 </div>
               </div>
 
               <div className="my-8">
                 <p className="font-display text-4xl leading-tight text-foreground md:text-5xl">
-                  Small talk <span className="text-brand-light">without</span>
+                  Reserve uma <span className="text-brand-light">aula</span>
                   <br />
-                  freezing.
+                  experimental.
                 </p>
                 <p className="mt-4 text-sm text-muted-foreground">
-                  Tema: conversa profissional em reuniões e apresentações rápidas.
+                  Escolha um horário disponível e receba a confirmação direto no seu e-mail.
                 </p>
               </div>
 
               <div className="grid gap-3">
                 {[
-                  ["Data", "03/08/2026"],
-                  ["Horário", "09:00-09:50"],
-                  ["Créditos restantes", "4"],
+                  ["Valor hora-aula", "R$ 34,90"],
+                  ["Duração", "50 min"],
+                  ["Confirmação", "E-mail"],
                 ].map(([label, value]) => (
-                  <div key={label} className="flex items-center justify-between rounded-lg border border-border bg-background/40 p-3">
-                    <span className="text-xs uppercase tracking-widest text-muted-foreground">{label}</span>
+                  <div
+                    key={label}
+                    className="flex items-center justify-between rounded-lg border border-border bg-background/40 p-3"
+                  >
+                    <span className="text-xs uppercase tracking-widest text-muted-foreground">
+                      {label}
+                    </span>
                     <span className="font-medium text-foreground">{value}</span>
                   </div>
                 ))}
@@ -122,8 +150,16 @@ function HomePage() {
 
       <section className="border-b border-border">
         <div className="container-page grid grid-cols-2 gap-6 py-8 md:grid-cols-4">
-          {["Conversação real", "Pronúncia guiada", "Inglês para viagens", "Inglês profissional"].map((f) => (
-            <div key={f} className="flex items-start gap-2 text-xs font-medium uppercase tracking-widest text-muted-foreground">
+          {[
+            "Conversação real",
+            "Pronúncia guiada",
+            "Inglês para viagens",
+            "Inglês profissional",
+          ].map((f) => (
+            <div
+              key={f}
+              className="flex items-start gap-2 text-xs font-medium uppercase tracking-widest text-muted-foreground"
+            >
               <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-brand" /> {f}
             </div>
           ))}
@@ -132,12 +168,15 @@ function HomePage() {
 
       <section className="container-page py-20 md:py-24">
         <div className="mb-12 max-w-2xl">
-          <p className="text-xs font-semibold uppercase tracking-widest text-brand-light">Acompanhamento individual</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-brand-light">
+            Acompanhamento individual
+          </p>
           <h2 className="mt-3 text-foreground">
             Uma rotina de inglês que cabe na <span className="text-brand-light">sua semana.</span>
           </h2>
           <p className="mt-4 text-muted-foreground">
-            Você escolhe um plano de aulas, consulta seus créditos e reserva os melhores horários disponíveis.
+            Você escolhe uma frequência, solicita um horário disponível e recebe a confirmação por
+            e-mail.
           </p>
         </div>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -156,17 +195,19 @@ function HomePage() {
       <section className="border-y border-border bg-[color:var(--background-soft)]">
         <div className="container-page grid gap-10 py-20 md:grid-cols-2 md:gap-16 md:py-24">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-brand-light">Como funciona</p>
+            <p className="text-xs font-semibold uppercase tracking-widest text-brand-light">
+              Como funciona
+            </p>
             <h2 className="mt-3 text-foreground">
-              Plano, créditos e aula marcada sem complicar.
+              Plano, horário escolhido e confirmação sem complicar.
             </h2>
           </div>
           <ol className="grid gap-4 text-sm text-muted-foreground">
             {[
               "Escolha a frequência ideal para seu momento.",
-              "Use seus créditos para reservar horários disponíveis.",
+              "Escolha um horário disponível e envie sua solicitação.",
               "Participe das aulas ao vivo com foco no seu objetivo.",
-              "Acompanhe próximas aulas, frequência e histórico na área do aluno.",
+              "Receba a confirmação por e-mail e combine os próximos passos.",
             ].map((item, index) => (
               <li key={item} className="flex gap-4 rounded-lg border border-border/60 bg-card p-4">
                 <span className="font-display text-2xl text-brand-light">{index + 1}</span>
@@ -178,19 +219,31 @@ function HomePage() {
       </section>
 
       <section className="container-page py-24 text-center">
-        <p className="text-xs font-semibold uppercase tracking-widest text-brand-light">Bora começar?</p>
+        <p className="text-xs font-semibold uppercase tracking-widest text-brand-light">
+          Bora começar?
+        </p>
         <h2 className="mx-auto mt-3 max-w-3xl text-foreground">
           Reserve um horário e transforme estudo em conversa.
         </h2>
         <p className="mx-auto mt-4 max-w-lg text-muted-foreground">
-          A plataforma é demonstrativa, mas o fluxo mostra como alunos contratam planos e gerenciam suas aulas.
+          Nesta fase, o site recebe pedidos de aula por e-mail sem exigir cadastro ou banco de
+          dados.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <Button asChild size="lg" className="bg-brand text-primary-foreground hover:bg-brand-dark">
+          <Button
+            asChild
+            size="lg"
+            className="bg-brand text-primary-foreground hover:bg-brand-dark"
+          >
             <Link to="/agendar">Agendar aula</Link>
           </Button>
-          <Button asChild size="lg" variant="secondary" className="border border-border bg-transparent hover:bg-surface">
-            <Link to="/entrar">Já sou aluno</Link>
+          <Button
+            asChild
+            size="lg"
+            variant="secondary"
+            className="border border-border bg-transparent hover:bg-surface"
+          >
+            <Link to="/contato">Tirar dúvidas</Link>
           </Button>
         </div>
       </section>

@@ -15,7 +15,9 @@ const NAV = [
 
 function Logo({ className }: { className?: string }) {
   return (
-    <span className={cn("font-display text-2xl leading-none tracking-tight text-foreground", className)}>
+    <span
+      className={cn("font-display text-2xl leading-none tracking-tight text-foreground", className)}
+    >
       nerya<span className="text-brand">.</span>
     </span>
   );
@@ -76,14 +78,13 @@ export function PublicLayout({ children }: { children: ReactNode }) {
                 </Link>
               </Button>
             ) : (
-              <>
-                <Button asChild size="sm" variant="ghost" className="text-muted-foreground hover:text-foreground">
-                  <Link to="/entrar">Entrar</Link>
-                </Button>
-                <Button asChild size="sm" className="bg-brand text-primary-foreground hover:bg-brand-dark">
-                  <Link to="/agendar">Agendar aula</Link>
-                </Button>
-              </>
+              <Button
+                asChild
+                size="sm"
+                className="bg-brand text-primary-foreground hover:bg-brand-dark"
+              >
+                <Link to="/agendar">Agendar aula</Link>
+              </Button>
             )}
           </div>
 
@@ -116,14 +117,13 @@ export function PublicLayout({ children }: { children: ReactNode }) {
                   <Link to={user.role === "admin" ? "/" : "/aluno"}>Minha área</Link>
                 </Button>
               ) : (
-                <>
-                  <Button asChild size="sm" variant="ghost" className="flex-1">
-                    <Link to="/entrar">Entrar</Link>
-                  </Button>
-                  <Button asChild size="sm" className="flex-1 bg-brand text-primary-foreground hover:bg-brand-dark">
-                    <Link to="/agendar">Agendar aula</Link>
-                  </Button>
-                </>
+                <Button
+                  asChild
+                  size="sm"
+                  className="flex-1 bg-brand text-primary-foreground hover:bg-brand-dark"
+                >
+                  <Link to="/agendar">Agendar aula</Link>
+                </Button>
               )}
             </div>
           </div>
@@ -137,27 +137,51 @@ export function PublicLayout({ children }: { children: ReactNode }) {
           <div>
             <Logo className="text-3xl" />
             <p className="mt-4 max-w-xs text-sm text-muted-foreground">
-              Inglês online que conecta. Aulas particulares ao vivo, conversação e acompanhamento individual.
+              Inglês online que conecta. Aulas particulares ao vivo, conversação e acompanhamento
+              individual.
             </p>
           </div>
           <div>
-            <div className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">Aulas</div>
+            <div className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+              Aulas
+            </div>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link to="/planos" className="transition hover:text-foreground">Planos</Link></li>
-              <li><Link to="/agendar" className="transition hover:text-foreground">Agendar aula</Link></li>
+              <li>
+                <Link to="/planos" className="transition hover:text-foreground">
+                  Planos
+                </Link>
+              </li>
+              <li>
+                <Link to="/agendar" className="transition hover:text-foreground">
+                  Agendar aula
+                </Link>
+              </li>
             </ul>
           </div>
           <div>
-            <div className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">Institucional</div>
+            <div className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+              Institucional
+            </div>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link to="/como-funciona" className="transition hover:text-foreground">Como funciona</Link></li>
-              <li><Link to="/contato" className="transition hover:text-foreground">Contato</Link></li>
+              <li>
+                <Link to="/como-funciona" className="transition hover:text-foreground">
+                  Como funciona
+                </Link>
+              </li>
+              <li>
+                <Link to="/contato" className="transition hover:text-foreground">
+                  Contato
+                </Link>
+              </li>
             </ul>
           </div>
           <div>
-            <div className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">Aviso</div>
+            <div className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+              Aviso
+            </div>
             <p className="text-xs text-muted-foreground">
-              Versão demonstrativa. Nenhum pagamento é processado e nenhum horário real é reservado.
+              Nesta fase, solicitações de horário são enviadas por e-mail. Pagamentos e contas de
+              aluno ainda não são processados.
             </p>
           </div>
         </div>

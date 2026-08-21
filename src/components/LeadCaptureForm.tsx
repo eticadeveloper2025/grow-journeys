@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { Mail, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 import { env } from "@/config/env";
@@ -16,6 +16,7 @@ type LeadCaptureFormProps = {
   intent: LeadIntent;
   title?: string;
   description?: string;
+  preferredSchedulePreset?: string;
 };
 
 type LeadFormState = {
@@ -45,15 +46,32 @@ function defaultTitle(intent: LeadIntent): string {
 function defaultDescription(intent: LeadIntent): string {
   return intent === "scheduling"
     ? "Conte seus objetivos e melhores horários. A resposta pode chegar por e-mail ou pelo WhatsApp Web."
-    : "Envie sua dúvida sobre planos, créditos, horários ou objetivos de inglês.";
+    : "Envie sua dúvida sobre planos, horários ou objetivos de inglês.";
 }
 
-export function LeadCaptureForm({ intent, title, description }: LeadCaptureFormProps) {
+export function LeadCaptureForm({
+  intent,
+  title,
+  description,
+  preferredSchedulePreset,
+}: LeadCaptureFormProps) {
   const [form, setForm] = useState<LeadFormState>(emptyForm);
   const [renderedAt, setRenderedAt] = useState(() => new Date().toISOString());
   const [loading, setLoading] = useState(false);
   const whatsappReady = hasConfiguredWhatsApp();
   const isMock = env.leadsDataSource === "mock";
+
+  useEffect(() => {
+    if (!preferredSchedulePreset) return;
+    setForm((current) => ({
+      ...current,
+      preferredSchedule: preferredSchedulePreset,
+      message:
+        current.message.trim().length > 0
+          ? current.message
+          : `Gostaria de solicitar uma aula neste horário: ${preferredSchedulePreset}.`,
+    }));
+  }, [preferredSchedulePreset]);
 
   const update = <K extends keyof LeadFormState>(key: K, value: LeadFormState[K]) => {
     setForm((current) => ({ ...current, [key]: value }));
