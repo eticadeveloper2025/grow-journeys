@@ -61,11 +61,17 @@ describe("handleLeadRequest", () => {
     });
 
     expect(response.status).toBe(201);
-    expect(emailProvider.send).toHaveBeenCalledTimes(1);
+    expect(emailProvider.send).toHaveBeenCalledTimes(2);
     const [payload] = emailProvider.send.mock.calls[0]!;
     expect(payload.to).toBe("guilherme.augusto.nery1@gmail.com");
     expect(payload.replyTo).toBe("guilherme@example.com");
     expect(payload.subject).toBe("Nerya - Contato pelo site");
+    expect(payload.html).toContain("/logoo.png");
+
+    const [confirmation] = emailProvider.send.mock.calls[1]!;
+    expect(confirmation.to).toBe("guilherme@example.com");
+    expect(confirmation.replyTo).toBe("guilherme.augusto.nery1@gmail.com");
+    expect(confirmation.subject).toBe("Recebemos sua solicitação - Nerya");
   });
 
   it("rejects an invalid email", async () => {
@@ -135,7 +141,29 @@ describe("handleLeadRequest", () => {
 
     expect(first.status).toBe(201);
     expect(second.status).toBe(429);
-    expect(emailProvider.send).toHaveBeenCalledTimes(1);
+    expect(emailProvider.send).toHaveBeenCalledTimes(2);
+  });
+
+  it("keeps the lead accepted when the confirmation email fails", async () => {
+    const send = vi
+      .fn<LeadEmailProvider["send"]>()
+      .mockResolvedValueOnce({ id: "lead_email" })
+      .mockRejectedValueOnce(new Error("confirmation failed"));
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+
+    const response = await handleLeadRequest(request(validPayload()), env, {
+      emailProvider: { send },
+      now: () => new Date("2026-08-05T20:00:03.000Z"),
+    });
+
+    expect(response.status).toBe(201);
+    expect(send).toHaveBeenCalledTimes(2);
+    expect(warn).toHaveBeenCalledWith(
+      "Lead confirmation email failed.",
+      expect.objectContaining({ emailDomain: "example.com" }),
+    );
+
+    warn.mockRestore();
   });
 
   it("returns a controlled error when Resend variables are missing", async () => {
