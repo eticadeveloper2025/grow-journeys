@@ -128,7 +128,8 @@ export async function handleLeadRequest(
 
   const lead = validation.lead;
   const createdAt = (deps.now?.() ?? new Date()).toISOString();
-  const email = buildLeadEmail(lead, createdAt);
+  const siteOrigin = new URL(request.url).origin;
+  const email = buildLeadEmail(lead, createdAt, siteOrigin);
 
   try {
     await (deps.emailProvider ?? resendLeadEmailProvider).send(
@@ -147,6 +148,26 @@ export async function handleLeadRequest(
       { message: "Nao foi possivel enviar agora. Tente novamente em alguns minutos." },
       503,
     );
+  }
+
+  const confirmation = buildConfirmationEmail(lead, siteOrigin);
+  try {
+    await (deps.emailProvider ?? resendLeadEmailProvider).send(
+      {
+        from: config.from,
+        to: lead.email,
+        subject: confirmation.subject,
+        html: confirmation.html,
+        text: confirmation.text,
+        replyTo: config.to,
+      },
+      config.apiKey,
+    );
+  } catch (error) {
+    console.warn("Lead confirmation email failed.", {
+      emailDomain: lead.email.split("@")[1] ?? "unknown",
+      error: error instanceof Error ? error.message : "unknown",
+    });
   }
 
   return json(
@@ -217,6 +238,7 @@ function validatePayload(
 function buildLeadEmail(
   lead: NormalizedLead,
   createdAt: string,
+  siteOrigin: string,
 ): {
   subject: string;
   html: string;
@@ -225,6 +247,7 @@ function buildLeadEmail(
   const intentLabel = lead.intent === "scheduling" ? "Agendamento" : "Contato";
   const channelLabel = lead.preferredChannel === "whatsapp" ? "WhatsApp" : "E-mail";
   const subject = `Nerya - ${intentLabel} pelo site`;
+  const logoUrl = `${siteOrigin}/logoo.png`;
   const rows = [
     ["Origem", intentLabel],
     ["Nome", lead.fullName],
@@ -248,16 +271,71 @@ function buildLeadEmail(
   return {
     subject,
     html: [
-      '<div style="font-family:Arial,sans-serif;line-height:1.5;color:#1f2937">',
-      "<h1>Nerya - novo lead recebido</h1>",
-      "<table>",
+      '<div style="margin:0;background:#f7f8fb;padding:24px;font-family:Arial,sans-serif;line-height:1.5;color:#1f2937">',
+      '<div style="margin:0 auto;max-width:640px;border:1px solid #e5e7eb;border-radius:14px;background:#ffffff;overflow:hidden">',
+      '<div style="background:#0b111c;padding:22px 24px">',
+      `<img src="${escapeHtml(logoUrl)}" alt="Nerya" width="44" height="44" style="display:block;border-radius:10px" />`,
+      "</div>",
+      '<div style="padding:28px 24px">',
+      '<p style="margin:0 0 8px;color:#536184;font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase">Novo lead recebido</p>',
+      '<h1 style="margin:0 0 20px;font-size:28px;line-height:1.15;color:#111827">Nerya - solicitação pelo site</h1>',
+      '<table style="width:100%;border-collapse:collapse">',
       htmlRows,
       "</table>",
-      "<h2>Mensagem</h2>",
-      `<p style="white-space:pre-wrap">${escapeHtml(lead.message)}</p>`,
+      '<h2 style="margin:26px 0 8px;font-size:18px;color:#111827">Mensagem</h2>',
+      `<p style="margin:0;white-space:pre-wrap;color:#374151">${escapeHtml(lead.message)}</p>`,
+      "</div>",
+      "</div>",
       "</div>",
     ].join(""),
     text: ["Nerya - novo lead recebido", "", textRows, "", "Mensagem:", lead.message].join("\n"),
+  };
+}
+
+function buildConfirmationEmail(
+  lead: NormalizedLead,
+  siteOrigin: string,
+): {
+  subject: string;
+  html: string;
+  text: string;
+} {
+  const intentLabel = lead.intent === "scheduling" ? "solicitação de agendamento" : "mensagem";
+  const schedule = lead.preferredSchedule ?? "horário a combinar";
+  const logoUrl = `${siteOrigin}/logoo.png`;
+  const escapedName = escapeHtml(lead.fullName);
+  const escapedSchedule = escapeHtml(schedule);
+
+  return {
+    subject: "Recebemos sua solicitação - Nerya",
+    html: [
+      '<div style="margin:0;background:#f7f8fb;padding:24px;font-family:Arial,sans-serif;line-height:1.55;color:#1f2937">',
+      '<div style="margin:0 auto;max-width:600px;border:1px solid #e5e7eb;border-radius:14px;background:#ffffff;overflow:hidden">',
+      '<div style="background:#0b111c;padding:22px 24px">',
+      `<img src="${escapeHtml(logoUrl)}" alt="Nerya" width="44" height="44" style="display:block;border-radius:10px" />`,
+      "</div>",
+      '<div style="padding:28px 24px">',
+      '<p style="margin:0 0 8px;color:#536184;font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase">Solicitação recebida</p>',
+      `<h1 style="margin:0 0 16px;font-size:28px;line-height:1.15;color:#111827">Obrigado, ${escapedName}.</h1>`,
+      `<p style="margin:0 0 16px;color:#374151">Recebemos sua ${intentLabel} e vamos responder em breve pelo canal escolhido.</p>`,
+      '<div style="margin:22px 0;padding:16px;border:1px solid #e5e7eb;border-radius:10px;background:#f9fafb">',
+      '<p style="margin:0 0 6px;color:#6b7280;font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase">Horário informado</p>',
+      `<p style="margin:0;color:#111827;font-size:16px">${escapedSchedule}</p>`,
+      "</div>",
+      '<p style="margin:0;color:#374151">Se quiser acrescentar alguma informação, responda diretamente este e-mail.</p>',
+      "</div>",
+      "</div>",
+      "</div>",
+    ].join(""),
+    text: [
+      "Recebemos sua solicitação - Nerya",
+      "",
+      `Obrigado, ${lead.fullName}.`,
+      `Recebemos sua ${intentLabel} e vamos responder em breve pelo canal escolhido.`,
+      `Horario informado: ${schedule}`,
+      "",
+      "Se quiser acrescentar alguma informação, responda diretamente este e-mail.",
+    ].join("\n"),
   };
 }
 
