@@ -10,7 +10,6 @@ import { formatPriceBRL } from "@/utils/format";
 import { DemoBanner } from "@/components/DemoBanner";
 import { EmptyState, ErrorState, LoadingBlock } from "@/components/States";
 import { cn } from "@/lib/utils";
-import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 import type { Plan } from "@/types";
 
@@ -18,14 +17,15 @@ export const Route = createFileRoute("/planos/")({
   head: () => ({
     meta: [
       { title: "Planos — Nerya" },
-      { name: "description", content: "Escolha um plano de aulas particulares de inglês com créditos mensais." },
+      { name: "description", content: "Escolha uma frequência de aulas particulares de inglês." },
     ],
   }),
   component: Plans,
 });
 
 function savingsLabel(plan: Plan): string | null {
-  if (!plan.originalMonthlyPriceCents || plan.originalMonthlyPriceCents <= plan.monthlyPriceCents) return null;
+  if (!plan.originalMonthlyPriceCents || plan.originalMonthlyPriceCents <= plan.monthlyPriceCents)
+    return null;
   const saved = plan.originalMonthlyPriceCents - plan.monthlyPriceCents;
   const percent = Math.round((saved / plan.originalMonthlyPriceCents) * 100);
   return `${percent}% de desconto`;
@@ -37,9 +37,11 @@ function frequencyLabel(plan: Plan): string {
 
 function Plans() {
   const navigate = useNavigate();
-  const { user, loading: authLoading } = useAuth();
   const [selectedPlanId, setSelectedPlanId] = useState<string | null>(null);
-  const { data, isPending, error, refetch } = useQuery({ queryKey: ["plans"], queryFn: () => planRepository.list() });
+  const { data, isPending, error, refetch } = useQuery({
+    queryKey: ["plans"],
+    queryFn: () => planRepository.list(),
+  });
 
   const choosePlan = useMutation({
     mutationFn: async (plan: Plan) => {
@@ -48,16 +50,10 @@ function Plans() {
       return plan;
     },
     onSuccess: (plan) => {
-      if (!user) {
-        toast.info("Entre para confirmar o plano demonstrativo.");
-        navigate({
-          to: "/entrar",
-          search: { redirect: `/planos/checkout?plan=${plan.id}&cycle=monthly` },
-        });
-        return;
-      }
-      toast.success("Plano selecionado (demonstrativo).");
-      navigate({ to: "/planos/checkout", search: { plan: plan.id, cycle: "monthly" } });
+      toast.info(
+        `Plano ${plan.name} selecionado. Envie seu melhor horário para confirmarmos por e-mail.`,
+      );
+      navigate({ to: "/agendar" });
     },
     onError: (err) => {
       toast.error(err instanceof Error ? err.message : "Nao foi possivel escolher o plano.");
@@ -71,15 +67,22 @@ function Plans() {
       <section className="bg-plan-bg text-plan-ink">
         <div className="container-page py-14 md:py-18">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-xs font-semibold uppercase tracking-widest text-plan-primary">Planos Nerya</p>
-            <h1 className="mt-3 font-display text-4xl text-plan-ink md:text-6xl">Escolha sua frequência.</h1>
+            <p className="text-xs font-semibold uppercase tracking-widest text-plan-primary">
+              Planos Nerya
+            </p>
+            <h1 className="mt-3 font-display text-4xl text-plan-ink md:text-6xl">
+              Escolha sua frequência.
+            </h1>
             <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-plan-muted md:text-base">
-              Aulas particulares ao vivo com créditos mensais claros, valores comparáveis e fluxo demonstrativo sem cobrança real.
+              Aulas particulares ao vivo com valores calculados por hora-aula e confirmação inicial
+              por e-mail.
             </p>
           </div>
 
           <div className="mx-auto mt-7 max-w-3xl">
-            <DemoBanner>Ambiente demonstrativo — nenhum pagamento será realizado.</DemoBanner>
+            <DemoBanner>
+              Sem pagamento online nesta fase. Solicite o horário e confirme por e-mail.
+            </DemoBanner>
           </div>
 
           {isPending && (
@@ -96,7 +99,10 @@ function Plans() {
 
           {!isPending && !error && plans.length === 0 && (
             <div className="mx-auto mt-10 max-w-3xl">
-              <EmptyState title="Nenhum plano disponível" description="Novas opções de aulas serão publicadas em breve." />
+              <EmptyState
+                title="Nenhum plano disponível"
+                description="Novas opções de aulas serão publicadas em breve."
+              />
             </div>
           )}
 
@@ -105,7 +111,7 @@ function Plans() {
               {plans.map((plan) => {
                 const saving = savingsLabel(plan);
                 const isChoosing = choosePlan.isPending && selectedPlanId === plan.id;
-                const disabled = authLoading || choosePlan.isPending;
+                const disabled = choosePlan.isPending;
                 const priceAria = plan.originalMonthlyPriceCents
                   ? `${formatPriceBRL(plan.monthlyPriceCents)} por mês, de ${formatPriceBRL(plan.originalMonthlyPriceCents)}`
                   : `${formatPriceBRL(plan.monthlyPriceCents)}`;
@@ -131,10 +137,14 @@ function Plans() {
                     <div className="flex min-h-24 flex-col justify-between gap-4">
                       <div>
                         <h2 className="font-display text-2xl text-plan-ink">{plan.name}</h2>
-                        <p className="mt-1 text-sm font-medium text-plan-primary">{frequencyLabel(plan)}</p>
+                        <p className="mt-1 text-sm font-medium text-plan-primary">
+                          {frequencyLabel(plan)}
+                        </p>
                       </div>
                       <div className="rounded-md bg-plan-primary-dark px-3 py-2 text-sm font-semibold text-primary-foreground">
-                        {plan.lessonsPerMonth === 1 ? "1 aula" : `${plan.lessonsPerMonth} aulas por mês`}
+                        {plan.lessonsPerMonth === 1
+                          ? "1 aula"
+                          : `${plan.lessonsPerMonth} aulas por mês`}
                       </div>
                     </div>
 
@@ -148,14 +158,18 @@ function Plans() {
                             </span>
                           </span>
                         ) : (
-                          <span className="text-plan-muted">Valor único</span>
+                          <span className="text-plan-muted">
+                            {plan.lessonsPerMonth === 1 ? "Valor único" : "R$ 34,90 por aula"}
+                          </span>
                         )}
                       </div>
                       <div className="mt-1" aria-label={priceAria}>
                         <span className="font-display text-5xl leading-none text-plan-primary-dark">
                           {formatPriceBRL(plan.monthlyPriceCents)}
                         </span>
-                        {plan.lessonsPerMonth > 1 && <span className="ml-1 text-sm text-plan-muted">/ mês</span>}
+                        {plan.lessonsPerMonth > 1 && (
+                          <span className="ml-1 text-sm text-plan-muted">/ mês</span>
+                        )}
                       </div>
                       <div className="mt-3 min-h-7">
                         {saving ? (
@@ -163,17 +177,26 @@ function Plans() {
                             {saving}
                           </span>
                         ) : (
-                          <span className="text-xs text-plan-muted">Sem assinatura mensal</span>
+                          <span className="text-xs text-plan-muted">
+                            {plan.lessonsPerMonth === 1
+                              ? "Aula individual avulsa"
+                              : "Total calculado pela quantidade de aulas"}
+                          </span>
                         )}
                       </div>
                     </div>
 
-                    <p className="mt-4 min-h-16 text-sm leading-relaxed text-plan-muted">{plan.description}</p>
+                    <p className="mt-4 min-h-16 text-sm leading-relaxed text-plan-muted">
+                      {plan.description}
+                    </p>
 
                     <ul className="mt-5 flex-1 space-y-2 text-sm text-plan-ink">
                       {plan.features.map((feature) => (
                         <li key={feature.id} className="flex gap-2">
-                          <Check className="mt-0.5 h-4 w-4 shrink-0 text-plan-primary" aria-hidden="true" />
+                          <Check
+                            className="mt-0.5 h-4 w-4 shrink-0 text-plan-primary"
+                            aria-hidden="true"
+                          />
                           <span>{feature.feature}</span>
                         </li>
                       ))}
@@ -196,7 +219,8 @@ function Plans() {
                         </>
                       ) : (
                         <>
-                          Escolher plano <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
+                          Solicitar horário{" "}
+                          <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
                         </>
                       )}
                     </Button>
