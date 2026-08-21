@@ -123,6 +123,30 @@ function RootShell({ children }: { children: ReactNode }) {
       </head>
       <body>
         {children}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+(() => {
+  const flag = "nerya:chunk-reload";
+  const shouldReload = (value) =>
+    typeof value === "string" &&
+    (value.includes("Failed to fetch dynamically imported module") ||
+      value.includes("Importing a module script failed") ||
+      value.includes("error loading dynamically imported module"));
+  const reloadOnce = () => {
+    if (sessionStorage.getItem(flag) === "1") return;
+    sessionStorage.setItem(flag, "1");
+    window.location.reload();
+  };
+  window.addEventListener("vite:preloadError", reloadOnce);
+  window.addEventListener("unhandledrejection", (event) => {
+    if (shouldReload(String(event.reason?.message || event.reason || ""))) reloadOnce();
+  });
+  window.addEventListener("load", () => sessionStorage.removeItem(flag), { once: true });
+})();
+`,
+          }}
+        />
         <Scripts />
       </body>
     </html>
