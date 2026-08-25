@@ -117,9 +117,9 @@ function HomePage() {
 
               <div className="my-8">
                 <p className="font-display text-4xl leading-tight text-foreground md:text-5xl">
-                  Reserve uma <span className="text-brand-light">aula</span>
+                  Escolha seu <span className="text-brand-light">horário</span>
                   <br />
-                  experimental.
+                  online.
                 </p>
                 <p className="mt-4 text-sm text-muted-foreground">
                   Escolha um horário disponível e receba a confirmação direto no seu e-mail.
@@ -128,9 +128,9 @@ function HomePage() {
 
               <div className="grid gap-3">
                 {[
-                  ["Valor hora-aula", "R$ 34,90"],
-                  ["Duração", "50 min"],
-                  ["Confirmação", "E-mail"],
+                  ["Data e horário", "Você escolhe"],
+                  ["Formato", "Online"],
+                  ["Confirmação", "Por e-mail"],
                 ].map(([label, value]) => (
                   <div
                     key={label}
