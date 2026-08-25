@@ -167,9 +167,6 @@ function Plans() {
                         <span className="font-display text-5xl leading-none text-plan-primary-dark">
                           {formatPriceBRL(plan.monthlyPriceCents)}
                         </span>
-                        {plan.lessonsPerMonth > 1 && (
-                          <span className="ml-1 text-sm text-plan-muted">/ mês</span>
-                        )}
                       </div>
                       <div className="mt-3 min-h-7">
                         {saving ? (

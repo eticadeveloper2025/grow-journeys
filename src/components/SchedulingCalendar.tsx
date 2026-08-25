@@ -185,7 +185,7 @@ export function SchedulingCalendar({
           </h1>
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
             {publicLeadMode
-              ? "Selecione uma data e envie o pedido pelo formulário. A confirmação chega por e-mail."
+              ? "Selecione uma data e um horário. Depois envie seus dados no formulário."
               : "Escolha uma data, selecione um horário disponível e confirme a reserva usando um crédito."}
           </p>
         </div>
@@ -409,7 +409,10 @@ export function SchedulingCalendar({
                       type="button"
                       disabled={!slot.available}
                       aria-pressed={selected}
-                      onClick={() => setSelectedSlotId(slot.id)}
+                      onClick={() => {
+                        setSelectedSlotId(slot.id);
+                        if (publicLeadMode) onRequestSlot?.(slot);
+                      }}
                       className={cn(
                         "flex min-h-14 items-center justify-between rounded-md border px-3 py-2 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                         slot.available
@@ -433,57 +436,52 @@ export function SchedulingCalendar({
               </div>
             )}
 
-            <div className="mt-6 rounded-lg border border-border/60 bg-background/40 p-4">
-              <h3 className="font-display text-xl">Resumo</h3>
-              {selectedSlot ? (
-                <dl className="mt-3 grid gap-2 text-sm">
-                  <SummaryRow label="Data" value={formatSlotDate(selectedSlot)} />
-                  <SummaryRow
-                    label="Horário"
-                    value={`${selectedSlot.startTime}-${selectedSlot.endTime}`}
-                  />
-                  <SummaryRow
-                    label="Duração"
-                    value={`${schedulingConfig.lessonDurationMinutes} min`}
-                  />
-                  {!publicLeadMode && (
-                    <>
-                      <SummaryRow label="Plano" value={planFrequency(activePlan)} />
-                      <SummaryRow
-                        label="Saldo após reserva"
-                        value={`${Math.max((balance?.remainingCredits ?? 0) - 1, 0)} créditos`}
-                      />
-                    </>
-                  )}
-                </dl>
-              ) : (
-                <p className="mt-2 text-sm text-muted-foreground">
-                  {publicLeadMode
-                    ? "Selecione um horário para preencher a solicitação."
-                    : "Selecione um horário para revisar a reserva."}
-                </p>
-              )}
-              <Button
-                className="mt-4 w-full bg-brand text-primary-foreground hover:bg-brand-dark"
-                disabled={!selectedSlot || confirm.isPending || (!publicLeadMode && !hasCredits)}
-                onClick={() => {
-                  if (publicLeadMode) {
-                    if (selectedSlot) {
-                      onRequestSlot?.(selectedSlot);
-                      toast.success("Horário enviado para o formulário.");
+            {!publicLeadMode && (
+              <div className="mt-6 rounded-lg border border-border/60 bg-background/40 p-4">
+                <h3 className="font-display text-xl">Resumo</h3>
+                {selectedSlot ? (
+                  <dl className="mt-3 grid gap-2 text-sm">
+                    <SummaryRow label="Data" value={formatSlotDate(selectedSlot)} />
+                    <SummaryRow
+                      label="Horário"
+                      value={`${selectedSlot.startTime}-${selectedSlot.endTime}`}
+                    />
+                    <SummaryRow
+                      label="Duração"
+                      value={`${schedulingConfig.lessonDurationMinutes} min`}
+                    />
+                    {!publicLeadMode && (
+                      <>
+                        <SummaryRow label="Plano" value={planFrequency(activePlan)} />
+                        <SummaryRow
+                          label="Saldo após reserva"
+                          value={`${Math.max((balance?.remainingCredits ?? 0) - 1, 0)} créditos`}
+                        />
+                      </>
+                    )}
+                  </dl>
+                ) : (
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    {publicLeadMode
+                      ? "Selecione um horário para preencher a solicitação."
+                      : "Selecione um horário para revisar a reserva."}
+                  </p>
+                )}
+                <Button
+                  className="mt-4 w-full bg-brand text-primary-foreground hover:bg-brand-dark"
+                  disabled={!selectedSlot || confirm.isPending || (!publicLeadMode && !hasCredits)}
+                  onClick={() => {
+                    if (!user) {
+                      navigate({ to: "/entrar", search: { redirect: "/agendar" } });
+                      return;
                     }
-                    return;
-                  }
-                  if (!user) {
-                    navigate({ to: "/entrar", search: { redirect: "/agendar" } });
-                    return;
-                  }
-                  if (selectedSlot) setConfirmOpen(true);
-                }}
-              >
-                {publicLeadMode ? "Solicitar este horário" : "Revisar e confirmar"}
-              </Button>
-            </div>
+                    if (selectedSlot) setConfirmOpen(true);
+                  }}
+                >
+                  Revisar e confirmar
+                </Button>
+              </div>
+            )}
           </section>
         </div>
       )}

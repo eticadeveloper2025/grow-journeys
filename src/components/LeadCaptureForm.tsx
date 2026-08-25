@@ -17,6 +17,8 @@ type LeadCaptureFormProps = {
   title?: string;
   description?: string;
   preferredSchedulePreset?: string;
+  requirePreferredSchedule?: boolean;
+  hidePreferredScheduleInput?: boolean;
 };
 
 type LeadFormState = {
@@ -54,12 +56,16 @@ export function LeadCaptureForm({
   title,
   description,
   preferredSchedulePreset,
+  requirePreferredSchedule = false,
+  hidePreferredScheduleInput = false,
 }: LeadCaptureFormProps) {
   const [form, setForm] = useState<LeadFormState>(emptyForm);
   const [renderedAt, setRenderedAt] = useState(() => new Date().toISOString());
   const [loading, setLoading] = useState(false);
   const whatsappReady = hasConfiguredWhatsApp();
   const isMock = env.leadsDataSource === "mock";
+  const needsSchedule = intent === "scheduling" && requirePreferredSchedule;
+  const missingSchedule = needsSchedule && form.preferredSchedule.trim().length === 0;
 
   useEffect(() => {
     if (!preferredSchedulePreset) return;
@@ -80,6 +86,10 @@ export function LeadCaptureForm({
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (loading) return;
+    if (missingSchedule) {
+      toast.info("Escolha uma data e um horário no calendário.");
+      return;
+    }
     setLoading(true);
     try {
       const response = await leadService.submit({
@@ -159,7 +169,7 @@ export function LeadCaptureForm({
         </div>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className={`grid gap-4 ${hidePreferredScheduleInput ? "" : "sm:grid-cols-2"}`}>
         <div>
           <Label htmlFor={`${intent}-whatsapp`}>WhatsApp</Label>
           <Input
@@ -170,16 +180,29 @@ export function LeadCaptureForm({
             onChange={(event) => update("whatsapp", event.target.value)}
           />
         </div>
-        <div>
-          <Label htmlFor={`${intent}-schedule`}>Melhores horários</Label>
-          <Input
-            id={`${intent}-schedule`}
-            placeholder="Ex.: terças à noite"
-            value={form.preferredSchedule}
-            onChange={(event) => update("preferredSchedule", event.target.value)}
-          />
-        </div>
+        {!hidePreferredScheduleInput && (
+          <div>
+            <Label htmlFor={`${intent}-schedule`}>Melhores horários</Label>
+            <Input
+              id={`${intent}-schedule`}
+              placeholder="Ex.: terças à noite"
+              value={form.preferredSchedule}
+              onChange={(event) => update("preferredSchedule", event.target.value)}
+            />
+          </div>
+        )}
       </div>
+
+      {hidePreferredScheduleInput && (
+        <div className="rounded-md border border-border/60 bg-background/40 px-3 py-3">
+          <div className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+            Horário escolhido
+          </div>
+          <div className="mt-1 text-sm font-medium text-foreground">
+            {form.preferredSchedule || "Escolha uma data e um horário no calendário."}
+          </div>
+        </div>
+      )}
 
       <div>
         <Label>Preferência de resposta</Label>
@@ -218,7 +241,7 @@ export function LeadCaptureForm({
           required
           placeholder={
             intent === "scheduling"
-              ? "Conte seu nível, objetivo e disponibilidade."
+              ? "Conte seu nível e objetivo."
               : "Escreva sua dúvida ou objetivo."
           }
           value={form.message}
@@ -228,14 +251,16 @@ export function LeadCaptureForm({
 
       <Button
         type="submit"
-        disabled={loading}
+        disabled={loading || missingSchedule}
         className="w-full bg-brand text-primary-foreground hover:bg-brand-dark"
       >
         {loading
           ? "Enviando..."
-          : form.preferredChannel === "whatsapp"
-            ? "Abrir WhatsApp Web"
-            : "Enviar por e-mail"}
+          : missingSchedule
+            ? "Escolha um horário no calendário"
+            : form.preferredChannel === "whatsapp"
+              ? "Abrir WhatsApp Web"
+              : "Enviar por e-mail"}
       </Button>
     </form>
   );

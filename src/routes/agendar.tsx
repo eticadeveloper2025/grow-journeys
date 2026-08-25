@@ -13,7 +13,7 @@ export const Route = createFileRoute("/agendar")({
       {
         name: "description",
         content:
-          "Consulte o calendário de disponibilidade e agende uma aula particular de inglês ao vivo.",
+          "Escolha um horário no calendário e envie uma solicitação de aula particular de inglês.",
       },
     ],
   }),
@@ -35,8 +35,10 @@ function SchedulePublic() {
         <LeadCaptureForm
           intent="scheduling"
           title="Pedir um horário"
-          description="Escolha um horário no calendário ou descreva sua disponibilidade. A confirmação chega por e-mail."
+          description="Escolha uma data e horário no calendário. Depois envie seus dados para confirmação por e-mail."
           preferredSchedulePreset={requestedSchedule}
+          requirePreferredSchedule
+          hidePreferredScheduleInput
         />
         <SchedulingCalendar framed={false} publicLeadMode onRequestSlot={requestSlot} />
       </section>
